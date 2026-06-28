@@ -30,16 +30,16 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-px bg-[#c9a84c]/10">
           {[
             {
-              initial: "F",
-              name: "Folub",
-              role: "Co-Founder & Business Lead",
-              bio: "Folub is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Folub is making sure it moves in the right direction.",
-            },
-            {
               initial: "S",
               name: "Samuel",
               role: "Co-Founder & Technical Lead",
               bio: "Samuel is the builder. A cybersecurity professional and full stack developer who architects and ships every product FSLabs puts into the world — including TailorNow. He turns ideas into real, working software.",
+            },
+            {
+              initial: "F",
+              name: "Folub",
+              role: "Co-Founder & Business Lead",
+              bio: "Folub is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Folub is making sure it moves in the right direction.",
             },
           ].map((f) => (
             <div key={f.name} className="bg-[#050505] p-12 group hover:bg-[#0a0906] transition-colors">
