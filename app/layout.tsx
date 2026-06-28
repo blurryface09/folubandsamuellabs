@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FolubandSamuel Labs | Tech Services & Consulting",
-  description: "FolubandSamuel Labs delivers world-class software development, IT consulting, outsourcing, and cybersecurity solutions for businesses of all sizes.",
+  title: "Folub & Samuel Labs | Technology & Consulting",
+  description: "Folub & Samuel Labs — world-class software development, cybersecurity, IT consulting, and tech outsourcing for businesses that demand excellence.",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#060b14] text-slate-200">
+      <body className="min-h-full flex flex-col bg-[#080808] text-[#f0ede8]">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

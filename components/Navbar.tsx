@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Logo from "./Logo";
 
 const links = [
   { href: "/", label: "Home" },
@@ -12,78 +13,68 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <nav className="fixed top-0 w-full z-50 bg-[#060b14]/90 backdrop-blur-md border-b border-cyan-900/30">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-cyan-400 font-bold text-xl tracking-tight">
-            FS<span className="text-white">Labs</span>
-          </span>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#080808]/95 backdrop-blur-md border-b border-[#c9a84c]/10 py-3" : "bg-transparent py-5"}`}>
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-3 group">
+          <Logo size={36} />
+          <div className="hidden sm:block">
+            <div className="text-white font-bold text-sm tracking-wide leading-none">FOLUB & SAMUEL</div>
+            <div className="text-[#c9a84c] font-light text-[10px] tracking-[0.25em] mt-0.5">LABS</div>
+          </div>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className={`text-sm font-medium transition-colors ${
-                pathname === l.href
-                  ? "text-cyan-400"
-                  : "text-slate-300 hover:text-cyan-400"
+              className={`text-sm font-medium tracking-wide transition-colors relative group ${
+                pathname === l.href ? "text-[#c9a84c]" : "text-white/70 hover:text-white"
               }`}
             >
               {l.label}
+              {pathname === l.href && (
+                <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-[#c9a84c] to-[#e8d080]" />
+              )}
             </Link>
           ))}
           <Link
             href="/contact"
-            className="ml-2 px-5 py-2 rounded-full bg-cyan-500 hover:bg-cyan-400 text-[#060b14] font-semibold text-sm transition-colors"
+            className="px-6 py-2.5 text-sm font-semibold tracking-wide border border-[#c9a84c]/60 text-[#c9a84c] hover:bg-[#c9a84c] hover:text-black transition-all duration-200 rounded-sm"
           >
             Get Started
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden text-slate-300 hover:text-cyan-400"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
+        <button className="md:hidden text-white/70 hover:text-[#c9a84c] transition-colors" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
           ) : (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/></svg>
           )}
         </button>
       </div>
 
-      {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-[#0a1220] border-t border-cyan-900/30 px-6 py-4 flex flex-col gap-4">
+        <div className="md:hidden bg-[#080808] border-t border-[#c9a84c]/10 px-6 py-6 flex flex-col gap-5">
           {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className={`text-sm font-medium transition-colors ${
-                pathname === l.href ? "text-cyan-400" : "text-slate-300 hover:text-cyan-400"
-              }`}
-            >
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
+              className={`text-sm font-medium tracking-wide ${pathname === l.href ? "text-[#c9a84c]" : "text-white/70"}`}>
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/contact"
-            onClick={() => setOpen(false)}
-            className="px-5 py-2 rounded-full bg-cyan-500 hover:bg-cyan-400 text-[#060b14] font-semibold text-sm text-center transition-colors"
-          >
+          <Link href="/contact" onClick={() => setOpen(false)}
+            className="mt-2 px-6 py-3 text-sm font-semibold text-center border border-[#c9a84c]/60 text-[#c9a84c] hover:bg-[#c9a84c] hover:text-black transition-all">
             Get Started
           </Link>
         </div>

@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #060b14;
-  --foreground: #e2e8f0;
+  --background: #080808;
+  --foreground: #f0ede8;
+  --gold: #c9a84c;
+  --gold-light: #e8d080;
+  --gold-dark: #9a7228;
 }
 
 @theme inline {
@@ -15,9 +18,12 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), 'Segoe UI', sans-serif;
+  font-family: var(--font-geist-sans), 'Helvetica Neue', sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+html { scroll-behavior: smooth; }
+
+::selection {
+  background: #c9a84c33;
+  color: #e8d080;
 }
