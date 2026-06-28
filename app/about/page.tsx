@@ -32,14 +32,14 @@ export default function About() {
             {
               initial: "F",
               name: "Folub",
-              role: "Co-Founder & Lead Engineer",
-              bio: "A cybersecurity specialist and software engineer with a sharp eye for building systems that are both powerful and secure. Folub leads the technical vision at FSLabs, turning complex problems into clean, scalable solutions.",
+              role: "Co-Founder & Business Lead",
+              bio: "Folub is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Folub is making sure it moves in the right direction.",
             },
             {
               initial: "S",
               name: "Samuel",
-              role: "Co-Founder & Strategy Lead",
-              bio: "A cybersecurity professional and business strategist who bridges the gap between technology and real-world outcomes. Samuel drives client relationships, product direction, and the overall growth of FSLabs.",
+              role: "Co-Founder & Technical Lead",
+              bio: "Samuel is the builder. A cybersecurity professional and full stack developer who architects and ships every product FSLabs puts into the world — including TailorNow. He turns ideas into real, working software.",
             },
           ].map((f) => (
             <div key={f.name} className="bg-[#050505] p-12 group hover:bg-[#0a0906] transition-colors">
