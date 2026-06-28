@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const services = [
-  { icon: "01", title: "Software Development", desc: "Custom web, mobile, and enterprise software built to scale. From MVP to production." },
-  { icon: "02", title: "Cybersecurity", desc: "Penetration testing, security audits, threat intelligence, and incident response." },
-  { icon: "03", title: "IT Consulting", desc: "Strategic technology advisory aligned to your business objectives and growth." },
-  { icon: "04", title: "Tech Outsourcing", desc: "On-demand engineering teams — skilled, vetted, ready to ship." },
+  { icon: "01", title: "Software Development", desc: "We build web apps, mobile apps, and enterprise software from the ground up. Fast, scalable, and built to last." },
+  { icon: "02", title: "Cybersecurity", desc: "From penetration testing to full security operations, we protect what your business has worked hard to build." },
+  { icon: "03", title: "IT Consulting", desc: "We help businesses make smarter technology decisions — aligning your tech investments with your actual goals." },
+  { icon: "04", title: "Tech Outsourcing", desc: "Need a team that delivers? We connect companies to real, vetted tech talent ready to get to work." },
 ];
 
 const stats = [
@@ -26,7 +26,7 @@ export default function Home() {
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-10">
               <div className="h-px w-8 bg-[#c9a84c]" />
-              <span className="text-[#c9a84c] text-xs font-medium tracking-[0.25em] uppercase">Technology & Consulting</span>
+              <span className="text-[#c9a84c] text-xs font-medium tracking-[0.25em] uppercase">Technology and Consulting</span>
             </div>
 
             <h1 className="text-6xl md:text-8xl font-bold text-white leading-[0.95] tracking-tight mb-8">
@@ -37,7 +37,7 @@ export default function Home() {
             </h1>
 
             <p className="text-white/50 text-lg md:text-xl max-w-xl leading-relaxed mb-12">
-              Folub & Samuel Labs delivers world-class software, cybersecurity, and tech consulting for businesses that refuse to settle.
+              Folub and Samuel Labs is a next generation technology company delivering world class software, cybersecurity, and consulting for businesses that refuse to settle for average.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -53,7 +53,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Floating stat in corner */}
         <div className="absolute right-8 bottom-12 hidden lg:flex flex-col items-end gap-1">
           <p className="text-[#c9a84c] text-4xl font-bold">50+</p>
           <p className="text-white/30 text-xs tracking-widest uppercase">Projects Shipped</p>
@@ -83,7 +82,7 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold text-white">Core Services</h2>
           </div>
           <Link href="/services" className="text-sm text-white/40 hover:text-[#c9a84c] transition-colors tracking-wide">
-            View All →
+            View All
           </Link>
         </div>
 
@@ -112,23 +111,23 @@ export default function Home() {
               <span className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase">Why Choose Us</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
-              Built on trust.<br />Driven by results.
+              We are not just a vendor.<br />We are your partner.
             </h2>
             <p className="text-white/40 text-base leading-relaxed mb-10">
-              We combine deep technical expertise with genuine care for your business. Every engagement is a partnership — not a transaction.
+              FSLabs was built by people who understand both technology and business. We bring the two together — delivering solutions that actually move the needle, not just tick boxes.
             </p>
             <Link href="/about"
               className="inline-flex items-center gap-3 text-sm text-[#c9a84c] border-b border-[#c9a84c]/30 pb-1 hover:border-[#c9a84c] transition-colors tracking-wide">
-              Meet the team →
+              Meet the team
             </Link>
           </div>
 
           <div className="space-y-0 border border-[#c9a84c]/10">
             {[
-              { n: "01", t: "Expert Team", d: "Seasoned engineers, security pros, and consultants." },
-              { n: "02", t: "Client-First", d: "Every solution is aligned to your goals, not just specs." },
-              { n: "03", t: "Full Lifecycle", d: "Strategy to deployment — we own it end to end." },
-              { n: "04", t: "Security Built In", d: "Cybersecurity isn't an add-on. It's in our DNA." },
+              { n: "01", t: "Real Expertise", d: "Our founders come from cybersecurity and software. We know this space inside out." },
+              { n: "02", t: "We Connect You to Talent", d: "We bridge the gap between companies and the skilled tech professionals they need." },
+              { n: "03", t: "Full Lifecycle Delivery", d: "From strategy to launch and beyond. We own the work from start to finish." },
+              { n: "04", t: "Security is in Our DNA", d: "We studied it, we practice it, and we build it into everything we create." },
             ].map((item, i) => (
               <div key={item.n} className={`flex gap-6 p-7 hover:bg-[#0e0c07] transition-colors group ${i !== 3 ? "border-b border-[#c9a84c]/10" : ""}`}>
                 <span className="text-[#c9a84c]/20 text-xs font-mono pt-1 group-hover:text-[#c9a84c]/50 transition-colors">{item.n}</span>
@@ -149,8 +148,12 @@ export default function Home() {
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c9a84c]/40 to-transparent" />
           <div className="relative">
             <p className="text-[#c9a84c] text-xs tracking-[0.3em] uppercase mb-6">Ready to Build?</p>
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">Let's create something<br />remarkable.</h2>
-            <p className="text-white/40 text-base mb-12 max-w-md mx-auto">Tell us about your project and we'll get back to you within 24 hours.</p>
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Let us create something<br />remarkable together.
+            </h2>
+            <p className="text-white/40 text-base mb-12 max-w-md mx-auto">
+              Tell us about your project and we will get back to you within 24 hours.
+            </p>
             <Link href="/contact"
               className="inline-block px-12 py-5 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
               Get in Touch
