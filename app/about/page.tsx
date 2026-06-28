@@ -36,10 +36,10 @@ export default function About() {
               bio: "Samuel is the builder. A cybersecurity professional and full stack developer who carries the full technical weight of FSLabs — from system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
             },
             {
-              initial: "F",
-              name: "Folub",
+              initial: "A",
+              name: "Akinbayo",
               role: "Co-Founder & Business Lead",
-              bio: "Folub is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Folub is making sure it moves in the right direction.",
+              bio: "Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.",
             },
           ].map((f) => (
             <div key={f.name} className="bg-[#050505] p-12 group hover:bg-[#0a0906] transition-colors">
