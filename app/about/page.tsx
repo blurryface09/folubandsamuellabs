@@ -33,7 +33,7 @@ export default function About() {
               initial: "S",
               name: "Samuel",
               role: "Co-Founder & Technical Lead",
-              bio: "Samuel is the builder. A cybersecurity professional and full stack developer who architects and ships every product FSLabs puts into the world — including TailorNow. He turns ideas into real, working software.",
+              bio: "Samuel is the builder. A cybersecurity professional and full stack developer who carries the full technical weight of FSLabs — from system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
             },
             {
               initial: "F",
