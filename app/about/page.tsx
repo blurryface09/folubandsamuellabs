@@ -80,16 +80,16 @@ export default function About() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-px bg-[#c9a84c]/10 border border-[#c9a84c]/10">
+        <div className="border border-[#c9a84c]/10 p-10 space-y-6">
           {[
-            { val: "50+", lbl: "Projects" },
-            { val: "30+", lbl: "Clients" },
-            { val: "5+", lbl: "Years" },
-            { val: "1", lbl: "Live Product" },
+            { label: "Founded", val: "2024" },
+            { label: "First Product", val: "TailorNow" },
+            { label: "Expertise", val: "Cybersecurity + Software" },
+            { label: "Reach", val: "Global" },
           ].map((s) => (
-            <div key={s.lbl} className="bg-[#080808] p-10 text-center hover:bg-[#0e0c07] transition-colors">
-              <p className="text-4xl font-bold text-[#c9a84c] mb-2">{s.val}</p>
-              <p className="text-white/30 text-xs tracking-widest uppercase">{s.lbl}</p>
+            <div key={s.label} className="flex justify-between items-center border-b border-[#c9a84c]/10 pb-5 last:border-0 last:pb-0">
+              <p className="text-white/30 text-xs tracking-widest uppercase">{s.label}</p>
+              <p className="text-[#c9a84c] font-semibold text-sm">{s.val}</p>
             </div>
           ))}
         </div>

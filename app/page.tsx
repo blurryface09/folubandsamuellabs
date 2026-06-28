@@ -7,11 +7,11 @@ const services = [
   { icon: "04", title: "Tech Outsourcing", desc: "Need a team that delivers? We connect companies to real, vetted tech talent ready to get to work." },
 ];
 
-const stats = [
-  { value: "50+", label: "Projects Delivered" },
-  { value: "30+", label: "Clients Served" },
-  { value: "5+", label: "Years Experience" },
-  { value: "100%", label: "Commitment" },
+const pillars = [
+  { label: "Software Development" },
+  { label: "Cybersecurity" },
+  { label: "IT Consulting" },
+  { label: "Tech Outsourcing" },
 ];
 
 export default function Home() {
@@ -53,19 +53,15 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="absolute right-8 bottom-12 hidden lg:flex flex-col items-end gap-1">
-          <p className="text-[#c9a84c] text-4xl font-bold">50+</p>
-          <p className="text-white/30 text-xs tracking-widest uppercase">Projects Shipped</p>
-        </div>
       </section>
 
-      {/* Stats bar */}
+      {/* Pillars bar */}
       <section className="border-y border-[#c9a84c]/10 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((s, i) => (
-            <div key={s.label} className={`text-center ${i !== stats.length - 1 ? "md:border-r border-[#c9a84c]/10" : ""}`}>
-              <p className="text-3xl font-bold text-[#c9a84c] mb-1">{s.value}</p>
-              <p className="text-white/30 text-xs tracking-widest uppercase">{s.label}</p>
+        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
+          {pillars.map((p, i) => (
+            <div key={p.label} className="flex items-center gap-12">
+              <span className="text-white/40 text-xs tracking-[0.2em] uppercase">{p.label}</span>
+              {i !== pillars.length - 1 && <span className="text-[#c9a84c]/20 hidden md:inline">·</span>}
             </div>
           ))}
         </div>
