@@ -54,47 +54,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Story */}
-      <section className="py-32 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-start">
-        <div>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-px w-8 bg-[#c9a84c]" />
-            <span className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase">Our Story</span>
-          </div>
-          <h2 className="text-4xl font-bold text-white mb-8 leading-tight">
-            Started in a classroom.<br />Built for the world.
-          </h2>
-          <div className="space-y-5 text-white/45 text-sm leading-relaxed">
-            <p>
-              Folub and Samuel met studying cybersecurity at university. Two people, same department, same mindset — obsessed with technology and what it could do in the right hands.
-            </p>
-            <p>
-              They worked together, challenged each other, and quickly realized they were building something bigger than coursework. The conversations kept coming back to one thing: why settle for less when you can build something that actually changes things?
-            </p>
-            <p>
-              So they did. Folub & Samuel Labs was born from that decision — a company where deep technical expertise meets real business ambition. Not just a service provider, but a technology partner built to help businesses grow, compete, and lead.
-            </p>
-            <p>
-              Today FSLabs delivers software, cybersecurity, consulting, and outsourcing services to clients across industries. We have already built and launched our first product — TailorNow, a marketplace connecting clients to professional tailors across Africa. This is only the beginning.
-            </p>
-          </div>
-        </div>
-
-        <div className="border border-[#c9a84c]/10 p-10 space-y-6">
-          {[
-            { label: "Founded", val: "2024" },
-            { label: "First Product", val: "TailorNow" },
-            { label: "Expertise", val: "Cybersecurity + Software" },
-            { label: "Reach", val: "Global" },
-          ].map((s) => (
-            <div key={s.label} className="flex justify-between items-center border-b border-[#c9a84c]/10 pb-5 last:border-0 last:pb-0">
-              <p className="text-white/30 text-xs tracking-widest uppercase">{s.label}</p>
-              <p className="text-[#c9a84c] font-semibold text-sm">{s.val}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Values */}
       <section className="border-t border-[#c9a84c]/10 bg-[#050505] py-24">
         <div className="max-w-7xl mx-auto px-6">
@@ -114,24 +73,15 @@ export default function About() {
         </div>
       </section>
 
-      {/* TailorNow callout */}
-      <section className="py-24 max-w-7xl mx-auto px-6">
-        <div className="border border-[#c9a84c]/15 p-12 md:p-16 grid md:grid-cols-2 gap-10 items-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c9a84c]/40 to-transparent" />
-          <div>
-            <p className="text-[#c9a84c] text-xs tracking-[0.3em] uppercase mb-4">Our First Product</p>
-            <h2 className="text-3xl font-bold text-white mb-4 leading-tight">TailorNow — Fashion, on demand.</h2>
-            <p className="text-white/40 text-sm leading-relaxed">
-              TailorNow is our marketplace connecting clients to professional tailors across Africa. Order fashion design services online, get matched with skilled tailors, and bring your style to life. Built by FSLabs. Powered by real talent.
-            </p>
-          </div>
-          <div className="flex md:justify-end">
-            <Link href="/contact"
-              className="inline-block px-10 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
-              Work With Us
-            </Link>
-          </div>
-        </div>
+      {/* CTA */}
+      <section className="py-24 max-w-7xl mx-auto px-6 text-center">
+        <h2 className="text-4xl font-bold text-white mb-5">Ready to work together?</h2>
+        <p className="text-white/40 mb-10 max-w-md mx-auto text-sm leading-relaxed">
+          Tell us about your project and let us show you what FSLabs can do.
+        </p>
+        <Link href="/contact" className="inline-block px-12 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
+          Contact Us
+        </Link>
       </section>
     </>
   );
