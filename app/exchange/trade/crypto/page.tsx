@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 const coins = ["Bitcoin (BTC)", "Tether (USDT)", "Ethereum (ETH)", "Litecoin (LTC)", "BNB", "USDC"];
 const networks = ["Bitcoin Network", "Ethereum (ERC-20)", "Tron (TRC-20)", "BNB Smart Chain (BEP-20)"];
@@ -39,6 +40,20 @@ export default function CryptoTrade() {
     });
 
     if (!res.ok) { setError("Failed to submit. Please try again."); setLoading(false); return; }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase.from("exchange_requests").insert({
+        user_id: user.id,
+        type: `crypto_${tradeType}`,
+        details: {
+          coin: form.coin, network: form.network, amount: `$${form.amount}`,
+          ...(tradeType === "buy" ? { wallet_address: form.walletAddress } : { bank: form.bankName, account_number: form.accountNumber, account_name: form.accountName }),
+        },
+        status: "pending",
+      });
+    }
+
     setDone(true);
     setLoading(false);
   };

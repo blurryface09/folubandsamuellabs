@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 const accountTypes = [
   { id: "cashapp", label: "CashApp", tag: "US Digital Wallet", desc: "Receive USD from US clients via $Cashtag. Widely used by freelancers." },
@@ -46,6 +47,17 @@ export default function Accounts() {
     });
 
     if (!res.ok) { setError("Failed to submit. Please try again."); setLoading(false); return; }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase.from("exchange_requests").insert({
+        user_id: user.id,
+        type: "account_request",
+        details: { account_type: selected, phone: form.phone, purpose: form.purpose },
+        status: "pending",
+      });
+    }
+
     setDone(true);
     setLoading(false);
   };

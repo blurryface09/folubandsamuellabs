@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 const cards = [
   "Steam", "iTunes / Apple", "Amazon", "Google Play",
@@ -48,6 +49,17 @@ export default function GiftCardTrade() {
     });
 
     if (!res.ok) { setError("Failed to submit. Please try again."); setLoading(false); return; }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase.from("exchange_requests").insert({
+        user_id: user.id,
+        type: "giftcard_sell",
+        details: { card: form.cardType, currency: form.currency, country: form.country, amount: `${form.currency} ${form.amount}`, bank: form.bankName, account_number: form.accountNumber, account_name: form.accountName },
+        status: "pending",
+      });
+    }
+
     setDone(true);
     setLoading(false);
   };

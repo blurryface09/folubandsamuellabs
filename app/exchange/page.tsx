@@ -70,11 +70,11 @@ export default function ExchangeLanding() {
           </p>
 
           <div className="flex flex-wrap gap-4 mb-24">
-            <Link href="/exchange/dashboard"
+            <Link href="/exchange/signup"
               className="px-10 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
               Create Free Account
             </Link>
-            <Link href="/exchange/dashboard"
+            <Link href="/exchange/login"
               className="px-10 py-4 border border-white/10 text-white/60 font-medium text-sm tracking-wide hover:border-[#c9a84c]/40 hover:text-[#c9a84c] transition-all">
               Sign In
             </Link>
@@ -105,7 +105,7 @@ export default function ExchangeLanding() {
           </div>
           <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
             <h2 className="text-4xl md:text-5xl font-bold text-white">Everything you need.</h2>
-            <Link href="/exchange/dashboard" className="text-sm text-white/30 hover:text-[#c9a84c] transition-colors tracking-wide">
+            <Link href="/exchange/signup" className="text-sm text-white/30 hover:text-[#c9a84c] transition-colors tracking-wide">
               Get started →
             </Link>
           </div>
@@ -151,7 +151,7 @@ export default function ExchangeLanding() {
             <p className="text-white/35 text-base leading-relaxed mb-10">
               No complicated verification loops. No endless waiting. Submit your request and our team handles the rest — fast, private, and reliable.
             </p>
-            <Link href="/exchange/dashboard"
+            <Link href="/exchange/signup"
               className="inline-block px-10 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
               Get Started Free
             </Link>
@@ -187,7 +187,7 @@ export default function ExchangeLanding() {
               <p className="text-white/35 text-base mb-12 max-w-md mx-auto leading-relaxed">
                 Join FSLabs Exchange and trade crypto, exchange gift cards, and access real payment accounts — all from Nigeria.
               </p>
-              <Link href="/exchange/dashboard"
+              <Link href="/exchange/signup"
                 className="inline-block px-14 py-5 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
                 Create Free Account
               </Link>
