@@ -111,7 +111,7 @@ function RadarBg() {
 
 export default function Home() {
   useReveal();
-  const headline = useScramble("We vet the talent.\nYou get the outcome.", 600);
+  const headline = useScramble("We build the tech.\nWe secure the system.", 600);
 
   const CHARS = ["01","λ","∑","Ψ","//","{}","ΔΦ",">>","0x","∞","≠","±"];
   const [mounted, setMounted] = useState(false);
@@ -156,7 +156,7 @@ export default function Home() {
 
           <p className="text-[#F1ECE1]/45 text-lg md:text-xl max-w-xl leading-relaxed mb-12 reveal"
             style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-            FSLabs aggregates vetted specialist talent: software engineers, security professionals, and digital experts deployed to solve real business problems.
+            FSLabs is a technology and cybersecurity company based in Lagos. We build software, secure systems, and deliver digital solutions for businesses that need it done right.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-20 reveal">
@@ -201,18 +201,18 @@ export default function Home() {
             <span className="text-[#2FA3A3]">One quality standard.</span>
           </h2>
           <p className="text-[#F1ECE1]/40 max-w-lg mb-16 leading-relaxed reveal" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-            Every engagement runs through the same vetting pipeline. Specialist output, not generalist guesswork.
+            From custom software to security operations, every service is delivered directly by the FSLabs team with no middlemen and no shortcuts.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 reveal">
             {[
               { n:"01", title:"Software Development", color:"#2FA3A3",
-                desc:"Web apps, mobile apps, APIs, and enterprise systems built by engineers we have verified technically and professionally.",
+                desc:"We design and build web apps, mobile apps, APIs, and enterprise systems from the ground up. Clean architecture, production ready code.",
                 tags:["Full Stack","Mobile","APIs","Architecture"] },
               { n:"02", title:"Cybersecurity", color:"#C99A3B",
-                desc:"Penetration testing, security audits, threat modelling, and SOC level monitoring from CEH certified professionals.",
+                desc:"We run penetration tests, security audits, threat assessments, and compliance checks. CEH certified and hands on from day one.",
                 tags:["Pen Testing","Audits","Threat Intel","Compliance"] },
               { n:"03", title:"Digital Solutions", color:"#D8432E",
-                desc:"UI and UX design, digital transformation consulting, product strategy, and technology integration for modern businesses.",
+                desc:"We handle UI and UX design, product strategy, and technology consulting for businesses making the move into the digital space.",
                 tags:["UI UX","Strategy","Integration","Consulting"] },
             ].map(s => (
               <div key={s.title} className="bg-[#0a0d11] p-10 group hover:bg-[#0f1318] transition-colors relative overflow-hidden">
@@ -240,20 +240,20 @@ export default function Home() {
         <div className="relative max-w-6xl mx-auto px-6 z-10">
           <div className="flex items-center gap-3 mb-4 reveal">
             <div className="h-px w-8 bg-[#2FA3A3]"/>
-            <span className="text-[#2FA3A3] text-[10px] tracking-[0.3em] uppercase" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>The Model</span>
+            <span className="text-[#2FA3A3] text-[10px] tracking-[0.3em] uppercase" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>How We Work</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#F1ECE1] mb-4 reveal" style={{fontFamily:"var(--font-space-grotesk)"}}>
-            The aggregation<br/><span className="text-[#C99A3B]">model.</span>
+            Simple process.<br/><span className="text-[#C99A3B]">Real results.</span>
           </h2>
           <p className="text-[#F1ECE1]/40 max-w-lg mb-16 leading-relaxed reveal" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-            We don't guess who's good. We build a verified network and match the right people to the right problems, every time.
+            We keep it straightforward. You tell us what you need, we scope it honestly, build it properly, and hand it over working.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5 reveal">
             {[
-              {n:"01", title:"Source", color:"#2FA3A3", desc:"We continuously identify specialist talent across software, security, and digital disciplines."},
-              {n:"02", title:"Vet", color:"#C99A3B", desc:"Technical assessments, background checks, reference verification, and live skill validation."},
-              {n:"03", title:"Match", color:"#D8432E", desc:"We map your project requirements to the right specialists, not the closest available."},
-              {n:"04", title:"Deliver", color:"#2FA3A3", desc:"Specialists execute under FSLabs quality standards. You get outcomes, not effort reports."},
+              {n:"01", title:"Brief", color:"#2FA3A3", desc:"You tell us what you are building or what problem you are facing. We listen and ask the right questions."},
+              {n:"02", title:"Scope", color:"#C99A3B", desc:"We define the work, set a realistic timeline, and agree on a clear deliverable before anything starts."},
+              {n:"03", title:"Build", color:"#D8432E", desc:"We do the work. Software gets built, systems get secured, solutions get shipped. No status theatre."},
+              {n:"04", title:"Deliver", color:"#2FA3A3", desc:"You receive something that works, is documented, and is ready for the real world. That is the standard."},
             ].map((step, i) => (
               <div key={step.n} className="bg-[#0E1116] p-8 group hover:bg-[#131820] transition-colors relative overflow-hidden">
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
