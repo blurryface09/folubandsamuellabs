@@ -1,25 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #FAFAF8;
-  --bg-alt: #F2EFE9;
-  --surface: #FFFFFF;
-  --text: #1A1714;
-  --text-dim: #7A746D;
-  --indigo: #4F46E5;
-  --indigo-light: #EEF2FF;
+  --bg: #04040A;
+  --surface: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.07);
+  --indigo: #6366F1;
+  --violet: #8B5CF6;
   --orange: #F97316;
-  --orange-light: #FFF7ED;
-  --teal: #0891B2;
-  --teal-light: #ECFEFF;
-  --border: #E5E0D8;
+  --teal: #22D3EE;
+  --text: #F1F5F9;
+  --muted: rgba(241,245,249,0.4);
 
-  /* legacy compat for exchange pages */
-  --background: #FAFAF8;
-  --foreground: #1A1714;
-  --gold: #D97706;
+  /* legacy for exchange */
+  --background: #04040A;
+  --foreground: #F1F5F9;
+  --gold: #F59E0B;
   --gold-light: #FCD34D;
-  --gold-dark: #92400E;
+  --gold-dark: #D97706;
 }
 
 @theme inline {
@@ -40,23 +37,17 @@ body {
 
 html { scroll-behavior: smooth; }
 
-::selection { background: rgba(79,70,229,0.15); color: #1A1714; }
+::selection { background: rgba(99,102,241,0.3); color: #fff; }
 
-:focus-visible {
-  outline: 2px solid var(--indigo);
-  outline-offset: 3px;
-}
+:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
 
 /* Scroll reveal */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
@@ -65,21 +56,49 @@ html { scroll-behavior: smooth; }
 
 /* Orb drift */
 @keyframes orb-drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -20px) scale(1.05); }
-  66% { transform: translate(-20px, 15px) scale(0.95); }
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(40px,-30px) scale(1.08); }
+  66% { transform: translate(-30px,20px) scale(0.94); }
 }
-
 @keyframes orb-drift-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-25px, 20px) scale(1.08); }
-  66% { transform: translate(15px, -10px) scale(0.92); }
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(-35px,25px) scale(1.1); }
+  66% { transform: translate(20px,-15px) scale(0.92); }
+}
+@keyframes orb-drift-3 {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(20px,30px); }
 }
 
-/* Float up (kept subtle for hero) */
+/* Float */
 @keyframes float-up {
   0% { transform: translateY(0); opacity: 0; }
-  10% { opacity: 0.5; }
+  10% { opacity: 0.6; }
   90% { opacity: 0.15; }
   100% { transform: translateY(-80px); opacity: 0; }
+}
+
+/* Pulse glow */
+@keyframes pulse-glow {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+
+/* Spin */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Gradient shift */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Shimmer */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
