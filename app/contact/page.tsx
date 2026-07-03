@@ -27,7 +27,7 @@ export default function Contact() {
       if (!res.ok) throw new Error();
       setSubmitted(true);
     } catch {
-      setError("Something went wrong. Email us directly at sekosamuel@gmail.com");
+      setError("Something went wrong. Email us directly at admin@folubandsamuellabs.com");
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export default function Contact() {
               <p className="text-[10px] tracking-[0.2em] text-white/25 uppercase mb-5">Reach Us</p>
               <div className="space-y-5">
                 {[
-                  { label: "Email", value: "sekosamuel@gmail.com" },
+                  { label: "Email", value: "admin@folubandsamuellabs.com" },
                   { label: "Website", value: "folubandsamuellabs.com" },
                   { label: "Location", value: "Nigeria · Remote Worldwide" },
                 ].map((c) => (

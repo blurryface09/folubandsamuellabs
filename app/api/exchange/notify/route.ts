@@ -18,8 +18,8 @@ export async function POST(req: Request) {
     .join("");
 
   const { error } = await resend.emails.send({
-    from: "FSLabs Exchange <onboarding@resend.dev>",
-    to: "sekosamuel@gmail.com",
+    from: "FSLabs Exchange <exchange@folubandsamuellabs.com>",
+    to: "admin@folubandsamuellabs.com",
     replyTo: email,
     subject: `[Exchange] ${type} — ${name}`,
     html: `

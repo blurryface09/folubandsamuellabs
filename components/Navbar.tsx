@@ -1,21 +1,18 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Logo from "./Logo";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/exchange", label: "Exchange" },
-  { href: "/contact", label: "Contact" },
+const navLinks = [
+  { href: "/#services", label: "Services" },
+  { href: "/#process", label: "Process" },
+  { href: "/#team", label: "Team" },
+  { href: "/exchange", label: "Exchange", highlight: true },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -24,59 +21,61 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#080808]/95 backdrop-blur-md border-b border-[#c9a84c]/10 py-3" : "bg-transparent py-5"}`}>
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "py-3 bg-white/90 backdrop-blur-md border-b border-[#E5E0D8] shadow-sm" : "py-5 bg-transparent"}`}>
+      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <Logo size={36} />
-          <div className="hidden sm:block">
-            <div className="text-white font-bold text-sm tracking-wide leading-none">FOLUB & SAMUEL</div>
-            <div className="text-[#c9a84c] font-light text-[10px] tracking-[0.25em] mt-0.5">LABS</div>
+          <div className="w-8 h-8 bg-[#4F46E5] flex items-center justify-center rounded-sm">
+            <span className="text-white text-xs font-bold" style={{ fontFamily: "var(--font-space-grotesk)" }}>FS</span>
+          </div>
+          <div>
+            <div className="text-[#1A1714] font-semibold text-sm leading-none tracking-wide" style={{ fontFamily: "var(--font-space-grotesk)" }}>FSLabs</div>
+            <div className="text-[#4F46E5] text-[9px] tracking-[0.15em] mt-0.5" style={{ fontFamily: "var(--font-ibm-plex-mono)" }}>RC 9637480</div>
           </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-10">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`text-sm font-medium tracking-wide transition-colors relative group ${
-                pathname === l.href ? "text-[#c9a84c]" : "text-white/70 hover:text-white"
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((l) => (
+            <Link key={l.href} href={l.href}
+              className={`text-xs tracking-wide transition-colors font-medium ${
+                l.highlight
+                  ? "text-[#0891B2] hover:text-[#1A1714] border border-[#0891B2]/30 hover:border-[#0891B2] px-3 py-1.5 rounded-sm"
+                  : "text-[#7A746D] hover:text-[#1A1714]"
               }`}
-            >
+              style={{ fontFamily: "var(--font-ibm-plex-mono)" }}>
               {l.label}
-              {pathname === l.href && (
-                <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-[#c9a84c] to-[#e8d080]" />
-              )}
             </Link>
           ))}
-          <Link
-            href="/contact"
-            className="px-6 py-2.5 text-sm font-semibold tracking-wide border border-[#c9a84c]/60 text-[#c9a84c] hover:bg-[#c9a84c] hover:text-black transition-all duration-200 rounded-sm"
-          >
-            Get Started
+          <Link href="/#contact"
+            className="px-5 py-2 bg-[#4F46E5] text-white text-xs font-semibold tracking-wide rounded-sm hover:bg-[#4338CA] transition-colors"
+            style={{ fontFamily: "var(--font-ibm-plex-mono)" }}>
+            Start Project
           </Link>
         </div>
 
-        <button className="md:hidden text-white/70 hover:text-[#c9a84c] transition-colors" onClick={() => setOpen(!open)} aria-label="Menu">
-          {open ? (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
-          ) : (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/></svg>
-          )}
+        {/* Mobile toggle */}
+        <button onClick={() => setOpen(!open)} className="md:hidden text-[#7A746D] hover:text-[#1A1714] transition-colors" aria-label="Menu">
+          {open
+            ? <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12"/></svg>
+            : <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16"/></svg>
+          }
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden bg-[#080808] border-t border-[#c9a84c]/10 px-6 py-6 flex flex-col gap-5">
-          {links.map((l) => (
+        <div className="md:hidden bg-white border-t border-[#E5E0D8] px-6 py-6 flex flex-col gap-5 shadow-lg">
+          {navLinks.map((l) => (
             <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
-              className={`text-sm font-medium tracking-wide ${pathname === l.href ? "text-[#c9a84c]" : "text-white/70"}`}>
+              className="text-xs tracking-wide text-[#7A746D] hover:text-[#1A1714] transition-colors"
+              style={{ fontFamily: "var(--font-ibm-plex-mono)" }}>
               {l.label}
             </Link>
           ))}
-          <Link href="/contact" onClick={() => setOpen(false)}
-            className="mt-2 px-6 py-3 text-sm font-semibold text-center border border-[#c9a84c]/60 text-[#c9a84c] hover:bg-[#c9a84c] hover:text-black transition-all">
-            Get Started
+          <Link href="/#contact" onClick={() => setOpen(false)}
+            className="mt-2 px-5 py-3 bg-[#4F46E5] text-white text-xs font-semibold tracking-wide text-center rounded-sm hover:bg-[#4338CA] transition-colors"
+            style={{ fontFamily: "var(--font-ibm-plex-mono)" }}>
+            Start Project
           </Link>
         </div>
       )}

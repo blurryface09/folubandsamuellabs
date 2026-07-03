@@ -1,29 +1,85 @@
 @import "tailwindcss";
 
 :root {
-  --background: #080808;
-  --foreground: #f0ede8;
-  --gold: #c9a84c;
-  --gold-light: #e8d080;
-  --gold-dark: #9a7228;
+  --bg: #FAFAF8;
+  --bg-alt: #F2EFE9;
+  --surface: #FFFFFF;
+  --text: #1A1714;
+  --text-dim: #7A746D;
+  --indigo: #4F46E5;
+  --indigo-light: #EEF2FF;
+  --orange: #F97316;
+  --orange-light: #FFF7ED;
+  --teal: #0891B2;
+  --teal-light: #ECFEFF;
+  --border: #E5E0D8;
+
+  /* legacy compat for exchange pages */
+  --background: #FAFAF8;
+  --foreground: #1A1714;
+  --gold: #D97706;
+  --gold-light: #FCD34D;
+  --gold-dark: #92400E;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-ibm-plex-sans);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
+* { box-sizing: border-box; }
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ibm-plex-sans), 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 html { scroll-behavior: smooth; }
 
-::selection {
-  background: #c9a84c33;
-  color: #e8d080;
+::selection { background: rgba(79,70,229,0.15); color: #1A1714; }
+
+:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: 3px;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* Orb drift */
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 15px) scale(0.95); }
+}
+
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 20px) scale(1.08); }
+  66% { transform: translate(15px, -10px) scale(0.92); }
+}
+
+/* Float up (kept subtle for hero) */
+@keyframes float-up {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.15; }
+  100% { transform: translateY(-80px); opacity: 0; }
 }
