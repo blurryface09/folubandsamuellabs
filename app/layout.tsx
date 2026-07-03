@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Exo_2, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], weight: ["400","500","600","700"] });
-const ibmPlexSans = IBM_Plex_Sans({ variable: "--font-ibm-plex-sans", subsets: ["latin"], weight: ["300","400","500","600"] });
-const ibmPlexMono = IBM_Plex_Mono({ variable: "--font-ibm-plex-mono", subsets: ["latin"], weight: ["400","500"] });
+const exo2 = Exo_2({
+  variable: "--font-exo2",
+  subsets: ["latin"],
+  weight: ["300","400","500","600","700","800","900"],
+});
+const robotoMono = Roboto_Mono({
+  variable: "--font-roboto-mono",
+  subsets: ["latin"],
+  weight: ["300","400","500","700"],
+});
 
 export const metadata: Metadata = {
   title: "Folub & Samuel Labs | Technology & Cybersecurity",
@@ -15,8 +22,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-[#04040A] text-[#F1F5F9] antialiased">
+    <html lang="en" className={`${exo2.variable} ${robotoMono.variable}`}>
+      <body className="min-h-screen flex flex-col bg-[#050505] text-[#F5F0E8] antialiased">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

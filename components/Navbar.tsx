@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -21,85 +22,94 @@ export default function Navbar() {
   ];
 
   return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        transition: "background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease",
-        background: scrolled ? "rgba(4,4,10,0.85)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
-      }}
-    >
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <div style={{ width: 34, height: 34, background: "linear-gradient(135deg, #6366F1, #8B5CF6)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 16px rgba(99,102,241,0.5)" }}>
-            <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 14, color: "#fff", letterSpacing: "-0.5px" }}>FS</span>
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      background: scrolled ? "rgba(5,5,5,0.92)" : "transparent",
+      backdropFilter: scrolled ? "blur(24px)" : "none",
+      WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
+      borderBottom: scrolled ? "1px solid rgba(201,168,76,0.12)" : "1px solid transparent",
+      transition: "background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease",
+    }}>
+      <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 72 }}>
+
+        {/* Logo */}
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
+          <Image src="/fslabs-logo.svg" alt="FSLabs" width={38} height={38} priority />
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+            <span style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 15, letterSpacing: "0.05em", background: "linear-gradient(135deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              FOLUB &amp; SAMUEL
+            </span>
+            <span style={{ fontFamily: "var(--font-roboto-mono)", fontWeight: 400, fontSize: 9, letterSpacing: "0.28em", color: "rgba(201,168,76,0.5)", textTransform: "uppercase" }}>
+              Labs Limited
+            </span>
           </div>
-          <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 16, color: "#F1F5F9", letterSpacing: "-0.3px" }}>
-            Folub <span style={{ opacity: 0.4 }}>&amp;</span> Samuel Labs
-          </span>
         </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }} className="fs-nav-links">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 14, fontWeight: 500, color: "rgba(241,245,249,0.65)", textDecoration: "none", padding: "8px 14px", borderRadius: 8, transition: "color 0.2s, background 0.2s" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#F1F5F9"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(241,245,249,0.65)"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
-            >
-              {l.label}
-            </Link>
+        {/* Desktop nav */}
+        <div className="fs-nav-links" style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          {links.map(l => (
+            <Link key={l.href} href={l.href} style={{
+              fontFamily: "var(--font-roboto-mono)", fontSize: 12, fontWeight: 500,
+              letterSpacing: "0.1em", textTransform: "uppercase",
+              color: "rgba(245,240,232,0.5)", textDecoration: "none",
+              padding: "8px 16px", borderRadius: 8,
+              transition: "color 0.2s, background 0.2s",
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#C9A84C"; (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.07)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.5)"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
+            >{l.label}</Link>
           ))}
-          <Link
-            href="#contact"
-            style={{ marginLeft: 8, padding: "9px 20px", background: "linear-gradient(135deg, #6366F1, #8B5CF6)", color: "#fff", borderRadius: 10, fontFamily: "var(--font-ibm-plex-sans)", fontSize: 14, fontWeight: 600, textDecoration: "none", boxShadow: "0 0 20px rgba(99,102,241,0.35)", transition: "box-shadow 0.2s, transform 0.2s" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 30px rgba(99,102,241,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 20px rgba(99,102,241,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
-          >
-            Get Started
-          </Link>
+          <Link href="#contact" style={{
+            marginLeft: 12, padding: "10px 24px",
+            background: "linear-gradient(135deg,#C9A84C,#8B6914)",
+            color: "#050505", borderRadius: 10,
+            fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 11,
+            letterSpacing: "0.12em", textTransform: "uppercase",
+            textDecoration: "none",
+            boxShadow: "0 0 24px rgba(201,168,76,0.3)",
+            transition: "box-shadow 0.25s, transform 0.2s",
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 40px rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(201,168,76,0.3)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+          >Get Started</Link>
         </div>
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="fs-hamburger"
-          style={{ background: "none", border: "none", cursor: "pointer", padding: 8, color: "#F1F5F9" }}
-          aria-label="Toggle menu"
-        >
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        {/* Hamburger */}
+        <button onClick={() => setOpen(!open)} className="fs-hamburger"
+          style={{ background: "none", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 8, cursor: "pointer", padding: "8px 10px", color: "#C9A84C" }}
+          aria-label="Toggle menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             {open ? (
-              <>
-                <line x1="4" y1="4" x2="18" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <line x1="18" y1="4" x2="4" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </>
+              <><line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                <line x1="16" y1="4" x2="4" y2="16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></>
             ) : (
-              <>
-                <line x1="3" y1="6" x2="19" y2="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <line x1="3" y1="11" x2="19" y2="11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <line x1="3" y1="16" x2="19" y2="16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </>
+              <><line x1="2" y1="6" x2="18" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                <line x1="2" y1="10" x2="18" y2="10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                <line x1="2" y1="14" x2="18" y2="14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></>
             )}
           </svg>
         </button>
       </div>
 
+      {/* Mobile menu */}
       {open && (
-        <div style={{ background: "rgba(4,4,10,0.97)", backdropFilter: "blur(20px)", borderTop: "1px solid rgba(255,255,255,0.06)", padding: "16px 24px 24px" }}>
-          {links.map((l) => (
-            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} style={{ display: "block", padding: "12px 0", color: "rgba(241,245,249,0.8)", textDecoration: "none", fontSize: 15, fontFamily: "var(--font-ibm-plex-sans)", fontWeight: 500, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              {l.label}
-            </Link>
+        <div style={{ background: "rgba(5,5,5,0.98)", backdropFilter: "blur(24px)", borderTop: "1px solid rgba(201,168,76,0.1)", padding: "20px 28px 32px" }}>
+          {links.map(l => (
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} style={{
+              display: "block", padding: "14px 0",
+              fontFamily: "var(--font-roboto-mono)", fontSize: 13, fontWeight: 500,
+              letterSpacing: "0.12em", textTransform: "uppercase",
+              color: "rgba(245,240,232,0.6)", textDecoration: "none",
+              borderBottom: "1px solid rgba(201,168,76,0.08)",
+            }}>{l.label}</Link>
           ))}
-          <Link href="#contact" onClick={() => setOpen(false)} style={{ display: "block", marginTop: 16, padding: "12px 20px", background: "linear-gradient(135deg, #6366F1, #8B5CF6)", color: "#fff", borderRadius: 10, fontFamily: "var(--font-ibm-plex-sans)", fontSize: 14, fontWeight: 600, textDecoration: "none", textAlign: "center" }}>
-            Get Started
-          </Link>
+          <Link href="#contact" onClick={() => setOpen(false)} style={{
+            display: "block", marginTop: 20, padding: "14px",
+            background: "linear-gradient(135deg,#C9A84C,#8B6914)",
+            color: "#050505", borderRadius: 10, textAlign: "center",
+            fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12,
+            letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none",
+          }}>Get Started</Link>
         </div>
       )}
 

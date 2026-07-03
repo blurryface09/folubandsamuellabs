@@ -1,388 +1,419 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
+import Image from "next/image";
 
-/* ─── Particle Mesh Canvas ─── */
-function ParticleCanvas() {
+/* ══════════════════════════════════════════════
+   GOLD PARTICLE CANVAS (adapted from 21st.dev)
+══════════════════════════════════════════════ */
+function GoldParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particlesRef = useRef<Array<{
+    x: number; y: number; speed: number; opacity: number;
+    fadeDelay: number; fadeStart: number; fadingOut: boolean;
+    size: number;
+  }>>([]);
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const cv: HTMLCanvasElement = canvas;
     const ctx = cv.getContext("2d") as CanvasRenderingContext2D;
-    if (!ctx) return;
 
-    let W = 0, H = 0, raf = 0;
-    const COUNT = 80;
-    const MAX_DIST = 160;
-
-    interface Pt { x: number; y: number; vx: number; vy: number; r: number }
-    let pts: Pt[] = [];
+    function makeParticle() {
+      return {
+        x: Math.random() * cv.width,
+        y: Math.random() * cv.height,
+        speed: Math.random() * 0.3 + 0.08,
+        opacity: 1,
+        fadeDelay: Math.random() * 800 + 200,
+        fadeStart: Date.now() + Math.random() * 800 + 200,
+        fadingOut: false,
+        size: Math.random() * 1.4 + 0.3,
+      };
+    }
 
     function resize() {
-      W = cv.offsetWidth; H = cv.offsetHeight;
-      cv.width = W; cv.height = H;
+      cv.width = window.innerWidth;
+      cv.height = window.innerHeight;
+      const count = Math.floor((cv.width * cv.height) / 5000);
+      particlesRef.current = Array.from({ length: count }, makeParticle);
     }
 
-    function init() {
-      pts = Array.from({ length: COUNT }, () => ({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 1.5 + 0.5,
-      }));
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      for (const p of pts) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(99,102,241,0.7)";
-        ctx.fill();
-      }
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < MAX_DIST) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(99,102,241,${(1 - d / MAX_DIST) * 0.25})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
+    function animate() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      for (const p of particlesRef.current) {
+        p.y -= p.speed;
+        if (p.y < 0) {
+          p.x = Math.random() * cv.width;
+          p.y = cv.height;
+          p.opacity = 1;
+          p.fadingOut = false;
+          p.fadeStart = Date.now() + p.fadeDelay;
+        }
+        if (!p.fadingOut && Date.now() > p.fadeStart) p.fadingOut = true;
+        if (p.fadingOut) {
+          p.opacity -= 0.006;
+          if (p.opacity <= 0) {
+            p.x = Math.random() * cv.width;
+            p.y = cv.height;
+            p.opacity = 1;
+            p.fadingOut = false;
+            p.fadeStart = Date.now() + p.fadeDelay;
           }
         }
+        const r = Math.floor(200 + Math.random() * 55);
+        const g = Math.floor(150 + Math.random() * 68);
+        ctx.fillStyle = `rgba(${r},${g},40,${p.opacity * 0.85})`;
+        ctx.fillRect(p.x, p.y, p.size, Math.random() * 2.5 + 1);
       }
-      raf = requestAnimationFrame(draw);
+      rafRef.current = requestAnimationFrame(animate);
     }
 
-    const ro = new ResizeObserver(() => { resize(); init(); });
-    ro.observe(cv);
-    resize(); init(); draw();
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+    resize();
+    animate();
+    window.addEventListener("resize", resize);
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: 0.6 }}
-    />
+    <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1, opacity: 0.7 }} />
   );
 }
 
-/* ─── 3D Tilt Card ─── */
-function TiltCard({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = ref.current;
-    if (!el) return;
-    const { left, top, width, height } = el.getBoundingClientRect();
-    const x = ((e.clientX - left) / width - 0.5) * 2;
-    const y = ((e.clientY - top) / height - 0.5) * 2;
-    el.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateZ(10px)`;
-    el.style.boxShadow = `${-x * 10}px ${y * 10}px 40px rgba(99,102,241,0.2), 0 0 40px rgba(99,102,241,0.08)`;
-  }, []);
-
-  const onLeave = useCallback(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.transform = "perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px)";
-    el.style.boxShadow = "0 0 0 1px rgba(255,255,255,0.07)";
-  }, []);
-
+/* ══════════════════════════════════════════════
+   GOLD SPOTLIGHTS
+══════════════════════════════════════════════ */
+function GoldSpotlights() {
   return (
-    <div
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.07)",
-        borderRadius: 20,
-        transition: "transform 0.15s ease, box-shadow 0.15s ease",
-        willChange: "transform",
-        ...style,
-      }}
-    >
-      {children}
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
+      {[
+        { rotate: "25deg", dur: "17s", delay: "0s" },
+        { rotate: "-25deg", dur: "13s", delay: "0.5s" },
+        { rotate: "0deg", dur: "21s", delay: "1s", reverse: true },
+      ].map((s, i) => (
+        <div key={i} style={{
+          position: "absolute", left: 0, right: 0, top: "4em",
+          margin: "0 auto", width: "36em", height: "90vh",
+          borderRadius: "0 0 50% 50%",
+          backgroundImage: "conic-gradient(from 0deg at 50% -5%, transparent 43%, rgba(201,168,76,0.18) 48%, rgba(201,168,76,0.35) 50%, rgba(201,168,76,0.18) 52%, transparent 57%)",
+          transformOrigin: "50% 0",
+          transform: `rotate(${s.rotate})`,
+          filter: "blur(20px) opacity(0.45)",
+          animation: `loadrot 2s ease-out ${s.delay} forwards, spotlight-anim ${s.dur} ease-in-out ${s.delay} infinite${s.reverse ? " reverse" : ""}`,
+          opacity: 0,
+        }} />
+      ))}
     </div>
   );
 }
 
-/* ─── Scramble hook ─── */
-const GLYPHS = "01ΩΨΔΦλπ∑∂≠≡±∞αβγδ!@#$%^&*";
-function useScramble(text: string, delay = 500) {
+/* ══════════════════════════════════════════════
+   3D TILT CARD (from 21st.dev tom_ui)
+══════════════════════════════════════════════ */
+function TiltCard({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [transform, setTransform] = useState("perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)");
+  const [spotPos, setSpotPos] = useState({ x: 50, y: 50 });
+  const [hovered, setHovered] = useState(false);
+
+  const onMove = useCallback((e: React.PointerEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    const xRot = (py - 0.5) * 22;
+    const yRot = (px - 0.5) * -22;
+    setTransform(`perspective(1200px) rotateX(${xRot}deg) rotateY(${yRot}deg) scale3d(1.03,1.03,1.03)`);
+    setSpotPos({ x: px * 100, y: py * 100 });
+  }, []);
+
+  const onLeave = useCallback(() => {
+    setTransform("perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)");
+    setHovered(false);
+  }, []);
+
+  return (
+    <div ref={ref} className={className}
+      onPointerEnter={() => setHovered(true)}
+      onPointerMove={onMove}
+      onPointerLeave={onLeave}
+      style={{ transform, transition: "transform 0.2s ease-out", transformStyle: "preserve-3d", willChange: "transform", position: "relative", overflow: "hidden", ...style }}
+    >
+      {children}
+      <div style={{ position: "absolute", inset: 0, zIndex: 10, pointerEvents: "none", opacity: hovered ? 1 : 0, transition: "opacity 0.3s" }}>
+        <div style={{ position: "absolute", width: "220%", height: "220%", borderRadius: "50%", left: `${spotPos.x}%`, top: `${spotPos.y}%`, transform: "translate(-50%,-50%)", background: "radial-gradient(circle, rgba(240,192,64,0.12) 0%, rgba(201,168,76,0.05) 30%, transparent 60%)" }} />
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   SCRAMBLE HOOK
+══════════════════════════════════════════════ */
+const GLYPHS = "01ΩΨΔΦλπ∑∂≠≡±∞αβγδ!@#$%^&*<>?|[]{}";
+function useScramble(text: string, delay = 800) {
   const [display, setDisplay] = useState(() => text.replace(/\S/g, "·"));
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const t = setTimeout(() => {
       let frame = 0;
-      const total = text.length;
       const id = setInterval(() => {
         frame++;
-        const resolved = Math.floor((frame / 60) * total);
+        const resolved = Math.floor((frame / 65) * text.length);
         setDisplay(text.split("").map((ch, i) => {
           if (ch === " " || ch === "\n") return ch;
           if (i < resolved) return ch;
           return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
         }).join(""));
-        if (resolved >= total) clearInterval(id);
-      }, 30);
+        if (resolved >= text.length) clearInterval(id);
+      }, 28);
       return () => clearInterval(id);
     }, delay);
-    return () => clearTimeout(timer);
+    return () => clearTimeout(t);
   }, [text, delay]);
   return display;
 }
 
-/* ─── Scroll reveal ─── */
+/* ══════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════ */
 function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>(".reveal");
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => {
-        if (e.isIntersecting) { (e.target as HTMLElement).classList.add("visible"); obs.unobserve(e.target); }
-      }),
-      { threshold: 0.08 }
-    );
+    const obs = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { (e.target as HTMLElement).classList.add("visible"); obs.unobserve(e.target); }
+    }), { threshold: 0.08 });
     els.forEach(el => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 }
 
-/* ─── Contact Form ─── */
+/* ══════════════════════════════════════════════
+   CONTACT FORM
+══════════════════════════════════════════════ */
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", service: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [status, setStatus] = useState<"idle"|"sending"|"sent"|"error">("idle");
 
-  const inputStyle: React.CSSProperties = {
-    width: "100%",
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 10,
-    color: "#F1F5F9",
-    fontSize: 14,
-    padding: "12px 16px",
-    fontFamily: "var(--font-ibm-plex-sans)",
-    outline: "none",
-    transition: "border-color 0.2s",
+  const iStyle: React.CSSProperties = {
+    width: "100%", background: "rgba(201,168,76,0.04)", border: "1px solid rgba(201,168,76,0.15)",
+    borderRadius: 10, color: "#F5F0E8", fontSize: 13, padding: "12px 16px",
+    fontFamily: "var(--font-roboto-mono)", outline: "none", transition: "border-color 0.2s",
   };
 
   async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus("sending");
+    e.preventDefault(); setStatus("sending");
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
       setStatus(res.ok ? "sent" : "error");
-    } catch {
-      setStatus("error");
-    }
+    } catch { setStatus("error"); }
   }
 
   if (status === "sent") return (
-    <div style={{ padding: 40, textAlign: "center", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 16, background: "rgba(99,102,241,0.08)" }}>
-      <div style={{ width: 48, height: 48, borderRadius: "50%", background: "rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11l5 5 9-9" stroke="#6366F1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    <div style={{ padding: 48, textAlign: "center", border: "1px solid rgba(201,168,76,0.25)", borderRadius: 16, background: "rgba(201,168,76,0.04)" }}>
+      <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(201,168,76,0.12)", border: "1px solid rgba(201,168,76,0.3)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-9" stroke="#C9A84C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
       </div>
-      <p style={{ fontFamily: "var(--font-space-grotesk)", fontSize: 18, fontWeight: 600, color: "#F1F5F9", marginBottom: 8 }}>Message received</p>
-      <p style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 14, color: "rgba(241,245,249,0.5)" }}>We will be in touch within 24 hours.</p>
+      <p style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 20, color: "#F0C040", marginBottom: 8 }}>Message Received</p>
+      <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.45)" }}>We will respond within 24 hours.</p>
     </div>
   );
 
   return (
     <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-        {(["name", "email"] as const).map(field => (
-          <div key={field}>
-            <label style={{ display: "block", fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(241,245,249,0.35)", marginBottom: 6 }}>
-              {field}
-            </label>
-            <input
-              required
-              type={field === "email" ? "email" : "text"}
-              placeholder={field === "email" ? "you@company.com" : "Your name"}
-              style={inputStyle}
-              value={form[field]}
-              onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
-              onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,102,241,0.6)")}
-              onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
-            />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        {(["name","email"] as const).map(f => (
+          <div key={f}>
+            <label style={{ display: "block", fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", marginBottom: 6 }}>{f}</label>
+            <input required type={f === "email" ? "email" : "text"} placeholder={f === "email" ? "you@company.com" : "Your name"} style={iStyle} value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
+              onFocus={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")}
+              onBlur={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.15)")} />
           </div>
         ))}
       </div>
       <div>
-        <label style={{ display: "block", fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(241,245,249,0.35)", marginBottom: 6 }}>Service</label>
-        <select
-          required
-          style={{ ...inputStyle, cursor: "pointer" }}
-          value={form.service}
-          onChange={e => setForm(f => ({ ...f, service: e.target.value }))}
-          onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,102,241,0.6)")}
-          onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
-        >
-          <option value="" disabled style={{ background: "#0D0D1A" }}>Select a service</option>
-          {["Software Development", "Cybersecurity", "Digital Solutions", "FS Exchange", "Other"].map(s => (
-            <option key={s} value={s} style={{ background: "#0D0D1A" }}>{s}</option>
+        <label style={{ display: "block", fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", marginBottom: 6 }}>Service</label>
+        <select required style={{ ...iStyle, cursor: "pointer" }} value={form.service} onChange={e => setForm(p => ({ ...p, service: e.target.value }))}
+          onFocus={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")}
+          onBlur={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.15)")}>
+          <option value="" disabled style={{ background: "#0A0A0A" }}>Select a service</option>
+          {["Software Development","Cybersecurity","Digital Solutions","FS Exchange","Other"].map(s => (
+            <option key={s} value={s} style={{ background: "#0A0A0A" }}>{s}</option>
           ))}
         </select>
       </div>
       <div>
-        <label style={{ display: "block", fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(241,245,249,0.35)", marginBottom: 6 }}>Message</label>
-        <textarea
-          required
-          rows={5}
-          placeholder="Tell us about your project..."
-          style={{ ...inputStyle, resize: "none" }}
-          value={form.message}
-          onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-          onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,102,241,0.6)")}
-          onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
-        />
+        <label style={{ display: "block", fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", marginBottom: 6 }}>Message</label>
+        <textarea required rows={5} placeholder="Tell us about your project..." style={{ ...iStyle, resize: "none" }} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+          onFocus={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")}
+          onBlur={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.15)")} />
       </div>
-      {status === "error" && (
-        <p style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 12, color: "#F87171" }}>
-          Something went wrong. Email us at admin@folubandsamuellabs.com
-        </p>
-      )}
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        style={{ padding: "14px 24px", background: "linear-gradient(135deg, #6366F1, #8B5CF6)", color: "#fff", borderRadius: 12, border: "none", fontFamily: "var(--font-ibm-plex-sans)", fontWeight: 600, fontSize: 15, cursor: status === "sending" ? "not-allowed" : "pointer", opacity: status === "sending" ? 0.7 : 1, boxShadow: "0 0 30px rgba(99,102,241,0.35)", transition: "opacity 0.2s, transform 0.2s" }}
-        onMouseEnter={e => { if (status !== "sending") (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
-      >
-        {status === "sending" ? "Sending..." : "Send Message"}
-      </button>
+      {status === "error" && <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 11, color: "#F87171" }}>Something went wrong. Email us at admin@folubandsamuellabs.com</p>}
+      <button type="submit" disabled={status === "sending"} style={{
+        padding: "15px 24px", background: "linear-gradient(135deg,#C9A84C,#8B6914)",
+        color: "#050505", borderRadius: 12, border: "none",
+        fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12,
+        letterSpacing: "0.12em", textTransform: "uppercase",
+        cursor: status === "sending" ? "not-allowed" : "pointer",
+        opacity: status === "sending" ? 0.6 : 1,
+        boxShadow: "0 0 32px rgba(201,168,76,0.3)", transition: "opacity 0.2s, transform 0.2s, box-shadow 0.2s",
+      }}
+        onMouseEnter={e => { if (status !== "sending") { (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 50px rgba(201,168,76,0.55)"; }}}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 32px rgba(201,168,76,0.3)"; }}
+      >{status === "sending" ? "Sending..." : "Send Message →"}</button>
     </form>
   );
 }
 
-/* ─── Main Page ─── */
+/* ══════════════════════════════════════════════
+   SECTION LABEL
+══════════════════════════════════════════════ */
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+      <span style={{ width: 36, height: 1, background: "linear-gradient(90deg,#C9A84C,transparent)" }} />
+      <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, fontWeight: 700, letterSpacing: "0.25em", textTransform: "uppercase", color: "#C9A84C" }}>{children}</span>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   GOLD DIVIDER LINE
+══════════════════════════════════════════════ */
+function GoldDivider() {
+  return <div style={{ height: 1, background: "linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent)", margin: 0 }} />;
+}
+
+/* ══════════════════════════════════════════════
+   PAGE
+══════════════════════════════════════════════ */
 export default function Home() {
   useReveal();
-  const headline = useScramble("Your vision.\nOur execution.", 600);
+  const headline = useScramble("Your Vision.\nOur Execution.", 900);
+
+  const S = { /* shared section padding */ padding: "120px 28px" } as const;
+  const MW = { maxWidth: 1320, margin: "0 auto" } as const;
 
   return (
     <>
-      {/* ══════ HERO ══════ */}
-      <section style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: 96, paddingBottom: 80, overflow: "hidden", background: "#04040A" }}>
-        <ParticleCanvas />
+      {/* ══ HERO ══ */}
+      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", background: "#050505", overflow: "hidden", paddingTop: 72 }}>
+        <GoldParticleCanvas />
+        <GoldSpotlights />
 
-        {/* Aurora blobs */}
-        <div style={{ position: "absolute", top: "-10%", right: "-5%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%)", pointerEvents: "none", animation: "orb-drift 18s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", bottom: "-10%", left: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)", pointerEvents: "none", animation: "orb-drift-2 22s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", top: "40%", left: "40%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%)", pointerEvents: "none", animation: "orb-drift-3 14s ease-in-out infinite" }} />
+        {/* Aurora orbs */}
+        <div style={{ position: "absolute", top: "-15%", right: "-8%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle,rgba(201,168,76,0.1) 0%,transparent 65%)", pointerEvents: "none", animation: "orb-drift 20s ease-in-out infinite", zIndex: 0 }} />
+        <div style={{ position: "absolute", bottom: "-15%", left: "-8%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle,rgba(240,192,64,0.07) 0%,transparent 65%)", pointerEvents: "none", animation: "orb-drift-2 25s ease-in-out infinite", zIndex: 0 }} />
 
-        <div style={{ position: "relative", maxWidth: 1280, margin: "0 auto", padding: "0 24px", width: "100%", zIndex: 10 }}>
-          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.25)", padding: "6px 16px", borderRadius: 100, marginBottom: 40 }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#6366F1", boxShadow: "0 0 8px #6366F1", animation: "pulse-glow 2s ease-in-out infinite" }} />
-            <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 11, letterSpacing: "0.12em", color: "rgba(99,102,241,0.9)" }}>
+        {/* Grid overlay */}
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px)", backgroundSize: "60px 60px", pointerEvents: "none", zIndex: 0 }} />
+
+        <div style={{ ...MW, padding: "0 28px", position: "relative", zIndex: 2, width: "100%" }}>
+          {/* Badge */}
+          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", padding: "7px 18px", borderRadius: 100, marginBottom: 48 }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C9A84C", animation: "pulse-gold 2s ease-in-out infinite", boxShadow: "0 0 8px #C9A84C" }} />
+            <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 10, letterSpacing: "0.15em", color: "rgba(201,168,76,0.85)" }}>
               RC 9637480 &middot; Lagos, Nigeria &middot; Est. 2026
             </span>
           </div>
 
-          <h1 className="reveal" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.03em", marginBottom: 32, maxWidth: 860, whiteSpace: "pre-line", fontSize: "clamp(3rem,7.5vw,90px)" }}>
+          {/* Main headline */}
+          <h1 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 900, lineHeight: 1.02, letterSpacing: "-0.03em", marginBottom: 36, maxWidth: 900, whiteSpace: "pre-line", fontSize: "clamp(3.2rem,8vw,96px)" }}>
             {headline.split("\n").map((line, i) => (
-              <span key={i} style={{ display: "block", background: i === 1 ? "linear-gradient(90deg, #6366F1, #8B5CF6, #22D3EE)" : "none", WebkitBackgroundClip: i === 1 ? "text" : undefined, WebkitTextFillColor: i === 1 ? "transparent" : "#F1F5F9", backgroundClip: i === 1 ? "text" : undefined, color: i === 1 ? "transparent" : "#F1F5F9" }}>
+              <span key={i} style={{ display: "block", ...(i === 1 ? { background: "linear-gradient(90deg,#F0C040 0%,#C9A84C 40%,#8B6914 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" } : { color: "#F5F0E8" }) }}>
                 {line}
               </span>
             ))}
           </h1>
 
-          <p className="reveal" style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: "clamp(16px,2vw,20px)", color: "rgba(241,245,249,0.55)", lineHeight: 1.7, maxWidth: 520, marginBottom: 48 }}>
+          <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: "clamp(13px,1.5vw,16px)", color: "rgba(245,240,232,0.45)", lineHeight: 1.9, maxWidth: 520, marginBottom: 52 }}>
             FSLabs is a technology and cybersecurity company based in Lagos. We build software, secure systems, and deliver digital solutions for businesses that demand real results.
           </p>
 
-          <div className="reveal" style={{ display: "flex", flexWrap: "wrap", gap: 14, marginBottom: 80 }}>
-            <a href="#contact" style={{ padding: "14px 32px", background: "linear-gradient(135deg, #6366F1, #8B5CF6)", color: "#fff", borderRadius: 14, fontFamily: "var(--font-ibm-plex-sans)", fontWeight: 600, fontSize: 15, textDecoration: "none", boxShadow: "0 0 30px rgba(99,102,241,0.4)", transition: "transform 0.2s, box-shadow 0.2s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 50px rgba(99,102,241,0.6)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 30px rgba(99,102,241,0.4)"; }}
-            >
-              Start a Project
-            </a>
-            <a href="#services" style={{ padding: "14px 32px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(241,245,249,0.75)", borderRadius: 14, fontFamily: "var(--font-ibm-plex-sans)", fontWeight: 500, fontSize: 15, textDecoration: "none", transition: "background 0.2s, border-color 0.2s, color 0.2s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.09)"; (e.currentTarget as HTMLElement).style.color = "#F1F5F9"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLElement).style.color = "rgba(241,245,249,0.75)"; }}
-            >
-              See What We Do &rarr;
-            </a>
+          {/* CTAs */}
+          <div className="reveal" style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 88 }}>
+            <a href="#contact" style={{ padding: "15px 36px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 32px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 56px rgba(201,168,76,0.65)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 32px rgba(201,168,76,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+            >Start a Project</a>
+            <a href="#services" style={{ padding: "15px 36px", background: "transparent", border: "1px solid rgba(201,168,76,0.25)", color: "rgba(245,240,232,0.65)", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 500, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", transition: "border-color 0.25s, color 0.25s" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.color = "#C9A84C"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.25)"; (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.65)"; }}
+            >See What We Do →</a>
           </div>
 
-          {/* Stats */}
-          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12, maxWidth: 640 }}>
+          {/* Stats row */}
+          <div className="reveal" style={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
             {[
               { v: "2026", l: "Founded" },
               { v: "3+", l: "Service Lines" },
-              { v: "50/50", l: "Founder Equity" },
+              { v: "100%", l: "Direct Delivery" },
               { v: "Lagos", l: "Headquarters" },
-            ].map(s => (
-              <div key={s.l} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: "18px 20px" }}>
-                <p style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 22, color: "#F1F5F9", marginBottom: 4 }}>{s.v}</p>
-                <p style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(241,245,249,0.35)" }}>{s.l}</p>
+            ].map((s, i) => (
+              <div key={s.l} style={{ padding: "24px 36px", borderTop: "1px solid rgba(201,168,76,0.12)", borderBottom: "1px solid rgba(201,168,76,0.12)", borderLeft: i === 0 ? "1px solid rgba(201,168,76,0.12)" : "none", borderRight: "1px solid rgba(201,168,76,0.12)", background: "rgba(201,168,76,0.02)" }}>
+                <p style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 28, color: "#F0C040", marginBottom: 4 }}>{s.v}</p>
+                <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(245,240,232,0.3)" }}>{s.l}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════ SERVICES ══════ */}
-      <section id="services" style={{ position: "relative", padding: "120px 24px", background: "#04040A", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "20%", right: 0, width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <GoldDivider />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <span style={{ width: 32, height: 1, background: "#F97316" }} />
-            <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#F97316" }}>What We Do</span>
-          </div>
-          <h2 className="reveal" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "clamp(2rem,5vw,56px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F1F5F9", marginBottom: 20, maxWidth: 700 }}>
+      {/* ══ SERVICES ══ */}
+      <section id="services" style={{ ...S, background: "#050505", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "10%", right: "-5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ ...MW }}>
+          <SectionLabel>What We Do</SectionLabel>
+          <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: "clamp(2rem,5vw,58px)", lineHeight: 1.08, letterSpacing: "-0.02em", color: "#F5F0E8", marginBottom: 16, maxWidth: 700 }}>
             Three service lines.<br />
-            <span style={{ background: "linear-gradient(90deg, #F97316, #FBBF24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", color: "transparent" }}>
+            <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C,#8B6914)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               One quality standard.
             </span>
           </h2>
-          <p className="reveal" style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 16, color: "rgba(241,245,249,0.45)", lineHeight: 1.7, maxWidth: 480, marginBottom: 60 }}>
-            From custom software to security operations, every service is delivered directly by the FSLabs team. No middlemen, no shortcuts.
+          <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.4)", lineHeight: 1.9, maxWidth: 460, marginBottom: 64 }}>
+            Every service is delivered directly by the FSLabs team. No middlemen. No shortcuts. Your vision executed by the people who designed it.
           </p>
 
-          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
+          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 16 }}>
             {[
-              { n: "01", title: "Software Development", accent: "#6366F1", glow: "rgba(99,102,241,0.15)",
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><polyline points="4 8 2 11 4 14" stroke="#6366F1" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="18 8 20 11 18 14" stroke="#6366F1" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><line x1="9" y1="18" x2="13" y2="4" stroke="#6366F1" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-                desc: "We design and build web apps, mobile apps, APIs, and enterprise systems from the ground up. Clean architecture, production ready code.",
-                tags: ["Full Stack", "Mobile", "APIs", "Architecture"] },
-              { n: "02", title: "Cybersecurity", accent: "#F97316", glow: "rgba(249,115,22,0.12)",
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L4 6v5c0 4.4 3 8.4 7 9.3 4-0.9 7-4.9 7-9.3V6L11 2z" stroke="#F97316" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-                desc: "We run penetration tests, security audits, threat assessments, and compliance checks. CEH certified and hands on from day one.",
-                tags: ["Pen Testing", "Audits", "Threat Intel", "Compliance"] },
-              { n: "03", title: "Digital Solutions", accent: "#22D3EE", glow: "rgba(34,211,238,0.1)",
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="18" height="14" rx="2" stroke="#22D3EE" strokeWidth="1.8"/><line x1="8" y1="21" x2="14" y2="21" stroke="#22D3EE" strokeWidth="1.8" strokeLinecap="round"/><line x1="11" y1="17" x2="11" y2="21" stroke="#22D3EE" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-                desc: "We handle UI and UX design, product strategy, and technology consulting for businesses making the move into the digital space.",
-                tags: ["UI/UX", "Strategy", "Integration", "Consulting"] },
+              {
+                n: "01", title: "Software Development",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 18 22 12 16 6" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><polyline points="8 6 2 12 8 18" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                desc: "We design and build web apps, mobile apps, APIs, and enterprise systems from the ground up. Clean architecture. Production ready. Built to scale.",
+                tags: ["Full Stack", "Mobile", "APIs", "Architecture"],
+              },
+              {
+                n: "02", title: "Cybersecurity",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 7v6c0 5.25 3.75 10.15 8 11 4.25-.85 8-5.75 8-11V7L12 2z" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                desc: "We run penetration tests, security audits, threat assessments, and compliance checks. CEH certified. Hands-on from day one.",
+                tags: ["Pen Testing", "Audits", "Threat Intel", "Compliance"],
+              },
+              {
+                n: "03", title: "Digital Solutions",
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#C9A84C" strokeWidth="2"/><line x1="8" y1="21" x2="16" y2="21" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="17" x2="12" y2="21" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round"/></svg>,
+                desc: "UI/UX design, product strategy, and technology consulting for businesses making the move into the digital space. Vision into reality.",
+                tags: ["UI/UX", "Strategy", "Integration", "Consulting"],
+              },
             ].map(s => (
-              <TiltCard key={s.title} style={{ padding: 32, position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: -40, right: -40, width: 150, height: 150, borderRadius: "50%", background: `radial-gradient(circle, ${s.glow} 0%, transparent 70%)`, pointerEvents: "none" }} />
+              <TiltCard key={s.n} style={{ background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 20, padding: 36 }}>
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                    <div style={{ width: 44, height: 44, borderRadius: 12, background: `${s.glow}`, border: `1px solid ${s.accent}25`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24 }}>
+                    <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                       {s.icon}
                     </div>
-                    <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 11, color: "rgba(241,245,249,0.2)", letterSpacing: "0.1em" }}>{s.n}</span>
+                    <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 28, fontWeight: 700, color: "rgba(201,168,76,0.12)", letterSpacing: "-0.02em" }}>{s.n}</span>
                   </div>
-                  <h3 style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 600, fontSize: 20, color: "#F1F5F9", marginBottom: 12, letterSpacing: "-0.02em" }}>{s.title}</h3>
-                  <p style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 14, color: "rgba(241,245,249,0.5)", lineHeight: 1.7, marginBottom: 24 }}>{s.desc}</p>
+                  <h3 style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 22, color: "#F5F0E8", marginBottom: 12, letterSpacing: "-0.01em" }}>{s.title}</h3>
+                  <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.42)", lineHeight: 1.9, marginBottom: 28 }}>{s.desc}</p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                     {s.tags.map(t => (
-                      <span key={t} style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.08em", padding: "5px 10px", borderRadius: 6, background: `${s.glow}`, border: `1px solid ${s.accent}30`, color: s.accent }}>
+                      <span key={t} style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.12em", padding: "5px 12px", borderRadius: 6, background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.18)", color: "rgba(201,168,76,0.7)", textTransform: "uppercase" }}>
                         {t}
                       </span>
                     ))}
@@ -394,140 +425,132 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════ PROCESS ══════ */}
-      <section id="process" style={{ position: "relative", padding: "120px 24px", background: "#06060F", overflow: "hidden" }}>
-        <div style={{ position: "absolute", bottom: 0, left: "30%", width: 600, height: 300, background: "radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <GoldDivider />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <span style={{ width: 32, height: 1, background: "#6366F1" }} />
-            <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#6366F1" }}>How We Work</span>
-          </div>
-          <h2 className="reveal" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "clamp(2rem,5vw,56px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F1F5F9", marginBottom: 60, maxWidth: 600 }}>
-            Simple process.<br />
-            <span style={{ background: "linear-gradient(90deg, #6366F1, #8B5CF6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", color: "transparent" }}>
-              Real results.
+      {/* ══ PROCESS ══ */}
+      <section id="process" style={{ ...S, background: "#030303", position: "relative", overflow: "hidden" }}>
+        <div style={{ ...MW }}>
+          <SectionLabel>How We Work</SectionLabel>
+          <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: "clamp(2rem,5vw,58px)", lineHeight: 1.08, letterSpacing: "-0.02em", color: "#F5F0E8", marginBottom: 72, maxWidth: 560 }}>
+            Precision process.<br />
+            <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              Guaranteed delivery.
             </span>
           </h2>
 
-          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 0, position: "relative" }}>
+            {/* Connector line */}
+            <div style={{ position: "absolute", top: 36, left: "12.5%", right: "12.5%", height: 1, background: "linear-gradient(90deg,transparent,rgba(201,168,76,0.25),rgba(201,168,76,0.25),transparent)", pointerEvents: "none" }} className="process-line" />
             {[
-              { n: "01", title: "Brief", accent: "#6366F1", desc: "You tell us what you are building or what problem you are facing. We listen and ask the right questions." },
-              { n: "02", title: "Scope", accent: "#8B5CF6", desc: "We define the work, set a realistic timeline, and agree on clear deliverables before anything starts." },
-              { n: "03", title: "Build", accent: "#22D3EE", desc: "We do the work. Software gets built, systems get secured, solutions get shipped. No status theatre." },
-              { n: "04", title: "Deliver", accent: "#F97316", desc: "You receive something that works, is documented, and is ready for the real world. That is the standard." },
+              { n: "01", title: "Brief", desc: "You tell us what you need. We listen, ask the right questions, and understand the real problem before touching a keyboard." },
+              { n: "02", title: "Scope", desc: "We define the work clearly. Realistic timelines. Honest deliverables. No scope creep, no surprises." },
+              { n: "03", title: "Build", desc: "We do the work. Software gets built, systems get secured, solutions get shipped. No status theatre." },
+              { n: "04", title: "Deliver", desc: "You receive something that works, is documented, and is ready for the real world. That is the FSLabs standard." },
             ].map((step, i) => (
-              <div key={step.n} className="reveal" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 18, padding: 28, transition: "border-color 0.2s, background 0.2s" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${step.accent}40`; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)"; }}
-              >
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 22, fontWeight: 700, color: step.accent, opacity: 0.9 }}>{step.n}</span>
-                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: `${step.accent}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: step.accent, boxShadow: `0 0 8px ${step.accent}` }} />
-                  </div>
+              <div key={step.n} className="reveal" style={{ padding: "0 32px 0 0", animationDelay: `${i * 0.1}s` }}>
+                <div style={{ width: 72, height: 72, borderRadius: "50%", background: "rgba(201,168,76,0.06)", border: "2px solid rgba(201,168,76,0.25)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, position: "relative", zIndex: 1 }}>
+                  <span style={{ fontFamily: "var(--font-exo2)", fontWeight: 900, fontSize: 18, color: "#C9A84C" }}>{step.n}</span>
                 </div>
-                <h3 style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 600, fontSize: 18, color: "#F1F5F9", marginBottom: 10, letterSpacing: "-0.01em" }}>{step.title}</h3>
-                <p style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 13, color: "rgba(241,245,249,0.45)", lineHeight: 1.7 }}>{step.desc}</p>
+                <h3 style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 20, color: "#F5F0E8", marginBottom: 12 }}>{step.title}</h3>
+                <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.38)", lineHeight: 1.9 }}>{step.desc}</p>
               </div>
             ))}
           </div>
         </div>
+        <style>{`@media(max-width:768px){.process-line{display:none}}`}</style>
       </section>
 
-      {/* ══════ ABOUT ══════ */}
-      <section id="about" style={{ position: "relative", padding: "120px 24px", background: "#04040A", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.3), rgba(139,92,246,0.3), transparent)" }} />
+      <GoldDivider />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }} className="about-grid">
+      {/* ══ ABOUT ══ */}
+      <section id="about" style={{ ...S, background: "#050505", position: "relative", overflow: "hidden" }}>
+        <div style={{ ...MW }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 96, alignItems: "center" }} className="about-grid">
             <div>
-              <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <span style={{ width: 32, height: 1, background: "#22D3EE" }} />
-                <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#22D3EE" }}>About FSLabs</span>
-              </div>
-              <h2 className="reveal" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "clamp(2rem,4.5vw,52px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F1F5F9", marginBottom: 24 }}>
+              <SectionLabel>About FSLabs</SectionLabel>
+              <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: "clamp(2rem,4.5vw,52px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F5F0E8", marginBottom: 28 }}>
                 Built from Lagos.<br />
-                <span style={{ background: "linear-gradient(90deg, #22D3EE, #6366F1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", color: "transparent" }}>
-                  Built for scale.
+                <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  Engineered for scale.
                 </span>
               </h2>
-              <div className="reveal" style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 15, color: "rgba(241,245,249,0.55)", lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 16 }}>
-                <p>Folub and Samuel Labs is a technology and cybersecurity company incorporated in Nigeria. We are a two founder company where both founders work directly on client projects. That is the model and that is the standard.</p>
-                <p>We do not hand off your work to junior contractors or offshore teams. When you engage FSLabs, you get Adeseko Samuel on the technical implementation and Akinbayo on strategy and delivery management. Every time.</p>
+              <div style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.45)", lineHeight: 1.95 }}>
+                <p className="reveal" style={{ marginBottom: 20 }}>Folub and Samuel Labs is a technology and cybersecurity company incorporated in Nigeria. We are a two-founder company where both founders work directly on every client project. That is the model and that is the standard.</p>
+                <p className="reveal">We do not hand off your work to junior contractors or offshore teams. When you engage FSLabs, you get Adeseko Samuel on the technical side and Akinbayo on strategy and delivery. Every single time.</p>
               </div>
             </div>
 
             <div className="reveal">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {[
-                  { label: "Company Type", value: "Limited Liability", accent: "#6366F1" },
-                  { label: "RC Number", value: "9637480", accent: "#8B5CF6" },
-                  { label: "HQ", value: "Lagos, Nigeria", accent: "#22D3EE" },
-                  { label: "Founded", value: "2026", accent: "#F97316" },
-                  { label: "Specialties", value: "Software, Security", accent: "#6366F1" },
-                  { label: "Team Size", value: "Lean and Direct", accent: "#22D3EE" },
+                  { label: "Company Type", value: "Limited Liability" },
+                  { label: "RC Number", value: "9637480" },
+                  { label: "Headquarters", value: "Lagos, Nigeria" },
+                  { label: "Founded", value: "2026" },
+                  { label: "Specialties", value: "Software & Security" },
+                  { label: "Model", value: "Direct Delivery" },
                 ].map(item => (
-                  <div key={item.label} style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 14, padding: 18 }}>
-                    <p style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: item.accent, marginBottom: 6 }}>{item.label}</p>
-                    <p style={{ fontFamily: "var(--font-space-grotesk)", fontSize: 14, fontWeight: 600, color: "#F1F5F9" }}>{item.value}</p>
+                  <div key={item.label} style={{ background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 14, padding: "20px 20px", transition: "border-color 0.2s, background 0.2s" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.3)"; (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.06)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.1)"; (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.03)"; }}
+                  >
+                    <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(201,168,76,0.45)", marginBottom: 6 }}>{item.label}</p>
+                    <p style={{ fontFamily: "var(--font-exo2)", fontSize: 15, fontWeight: 600, color: "#F5F0E8" }}>{item.value}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
-
-        <style>{`
-          @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr !important; gap: 48px !important; } }
-        `}</style>
+        <style>{`@media(max-width:768px){.about-grid{grid-template-columns:1fr!important;gap:56px!important}}`}</style>
       </section>
 
-      {/* ══════ TEAM ══════ */}
-      <section id="team" style={{ position: "relative", padding: "120px 24px", background: "#06060F", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(249,115,22,0.2), rgba(139,92,246,0.2), transparent)" }} />
-        <div style={{ position: "absolute", top: "30%", right: "-5%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <GoldDivider />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <span style={{ width: 32, height: 1, background: "#8B5CF6" }} />
-            <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#8B5CF6" }}>Founders</span>
-          </div>
-          <h2 className="reveal" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "clamp(2rem,5vw,56px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F1F5F9", marginBottom: 16 }}>
+      {/* ══ TEAM ══ */}
+      <section id="team" style={{ ...S, background: "#030303", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", bottom: 0, left: "30%", width: 600, height: 300, background: "radial-gradient(ellipse,rgba(201,168,76,0.05) 0%,transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ ...MW }}>
+          <SectionLabel>Founders</SectionLabel>
+          <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: "clamp(2rem,5vw,58px)", lineHeight: 1.08, letterSpacing: "-0.02em", color: "#F5F0E8", marginBottom: 16 }}>
             Built by people who<br />
-            <span style={{ background: "linear-gradient(90deg, #8B5CF6, #6366F1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", color: "transparent" }}>
+            <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C,#8B6914)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               do the work.
             </span>
           </h2>
-          <p className="reveal" style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 15, color: "rgba(241,245,249,0.45)", marginBottom: 60, maxWidth: 500, lineHeight: 1.7 }}>
-            No account managers, no project coordinators sitting between you and the builders. Just two founders doing exactly what they said they would do.
+          <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.38)", lineHeight: 1.9, maxWidth: 480, marginBottom: 64 }}>
+            No account managers between you and the builders. Just two founders executing exactly what they said they would.
           </p>
 
-          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 20 }}>
+          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(360px,1fr))", gap: 20 }}>
             {[
-              { initial: "S", name: "Adeseko Samuel", role: "Co-Founder and Technical Lead", accent: "#6366F1", glow: "rgba(99,102,241,0.12)",
+              {
+                initial: "S", name: "Adeseko Samuel", role: "Co-Founder · Technical Lead",
                 bio: "Samuel is the builder. A cybersecurity professional and full stack developer who carries the full technical weight of FSLabs. From system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
-                tags: ["Cybersecurity", "Full Stack", "System Architecture", "Security Ops", "ALX Graduate"] },
-              { initial: "A", name: "Akinbayo", role: "Co-Founder and Business Lead", accent: "#F97316", glow: "rgba(249,115,22,0.1)",
+                tags: ["Cybersecurity", "Full Stack", "System Architecture", "Security Ops", "ALX Graduate"],
+              },
+              {
+                initial: "A", name: "Akinbayo", role: "Co-Founder · Business Lead",
                 bio: "Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.",
-                tags: ["Strategy", "Operations", "Business Development", "Client Relations", "Cybersecurity"] },
+                tags: ["Strategy", "Operations", "Business Development", "Client Relations", "Cybersecurity"],
+              },
             ].map(f => (
-              <TiltCard key={f.name} style={{ padding: 36, position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${f.glow} 0%, transparent 70%)`, pointerEvents: "none" }} />
+              <TiltCard key={f.name} style={{ background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 22, padding: 40 }}>
+                <div style={{ position: "absolute", top: 0, right: 0, width: 200, height: 200, background: "radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%)", pointerEvents: "none" }} />
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24 }}>
-                    <div style={{ width: 56, height: 56, borderRadius: 16, background: `linear-gradient(135deg, ${f.accent}30, ${f.accent}10)`, border: `1px solid ${f.accent}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 22, color: f.accent }}>{f.initial}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 28 }}>
+                    <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05))", border: "1px solid rgba(201,168,76,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <span style={{ fontFamily: "var(--font-exo2)", fontWeight: 900, fontSize: 26, color: "#C9A84C" }}>{f.initial}</span>
                     </div>
                     <div>
-                      <h3 style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 600, fontSize: 18, color: "#F1F5F9", letterSpacing: "-0.01em", marginBottom: 4 }}>{f.name}</h3>
-                      <p style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.08em", color: f.accent, textTransform: "uppercase" }}>{f.role}</p>
+                      <h3 style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 20, color: "#F5F0E8", marginBottom: 4 }}>{f.name}</h3>
+                      <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 10, letterSpacing: "0.1em", color: "rgba(201,168,76,0.6)", textTransform: "uppercase" }}>{f.role}</p>
                     </div>
                   </div>
-                  <p style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 14, color: "rgba(241,245,249,0.5)", lineHeight: 1.8, marginBottom: 24 }}>{f.bio}</p>
+                  <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.42)", lineHeight: 1.95, marginBottom: 28 }}>{f.bio}</p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                     {f.tags.map(t => (
-                      <span key={t} style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, padding: "5px 10px", borderRadius: 6, background: `${f.glow}`, border: `1px solid ${f.accent}25`, color: f.accent }}>
+                      <span key={t} style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.1em", padding: "5px 12px", borderRadius: 6, background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.18)", color: "rgba(201,168,76,0.65)", textTransform: "uppercase" }}>
                         {t}
                       </span>
                     ))}
@@ -539,63 +562,70 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════ FS EXCHANGE BANNER ══════ */}
-      <section style={{ padding: "80px 24px", background: "#04040A", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(139,92,246,0.06) 50%, rgba(34,211,238,0.04) 100%)", pointerEvents: "none" }} />
-        <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", padding: "5px 14px", borderRadius: 100, marginBottom: 24 }}>
-            <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6366F1" }}>New Platform</span>
+      <GoldDivider />
+
+      {/* ══ FS EXCHANGE BANNER ══ */}
+      <section style={{ position: "relative", padding: "100px 28px", overflow: "hidden", background: "#050505" }}>
+        {/* Dramatic background */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 50%,rgba(201,168,76,0.04) 100%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent)" }} />
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent)" }} />
+
+        <div style={{ ...MW, textAlign: "center", position: "relative", zIndex: 1 }}>
+          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", padding: "6px 18px", borderRadius: 100, marginBottom: 28 }}>
+            <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)" }}>New Platform</span>
           </div>
-          <h2 className="reveal" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "clamp(2rem,5vw,52px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F1F5F9", marginBottom: 16 }}>
+          <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 900, fontSize: "clamp(2.2rem,6vw,72px)", lineHeight: 1.06, letterSpacing: "-0.03em", color: "#F5F0E8", marginBottom: 20 }}>
             Introducing{" "}
-            <span style={{ background: "linear-gradient(90deg, #6366F1, #22D3EE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", color: "transparent" }}>
+            <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C,#8B6914)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               FS Exchange
             </span>
           </h2>
-          <p className="reveal" style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 16, color: "rgba(241,245,249,0.5)", lineHeight: 1.7, maxWidth: 520, margin: "0 auto 36px" }}>
-            Nigeria's fastest and most transparent currency exchange platform. Built by FSLabs, powered by real rates, designed for trust.
+          <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 14, color: "rgba(245,240,232,0.42)", lineHeight: 1.9, maxWidth: 500, margin: "0 auto 40px" }}>
+            Nigeria&apos;s fastest and most transparent currency exchange platform. Built by FSLabs. Powered by real rates. Designed for trust.
           </p>
-          <a href="/exchange" className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 32px", background: "linear-gradient(135deg, #6366F1, #22D3EE)", color: "#fff", borderRadius: 14, fontFamily: "var(--font-ibm-plex-sans)", fontWeight: 600, fontSize: 15, textDecoration: "none", boxShadow: "0 0 40px rgba(99,102,241,0.3)" }}>
+          <a href="/exchange" className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "16px 40px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 48px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 72px rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 48px rgba(201,168,76,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+          >
             Visit FS Exchange
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </a>
         </div>
       </section>
 
-      {/* ══════ CONTACT ══════ */}
-      <section id="contact" style={{ position: "relative", padding: "120px 24px", background: "#06060F", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.2), rgba(249,115,22,0.2), transparent)" }} />
-        <div style={{ position: "absolute", bottom: "-10%", left: "20%", width: 600, height: 400, background: "radial-gradient(ellipse, rgba(99,102,241,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <GoldDivider />
 
-        <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "start" }} className="contact-grid">
+      {/* ══ CONTACT ══ */}
+      <section id="contact" style={{ ...S, background: "#030303", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", bottom: "-10%", right: "10%", width: 500, height: 400, background: "radial-gradient(ellipse,rgba(201,168,76,0.06) 0%,transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ ...MW, position: "relative", zIndex: 1 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 96, alignItems: "start" }} className="contact-grid">
+
             <div>
-              <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <span style={{ width: 32, height: 1, background: "#F97316" }} />
-                <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#F97316" }}>Start a Project</span>
-              </div>
-              <h2 className="reveal" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "clamp(2rem,4.5vw,52px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F1F5F9", marginBottom: 20 }}>
+              <SectionLabel>Start a Project</SectionLabel>
+              <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: "clamp(2rem,4.5vw,52px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F5F0E8", marginBottom: 20 }}>
                 Tell us what<br />
-                <span style={{ background: "linear-gradient(90deg, #F97316, #FBBF24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", color: "transparent" }}>
+                <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                   you need built.
                 </span>
               </h2>
-              <p className="reveal" style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 15, color: "rgba(241,245,249,0.45)", lineHeight: 1.8, marginBottom: 48 }}>
+              <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.4)", lineHeight: 1.9, marginBottom: 48 }}>
                 Whether it is a product, a security audit, or a digital solution, send us the brief and we will come back with a clear plan within 24 hours.
               </p>
-              <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
                 {[
-                  { label: "Email", value: "admin@folubandsamuellabs.com", accent: "#6366F1" },
-                  { label: "Location", value: "Lagos, Nigeria", accent: "#8B5CF6" },
-                  { label: "RC Number", value: "9637480", accent: "#22D3EE" },
+                  { label: "Email", value: "admin@folubandsamuellabs.com" },
+                  { label: "Location", value: "Lagos, Nigeria" },
+                  { label: "RC Number", value: "9637480" },
                 ].map(item => (
                   <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: 10, background: `${item.accent}15`, border: `1px solid ${item.accent}25`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <span style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 9, color: item.accent, letterSpacing: "0.05em" }}>{item.label.slice(0, 2).toUpperCase()}</span>
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 8, color: "#C9A84C", letterSpacing: "0.05em", fontWeight: 700 }}>{item.label.slice(0,2).toUpperCase()}</span>
                     </div>
                     <div>
-                      <p style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(241,245,249,0.3)", marginBottom: 3 }}>{item.label}</p>
-                      <p style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: 13, color: "rgba(241,245,249,0.7)", wordBreak: "break-all" }}>{item.value}</p>
+                      <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", marginBottom: 4 }}>{item.label}</p>
+                      <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.65)", wordBreak: "break-all" }}>{item.value}</p>
                     </div>
                   </div>
                 ))}
@@ -603,16 +633,13 @@ export default function Home() {
             </div>
 
             <div className="reveal">
-              <div style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 24, padding: 40 }}>
+              <div style={{ background: "rgba(201,168,76,0.025)", border: "1px solid rgba(201,168,76,0.12)", borderRadius: 24, padding: 44, animation: "border-glow 4s ease-in-out infinite" }}>
                 <ContactForm />
               </div>
             </div>
           </div>
         </div>
-
-        <style>{`
-          @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; } }
-        `}</style>
+        <style>{`@media(max-width:768px){.contact-grid{grid-template-columns:1fr!important;gap:56px!important}}`}</style>
       </section>
     </>
   );

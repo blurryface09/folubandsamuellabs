@@ -1,0 +1,25 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer hexagon border -->
+  <polygon points="100,8 182,52 182,148 100,192 18,148 18,52" fill="#050505" stroke="#C9A84C" stroke-width="2.5"/>
+  <!-- Inner hexagon -->
+  <polygon points="100,22 168,60 168,140 100,178 32,140 32,60" fill="none" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.35"/>
+  <!-- Corner accent dots -->
+  <circle cx="100" cy="8" r="3" fill="#C9A84C"/>
+  <circle cx="182" cy="52" r="3" fill="#C9A84C"/>
+  <circle cx="182" cy="148" r="3" fill="#C9A84C"/>
+  <circle cx="100" cy="192" r="3" fill="#C9A84C"/>
+  <circle cx="18" cy="148" r="3" fill="#C9A84C"/>
+  <circle cx="18" cy="52" r="3" fill="#C9A84C"/>
+  <!-- FS text -->
+  <text x="100" y="118" font-family="'Exo 2', 'Exo', sans-serif" font-weight="700" font-size="76" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="-4">FS</text>
+  <!-- Bottom label -->
+  <text x="100" y="155" font-family="'Roboto Mono', monospace" font-weight="400" font-size="11" fill="#C9A84C" fill-opacity="0.6" text-anchor="middle" letter-spacing="5">LABS</text>
+  <!-- Gold gradient -->
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F0C040"/>
+      <stop offset="50%" stop-color="#C9A84C"/>
+      <stop offset="100%" stop-color="#8B6914"/>
+    </linearGradient>
+  </defs>
+</svg>
