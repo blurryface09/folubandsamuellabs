@@ -1,25 +1,82 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Outer hexagon border -->
-  <polygon points="100,8 182,52 182,148 100,192 18,148 18,52" fill="#050505" stroke="#C9A84C" stroke-width="2.5"/>
-  <!-- Inner hexagon -->
-  <polygon points="100,22 168,60 168,140 100,178 32,140 32,60" fill="none" stroke="#C9A84C" stroke-width="0.8" stroke-opacity="0.35"/>
-  <!-- Corner accent dots -->
-  <circle cx="100" cy="8" r="3" fill="#C9A84C"/>
-  <circle cx="182" cy="52" r="3" fill="#C9A84C"/>
-  <circle cx="182" cy="148" r="3" fill="#C9A84C"/>
-  <circle cx="100" cy="192" r="3" fill="#C9A84C"/>
-  <circle cx="18" cy="148" r="3" fill="#C9A84C"/>
-  <circle cx="18" cy="52" r="3" fill="#C9A84C"/>
-  <!-- FS text -->
-  <text x="100" y="118" font-family="'Exo 2', 'Exo', sans-serif" font-weight="700" font-size="76" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="-4">FS</text>
-  <!-- Bottom label -->
-  <text x="100" y="155" font-family="'Roboto Mono', monospace" font-weight="400" font-size="11" fill="#C9A84C" fill-opacity="0.6" text-anchor="middle" letter-spacing="5">LABS</text>
-  <!-- Gold gradient -->
+<svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#F0C040"/>
-      <stop offset="50%" stop-color="#C9A84C"/>
-      <stop offset="100%" stop-color="#8B6914"/>
+    <linearGradient id="g1" x1="60" y1="20" x2="180" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F5D060"/>
+      <stop offset="35%" stop-color="#E8B830"/>
+      <stop offset="65%" stop-color="#C9920A"/>
+      <stop offset="100%" stop-color="#8B6200"/>
     </linearGradient>
+    <linearGradient id="g2" x1="80" y1="30" x2="160" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FDE876"/>
+      <stop offset="40%" stop-color="#D4A012"/>
+      <stop offset="100%" stop-color="#7A5500"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="rgba(0,0,0,0.5)"/>
+    </filter>
   </defs>
+
+  <!-- Outer pentagon/diamond shape -->
+  <path d="M120 8 L210 65 L210 165 L120 232 L30 165 L30 65 Z" fill="url(#g1)" filter="url(#shadow)"/>
+  <!-- Inner dark area -->
+  <path d="M120 22 L196 70 L196 160 L120 218 L44 160 L44 70 Z" fill="#0A0800"/>
+
+  <!-- Upper C / top band: curves from upper-left to right and down, creates top lobe of S -->
+  <path d="
+    M 72 75
+    C 72 55, 95 48, 118 52
+    C 145 57, 165 74, 165 98
+    C 165 112, 157 123, 147 130
+    L 132 120
+    C 142 114, 148 107, 148 98
+    C 148 82, 134 68, 116 65
+    C 99 62, 86 68, 82 79
+    Z
+  " fill="url(#g2)"/>
+
+  <!-- Lower C / bottom band: mirrors above, creates bottom lobe of S -->
+  <path d="
+    M 168 165
+    C 168 185, 145 192, 122 188
+    C 95 183, 75 166, 75 142
+    C 75 128, 83 117, 93 110
+    L 108 120
+    C 98 126, 92 133, 92 142
+    C 92 158, 106 172, 124 175
+    C 141 178, 154 172, 158 161
+    Z
+  " fill="url(#g2)"/>
+
+  <!-- Center bridge connecting the two C shapes (the crossbar of S) -->
+  <path d="
+    M 147 130
+    C 138 137, 128 140, 120 140
+    C 112 140, 102 137, 93 130
+    L 108 120
+    C 113 124, 116 126, 120 126
+    C 124 126, 127 124, 132 120
+    Z
+  " fill="url(#g1)"/>
+
+  <!-- Top highlight on upper band -->
+  <path d="
+    M 80 76
+    C 86 66, 99 60, 116 63
+    C 125 65, 133 68, 139 73
+    L 130 80
+    C 124 76, 116 73, 108 72
+    C 96 70, 86 75, 82 83
+    Z
+  " fill="rgba(255,235,100,0.35)"/>
+
+  <!-- Bottom highlight on lower band -->
+  <path d="
+    M 160 164
+    C 154 174, 141 180, 124 177
+    C 115 175, 107 172, 101 167
+    L 110 160
+    C 116 164, 124 167, 132 168
+    C 144 170, 154 165, 158 157
+    Z
+  " fill="rgba(255,235,100,0.2)"/>
 </svg>

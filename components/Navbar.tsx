@@ -33,14 +33,16 @@ export default function Navbar() {
       <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 72 }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
-          <Image src="/fslabs-logo.svg" alt="FSLabs" width={38} height={38} priority />
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
-            <span style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 15, letterSpacing: "0.05em", background: "linear-gradient(135deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              FOLUB &amp; SAMUEL
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none" }}>
+          <Image src="/fslabs-logo.svg" alt="FSLabs mark" width={40} height={40} priority style={{ flexShrink: 0 }} />
+          {/* Gold vertical divider */}
+          <div style={{ width: 1, height: 34, background: "linear-gradient(180deg, transparent, #C9A84C, transparent)", flexShrink: 0 }} />
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
+            <span style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 15, letterSpacing: "0.06em", color: "#FFFFFF" }}>
+              FOLUB &amp; SAMUEL LABS
             </span>
-            <span style={{ fontFamily: "var(--font-roboto-mono)", fontWeight: 400, fontSize: 9, letterSpacing: "0.28em", color: "rgba(201,168,76,0.5)", textTransform: "uppercase" }}>
-              Labs Limited
+            <span style={{ fontFamily: "var(--font-roboto-mono)", fontWeight: 400, fontSize: 8, letterSpacing: "0.22em", color: "rgba(201,168,76,0.55)", textTransform: "uppercase", marginTop: 2 }}>
+              Technology &amp; Cybersecurity
             </span>
           </div>
         </Link>

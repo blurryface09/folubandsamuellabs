@@ -15,11 +15,12 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-              <Image src="/fslabs-logo.svg" alt="FSLabs" width={40} height={40} />
-              <div>
-                <div style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 14, letterSpacing: "0.06em", background: "linear-gradient(135deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>FOLUB &amp; SAMUEL</div>
-                <div style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 8, letterSpacing: "0.25em", color: "rgba(201,168,76,0.4)", textTransform: "uppercase" }}>Labs Limited</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
+              <Image src="/fslabs-logo.svg" alt="FSLabs" width={44} height={44} style={{ flexShrink: 0 }} />
+              <div style={{ width: 1, height: 36, background: "linear-gradient(180deg,transparent,#C9A84C,transparent)", flexShrink: 0 }} />
+              <div style={{ lineHeight: 1.2 }}>
+                <div style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 13, letterSpacing: "0.06em", color: "#FFFFFF" }}>FOLUB &amp; SAMUEL LABS</div>
+                <div style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 8, letterSpacing: "0.22em", color: "rgba(201,168,76,0.5)", textTransform: "uppercase", marginTop: 2 }}>Technology &amp; Cybersecurity</div>
               </div>
             </div>
             <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.35)", lineHeight: 1.9, maxWidth: 260 }}>
