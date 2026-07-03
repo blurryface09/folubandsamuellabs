@@ -156,7 +156,7 @@ export default function Home() {
 
           <p className="text-[#F1ECE1]/45 text-lg md:text-xl max-w-xl leading-relaxed mb-12 reveal"
             style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-            FSLabs aggregates vetted specialist talent — software engineers, security professionals, and digital experts — deployed to solve real business problems.
+            FSLabs aggregates vetted specialist talent: software engineers, security professionals, and digital experts deployed to solve real business problems.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-20 reveal">
@@ -206,14 +206,14 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 reveal">
             {[
               { n:"01", title:"Software Development", color:"#2FA3A3",
-                desc:"Web apps, mobile apps, APIs, and enterprise systems — built by engineers we've verified technically and professionally.",
-                tags:["Full-Stack","Mobile","APIs","Architecture"] },
+                desc:"Web apps, mobile apps, APIs, and enterprise systems built by engineers we have verified technically and professionally.",
+                tags:["Full Stack","Mobile","APIs","Architecture"] },
               { n:"02", title:"Cybersecurity", color:"#C99A3B",
-                desc:"Penetration testing, security audits, threat modelling, and SOC-level monitoring from CEH-certified professionals.",
+                desc:"Penetration testing, security audits, threat modelling, and SOC level monitoring from CEH certified professionals.",
                 tags:["Pen Testing","Audits","Threat Intel","Compliance"] },
               { n:"03", title:"Digital Solutions", color:"#D8432E",
-                desc:"UI/UX design, digital transformation consulting, product strategy, and technology integration for modern businesses.",
-                tags:["UI/UX","Strategy","Integration","Consulting"] },
+                desc:"UI and UX design, digital transformation consulting, product strategy, and technology integration for modern businesses.",
+                tags:["UI UX","Strategy","Integration","Consulting"] },
             ].map(s => (
               <div key={s.title} className="bg-[#0a0d11] p-10 group hover:bg-[#0f1318] transition-colors relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-500" style={{background:s.color}}/>
@@ -246,13 +246,13 @@ export default function Home() {
             The aggregation<br/><span className="text-[#C99A3B]">model.</span>
           </h2>
           <p className="text-[#F1ECE1]/40 max-w-lg mb-16 leading-relaxed reveal" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-            We don't guess who's good. We build a verified network and match the right people to the right problems — every time.
+            We don't guess who's good. We build a verified network and match the right people to the right problems, every time.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5 reveal">
             {[
               {n:"01", title:"Source", color:"#2FA3A3", desc:"We continuously identify specialist talent across software, security, and digital disciplines."},
               {n:"02", title:"Vet", color:"#C99A3B", desc:"Technical assessments, background checks, reference verification, and live skill validation."},
-              {n:"03", title:"Match", color:"#D8432E", desc:"We map your project requirements to the right specialists — not the closest available."},
+              {n:"03", title:"Match", color:"#D8432E", desc:"We map your project requirements to the right specialists, not the closest available."},
               {n:"04", title:"Deliver", color:"#2FA3A3", desc:"Specialists execute under FSLabs quality standards. You get outcomes, not effort reports."},
             ].map((step, i) => (
               <div key={step.n} className="bg-[#0E1116] p-8 group hover:bg-[#131820] transition-colors relative overflow-hidden">
@@ -280,11 +280,11 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5 reveal">
             {[
-              { initial:"P", name:"Poseidros", role:"Co-Founder & CTO", color:"#2FA3A3",
-                bio:"Cybersecurity engineer with a CEH certification, ALX diploma, and a background in network engineering and QA. Poseidros leads the technical architecture of FSLabs — from security implementation to engineering delivery. He is the reason our vetting standard is as high as it is.",
-                tags:["CEH Certified","Network Engineering","ALX Graduate","Security Ops","QA"] },
-              { initial:"A", name:"Akinbayode Adefolu Daniel", role:"Co-Founder & CEO", color:"#C99A3B",
-                bio:"Akinbayode drives the strategy, operations, and commercial growth of FSLabs. He translates complex client needs into clear briefs, builds the partnerships that keep the business moving, and ensures every engagement delivers measurable value — not just activity.",
+              { initial:"S", name:"Adeseko Samuel", role:"Co-Founder and Technical Lead", color:"#2FA3A3",
+                bio:"Samuel is the builder. A cybersecurity professional and full stack developer who carries the full technical weight of FSLabs. From system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
+                tags:["Cybersecurity","Full Stack","System Architecture","Security Ops","ALX Graduate"] },
+              { initial:"A", name:"Akinbayo", role:"Co-Founder and Business Lead", color:"#C99A3B",
+                bio:"Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.",
                 tags:["Strategy","Operations","Business Development","Client Relations"] },
             ].map(f => (
               <div key={f.name} className="bg-[#0a0d11] p-10 group hover:bg-[#0f1318] transition-colors relative overflow-hidden">
@@ -328,7 +328,7 @@ export default function Home() {
             Tell us what<br/>you need built.
           </h2>
           <p className="text-[#F1ECE1]/35 text-base max-w-sm mx-auto mb-12 leading-relaxed reveal" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-            We respond within 24 hours with a clear plan — no vague proposals, no inflated timelines.
+            We respond within 24 hours with a clear plan. No vague proposals, no inflated timelines.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 reveal">
             <a href="mailto:admin@folubandsamuellabs.com"
