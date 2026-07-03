@@ -111,7 +111,7 @@ function RadarBg() {
 
 export default function Home() {
   useReveal();
-  const headline = useScramble("We build the tech.\nWe secure the system.", 600);
+  const headline = useScramble("Your vision.\nOur execution.", 600);
 
   const CHARS = ["01","λ","∑","Ψ","//","{}","ΔΦ",">>","0x","∞","≠","±"];
   const [mounted, setMounted] = useState(false);
