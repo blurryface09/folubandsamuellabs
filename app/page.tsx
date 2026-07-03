@@ -316,31 +316,33 @@ export default function Home() {
       </section>
 
       {/* ══════ CONTACT ══════ */}
-      <section id="contact" className="relative py-40 border-t border-white/5 overflow-hidden bg-[#0E1116]">
+      <section id="contact" className="relative py-24 border-t border-white/5 overflow-hidden bg-[#0E1116]">
         <RadarBg/>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(201,154,59,0.05),transparent_70%)] pointer-events-none"/>
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#C99A3B]/30 to-transparent"/>
-        <div className="relative max-w-3xl mx-auto px-6 text-center z-10">
-          <p className="text-[#C99A3B] text-[10px] tracking-[0.4em] uppercase mb-8 reveal" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>
-            Ready to Build?
-          </p>
-          <h2 className="text-4xl md:text-6xl font-bold text-[#F1ECE1] mb-8 leading-tight reveal" style={{fontFamily:"var(--font-space-grotesk)"}}>
-            Tell us what<br/>you need built.
-          </h2>
-          <p className="text-[#F1ECE1]/35 text-base max-w-sm mx-auto mb-12 leading-relaxed reveal" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-            We respond within 24 hours with a clear plan. No vague proposals, no inflated timelines.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 reveal">
-            <a href="mailto:admin@folubandsamuellabs.com"
-              className="px-8 py-4 bg-[#C99A3B] text-[#0E1116] font-bold text-sm tracking-wide uppercase hover:bg-[#e8c05a] transition-colors"
-              style={{fontFamily:"var(--font-ibm-plex-mono)"}}>
-              admin@folubandsamuellabs.com
-            </a>
-            <Link href="/exchange"
-              className="px-8 py-4 border border-[#2FA3A3]/30 text-[#2FA3A3] text-sm tracking-wide hover:border-[#2FA3A3] transition-colors"
-              style={{fontFamily:"var(--font-ibm-plex-mono)"}}>
-              FSLabs Exchange →
-            </Link>
+        <div className="relative max-w-4xl mx-auto px-6 z-10">
+          <div className="text-center mb-12">
+            <p className="text-[#C99A3B] text-[10px] tracking-[0.4em] uppercase mb-6 reveal" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>
+              Ready to Build?
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#F1ECE1] mb-4 leading-tight reveal" style={{fontFamily:"var(--font-space-grotesk)"}}>
+              Tell us what<br/>you need built.
+            </h2>
+            <p className="text-[#F1ECE1]/35 text-base max-w-sm mx-auto leading-relaxed reveal" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
+              We respond within 24 hours with a clear plan. No vague proposals, no inflated timelines.
+            </p>
+          </div>
+          <div className="reveal w-full rounded-none overflow-hidden border border-white/5">
+            <iframe
+              src="https://forms.visme.co/formsPlayer/zzdq9qvy-untitled-project"
+              title="FSLabs Contact Form"
+              width="100%"
+              height="700"
+              frameBorder="0"
+              allowFullScreen
+              className="block w-full bg-transparent"
+              style={{minHeight:"600px"}}
+            />
           </div>
         </div>
       </section>
