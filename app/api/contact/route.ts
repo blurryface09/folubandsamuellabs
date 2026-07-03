@@ -10,10 +10,10 @@ export async function POST(req: Request) {
   }
 
   const { error } = await resend.emails.send({
-    from: "FSLabs Contact <onboarding@resend.dev>",
-    to: "sekosamuel@gmail.com",
+    from: "FSLabs Contact <contact@folubandsamuellabs.com>",
+    to: "admin@folubandsamuellabs.com",
     replyTo: email,
-    subject: `New Enquiry: ${service} — from ${name}`,
+    subject: `New Enquiry: ${service} from ${name}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f9fafb; border-radius: 8px;">
         <h2 style="color: #0e7490; margin-bottom: 4px;">New Contact Form Submission</h2>

@@ -109,6 +109,78 @@ function RadarBg() {
   );
 }
 
+/* ─── Contact form ─── */
+function ContactForm() {
+  const [form, setForm] = useState({name:"", email:"", service:"", message:""});
+  const [status, setStatus] = useState<"idle"|"sending"|"sent"|"error">("idle");
+
+  const field = "w-full bg-[#0a0d11] border border-white/8 text-[#F1ECE1] text-sm px-4 py-3 placeholder:text-[#F1ECE1]/20 focus:outline-none focus:border-[#C99A3B]/50 transition-colors";
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(form),
+      });
+      setStatus(res.ok ? "sent" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (status === "sent") return (
+    <div className="border border-[#C99A3B]/20 bg-[#C99A3B]/5 p-10 text-center">
+      <p className="text-[#C99A3B] text-xs tracking-widest uppercase mb-2" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>Message received</p>
+      <p className="text-[#F1ECE1]/50 text-sm" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>We will be in touch within 24 hours.</p>
+    </div>
+  );
+
+  return (
+    <form onSubmit={submit} className="space-y-4 reveal">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-[9px] tracking-[0.2em] uppercase text-[#F1ECE1]/30 mb-2" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>Name</label>
+          <input required className={field} placeholder="Your name"
+            value={form.name} onChange={e => setForm(f => ({...f, name:e.target.value}))}/>
+        </div>
+        <div>
+          <label className="block text-[9px] tracking-[0.2em] uppercase text-[#F1ECE1]/30 mb-2" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>Email</label>
+          <input required type="email" className={field} placeholder="you@company.com"
+            value={form.email} onChange={e => setForm(f => ({...f, email:e.target.value}))}/>
+        </div>
+      </div>
+      <div>
+        <label className="block text-[9px] tracking-[0.2em] uppercase text-[#F1ECE1]/30 mb-2" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>Service</label>
+        <select required className={field}
+          value={form.service} onChange={e => setForm(f => ({...f, service:e.target.value}))}>
+          <option value="" disabled>Select a service</option>
+          <option value="Software Development">Software Development</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+          <option value="Digital Solutions">Digital Solutions</option>
+          <option value="FSLabs Exchange">FSLabs Exchange</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-[9px] tracking-[0.2em] uppercase text-[#F1ECE1]/30 mb-2" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>Message</label>
+        <textarea required rows={5} className={field} placeholder="Tell us about your project..."
+          value={form.message} onChange={e => setForm(f => ({...f, message:e.target.value}))}/>
+      </div>
+      {status === "error" && (
+        <p className="text-[#D8432E] text-xs" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>Something went wrong. Email us directly at admin@folubandsamuellabs.com</p>
+      )}
+      <button type="submit" disabled={status === "sending"}
+        className="w-full py-4 bg-[#C99A3B] text-[#0E1116] font-bold text-xs tracking-widest uppercase hover:bg-[#e8c05a] transition-colors disabled:opacity-50"
+        style={{fontFamily:"var(--font-ibm-plex-mono)"}}>
+        {status === "sending" ? "Sending..." : "Send Message"}
+      </button>
+    </form>
+  );
+}
+
 export default function Home() {
   useReveal();
   const headline = useScramble("Your vision.\nOur execution.", 600);
@@ -320,29 +392,36 @@ export default function Home() {
         <RadarBg/>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(201,154,59,0.05),transparent_70%)] pointer-events-none"/>
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#C99A3B]/30 to-transparent"/>
-        <div className="relative max-w-4xl mx-auto px-6 z-10">
-          <div className="text-center mb-12">
-            <p className="text-[#C99A3B] text-[10px] tracking-[0.4em] uppercase mb-6 reveal" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>
-              Ready to Build?
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#F1ECE1] mb-4 leading-tight reveal" style={{fontFamily:"var(--font-space-grotesk)"}}>
-              Tell us what<br/>you need built.
-            </h2>
-            <p className="text-[#F1ECE1]/35 text-base max-w-sm mx-auto leading-relaxed reveal" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
-              We respond within 24 hours with a clear plan. No vague proposals, no inflated timelines.
-            </p>
-          </div>
-          <div className="reveal w-full rounded-none overflow-hidden border border-white/5">
-            <iframe
-              src="https://forms.visme.co/formsPlayer/zzdq9qvy-untitled-project"
-              title="FSLabs Contact Form"
-              width="100%"
-              height="700"
-              frameBorder="0"
-              allowFullScreen
-              className="block w-full bg-transparent"
-              style={{minHeight:"600px"}}
-            />
+        <div className="relative max-w-5xl mx-auto px-6 z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+
+            {/* Left: heading + info */}
+            <div className="reveal">
+              <p className="text-[#C99A3B] text-[10px] tracking-[0.4em] uppercase mb-6" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>
+                Start a Project
+              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-[#F1ECE1] mb-6 leading-tight" style={{fontFamily:"var(--font-space-grotesk)"}}>
+                Tell us what<br/>you need built.
+              </h2>
+              <p className="text-[#F1ECE1]/40 text-sm leading-relaxed mb-10" style={{fontFamily:"var(--font-ibm-plex-sans)"}}>
+                Whether it is a product, a security audit, or a digital solution, send us the brief and we will come back with a clear plan within 24 hours.
+              </p>
+              <div className="space-y-4">
+                {[
+                  {label:"Email", value:"admin@folubandsamuellabs.com"},
+                  {label:"Location", value:"Lagos, Nigeria"},
+                  {label:"RC Number", value:"9637480"},
+                ].map(item => (
+                  <div key={item.label} className="flex items-center gap-4">
+                    <span className="text-[#C99A3B]/40 text-[9px] tracking-[0.25em] uppercase w-20 flex-shrink-0" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>{item.label}</span>
+                    <span className="text-[#F1ECE1]/50 text-xs" style={{fontFamily:"var(--font-ibm-plex-mono)"}}>{item.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: form */}
+            <ContactForm />
           </div>
         </div>
       </section>
