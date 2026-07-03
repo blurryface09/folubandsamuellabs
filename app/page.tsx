@@ -357,7 +357,7 @@ export default function Home() {
                 tags:["Cybersecurity","Full Stack","System Architecture","Security Ops","ALX Graduate"] },
               { initial:"A", name:"Akinbayo", role:"Co-Founder and Business Lead", color:"#C99A3B",
                 bio:"Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.",
-                tags:["Strategy","Operations","Business Development","Client Relations"] },
+                tags:["Strategy","Operations","Business Development","Client Relations","Cybersecurity"] },
             ].map(f => (
               <div key={f.name} className="bg-[#0a0d11] p-10 group hover:bg-[#0f1318] transition-colors relative overflow-hidden">
                 <div className="absolute top-0 left-0 h-full w-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
