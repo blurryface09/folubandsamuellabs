@@ -8,7 +8,8 @@ function ParticleCanvas() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const cv: HTMLCanvasElement = canvas;
+    const ctx = cv.getContext("2d") as CanvasRenderingContext2D;
     if (!ctx) return;
 
     let W = 0, H = 0, raf = 0;
@@ -19,8 +20,8 @@ function ParticleCanvas() {
     let pts: Pt[] = [];
 
     function resize() {
-      W = canvas.offsetWidth; H = canvas.offsetHeight;
-      canvas.width = W; canvas.height = H;
+      W = cv.offsetWidth; H = cv.offsetHeight;
+      cv.width = W; cv.height = H;
     }
 
     function init() {
@@ -62,7 +63,7 @@ function ParticleCanvas() {
     }
 
     const ro = new ResizeObserver(() => { resize(); init(); });
-    ro.observe(canvas);
+    ro.observe(cv);
     resize(); init(); draw();
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
   }, []);
