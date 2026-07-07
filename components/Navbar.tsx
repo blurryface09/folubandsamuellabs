@@ -34,7 +34,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none" }}>
-          <Image src="/fslabs-logo.svg" alt="FSLabs mark" width={40} height={40} priority style={{ flexShrink: 0 }} />
+          <Image src="/fslabs-logo-mark.png" alt="FSLabs mark" width={40} height={40} priority style={{ flexShrink: 0 }} />
           {/* Gold vertical divider */}
           <div style={{ width: 1, height: 34, background: "linear-gradient(180deg, transparent, #C9A84C, transparent)", flexShrink: 0 }} />
           <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>

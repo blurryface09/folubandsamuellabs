@@ -16,7 +16,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
-              <Image src="/fslabs-logo.svg" alt="FSLabs" width={44} height={44} style={{ flexShrink: 0 }} />
+              <Image src="/fslabs-logo-mark.png" alt="FSLabs" width={44} height={44} style={{ flexShrink: 0 }} />
               <div style={{ width: 1, height: 36, background: "linear-gradient(180deg,transparent,#C9A84C,transparent)", flexShrink: 0 }} />
               <div style={{ lineHeight: 1.2 }}>
                 <div style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 13, letterSpacing: "0.06em", color: "#FFFFFF" }}>FOLUB &amp; SAMUEL LABS</div>
