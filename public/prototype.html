@@ -618,20 +618,18 @@ section{position:relative;z-index:3}
 /* ─── Region slot animation ──────────────────────────── */
 .region-slot{
   display:inline-block;position:relative;
-  overflow:hidden;vertical-align:bottom;
-  min-width:120px;
+  vertical-align:baseline;
 }
 .region-slot .region-word{
-  display:block;
-  animation:none;
-  transform:translateY(0);
-  transition:transform .45s cubic-bezier(.76,0,.24,1), opacity .35s ease;
+  display:inline-block;
+  transition:opacity .3s ease, transform .45s cubic-bezier(.76,0,.24,1);
+  opacity:1;transform:translateY(0);
 }
 .region-slot .region-word.exit-up{
-  transform:translateY(-110%);opacity:0;
+  transform:translateY(-18px);opacity:0;
 }
 .region-slot .region-word.enter-below{
-  transform:translateY(110%);opacity:0;transition:none;
+  transform:translateY(18px);opacity:0;transition:none;
 }
 
 /* ─── Utility animations ─────────────────────────────── */
@@ -896,26 +894,26 @@ section{position:relative;z-index:3}
     </div>
     <div class="team-grid">
       <div class="team-card reveal tilt-card">
-        <div class="team-avatar">F</div>
-        <div class="team-name">Folub</div>
-        <div class="team-role">Co-Founder &amp; CTO</div>
-        <p class="team-bio">The architect. Folub leads technical strategy, security engineering, and systems design — with a philosophy that every system should be both elegant and impenetrable.</p>
+        <div class="team-avatar">S</div>
+        <div class="team-name">Adeseko Samuel</div>
+        <div class="team-role">Co-Founder · Technical Lead</div>
+        <p class="team-bio">Samuel is the builder. A cybersecurity professional and full-stack developer who carries the full technical weight of FSLabs — from system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.</p>
         <div class="team-skills">
           <span class="skill-tag">Cybersecurity</span>
-          <span class="skill-tag">Systems Design</span>
-          <span class="skill-tag">Backend Engineering</span>
-          <span class="skill-tag">Cloud</span>
+          <span class="skill-tag">Full-Stack Dev</span>
+          <span class="skill-tag">Systems Architecture</span>
+          <span class="skill-tag">Security</span>
         </div>
       </div>
       <div class="team-card reveal tilt-card">
-        <div class="team-avatar">S</div>
-        <div class="team-name">Samuel</div>
-        <div class="team-role">Co-Founder &amp; CEO</div>
-        <p class="team-bio">The strategist. Adeseko Samuel drives product vision, client relationships, and business development — turning complex technical problems into clear, powerful solutions.</p>
+        <div class="team-avatar">A</div>
+        <div class="team-name">Akinbayo</div>
+        <div class="team-role">Co-Founder · Business Lead</div>
+        <p class="team-bio">Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.</p>
         <div class="team-skills">
-          <span class="skill-tag">Product Strategy</span>
-          <span class="skill-tag">Full-Stack Dev</span>
-          <span class="skill-tag">UI/UX</span>
+          <span class="skill-tag">Strategy</span>
+          <span class="skill-tag">Client Relations</span>
+          <span class="skill-tag">Partnerships</span>
           <span class="skill-tag">Growth</span>
         </div>
       </div>
@@ -930,12 +928,12 @@ section{position:relative;z-index:3}
     <div class="exchange-content">
       <div class="section-label">FS Exchange</div>
       <h2 class="exchange-title">
-        Where talent<br>meets <span class="gold">opportunity.</span>
+        Nigeria's fastest<br><span class="gold">currency exchange.</span>
       </h2>
-      <p class="exchange-desc">FS Exchange is our talent marketplace — connecting vetted African tech talent with global opportunities. Developers, designers, and security experts ready to ship.</p>
+      <p class="exchange-desc">FS Exchange is Nigeria's most transparent currency exchange platform — built by FSLabs. Powered by real rates. Zero hidden fees. Send, receive, and exchange currencies with complete trust.</p>
       <div style="display:flex;gap:16px;flex-wrap:wrap">
-        <button class="btn-primary magnetic">Join as Talent</button>
-        <button class="btn-ghost magnetic">Hire from Exchange</button>
+        <a href="/exchange" class="btn-primary magnetic">Visit FS Exchange ↗</a>
+        <button class="btn-ghost magnetic">Learn more</button>
       </div>
     </div>
   </div>
