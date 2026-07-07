@@ -615,6 +615,25 @@ section{position:relative;z-index:3}
   .footer-bottom{flex-direction:column;gap:12px;text-align:center}
 }
 
+/* ─── Region slot animation ──────────────────────────── */
+.region-slot{
+  display:inline-block;position:relative;
+  overflow:hidden;vertical-align:bottom;
+  min-width:120px;
+}
+.region-slot .region-word{
+  display:block;
+  animation:none;
+  transform:translateY(0);
+  transition:transform .45s cubic-bezier(.76,0,.24,1), opacity .35s ease;
+}
+.region-slot .region-word.exit-up{
+  transform:translateY(-110%);opacity:0;
+}
+.region-slot .region-word.enter-below{
+  transform:translateY(110%);opacity:0;transition:none;
+}
+
 /* ─── Utility animations ─────────────────────────────── */
 .reveal{opacity:0;transform:translateY(32px)}
 .reveal-left{opacity:0;transform:translateX(-40px)}
@@ -853,12 +872,12 @@ section{position:relative;z-index:3}
     </div>
     <div class="about-body reveal-right">
       <div class="section-label">About us</div>
-      <h2 class="section-heading">We believe Africa deserves<br><span class="gold">world-class</span> tech.</h2>
-      <p>Folub &amp; Samuel Labs Limited is a Lagos-based technology and cybersecurity company co-founded by two builders who believe African businesses deserve the same level of security and engineering excellence as any global enterprise.</p>
+      <h2 class="section-heading">We believe <span id="region-slot" class="gold region-slot">Africa</span><br>deserves <span class="gold">world-class</span> tech.</h2>
+      <p>Folub &amp; Samuel Labs Limited is a Lagos-based technology and cybersecurity company built for the world — co-founded by two builders who believe every business, anywhere on earth, deserves the same level of security and engineering excellence.</p>
       <div class="about-highlight">
-        <p>"We don't build products that look good in demos. We build systems that hold up under real pressure."</p>
+        <p>"We don't build products that look good in demos. We build systems that hold up under real pressure — anywhere in the world."</p>
       </div>
-      <p>From securing fintech infrastructure to engineering consumer-facing platforms, we bring rigor, creativity, and a deep understanding of the African market to every engagement.</p>
+      <p>From Lagos to London, Nairobi to New York — we bring rigour, creativity, and a global standard of engineering to every engagement.</p>
       <div style="margin-top:36px">
         <button class="btn-primary magnetic" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
           Work with us
@@ -1302,6 +1321,35 @@ document.querySelectorAll('.tilt-card').forEach(card=>{
     setTimeout(()=>card.style.transition='',500);
   });
 });
+
+// ══ Region slot cycler ══════════════════════════════
+(function(){
+  const regions = ['Africa','Europe','Asia','Americas','The World'];
+  const slot = document.getElementById('region-slot');
+  if(!slot) return;
+  let current = 0;
+
+  // Wrap existing text in a span
+  slot.innerHTML = `<span class="region-word">${regions[0]}</span>`;
+
+  setInterval(()=>{
+    const currentWord = slot.querySelector('.region-word');
+    const next = regions[(++current) % regions.length];
+
+    // Slide current word up & out
+    currentWord.classList.add('exit-up');
+
+    // After exit, swap text and slide in from below
+    setTimeout(()=>{
+      currentWord.textContent = next;
+      currentWord.classList.remove('exit-up');
+      currentWord.classList.add('enter-below');
+      // Force reflow so the transition fires
+      void currentWord.offsetWidth;
+      currentWord.classList.remove('enter-below');
+    }, 420);
+  }, 2200);
+})();
 
 // ══ Smooth nav links ════════════════════════════════
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
