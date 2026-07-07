@@ -621,22 +621,6 @@ section{position:relative;z-index:3}
   .footer-bottom{flex-direction:column;gap:12px;text-align:center}
 }
 
-/* ─── Region slot animation ──────────────────────────── */
-.region-slot{
-  display:inline-block;position:relative;
-  vertical-align:baseline;
-}
-.region-slot .region-word{
-  display:inline-block;
-  transition:opacity .3s ease, transform .45s cubic-bezier(.76,0,.24,1);
-  opacity:1;transform:translateY(0);
-}
-.region-slot .region-word.exit-up{
-  transform:translateY(-18px);opacity:0;
-}
-.region-slot .region-word.enter-below{
-  transform:translateY(18px);opacity:0;transition:none;
-}
 
 /* ─── Utility animations ─────────────────────────────── */
 .reveal{opacity:0;transform:translateY(32px)}
@@ -876,7 +860,7 @@ section{position:relative;z-index:3}
     </div>
     <div class="about-body reveal-right">
       <div class="section-label">About us</div>
-      <h2 class="section-heading">We believe <span id="region-slot" class="gold region-slot">Africa</span><br>deserves <span class="gold">world-class</span> tech.</h2>
+      <h2 class="section-heading">We believe <span id="region-slot" class="gold">Africa</span><br>deserves <span class="gold">world-class</span> tech.</h2>
       <p>Folub &amp; Samuel Labs Limited is a Lagos-based technology and cybersecurity company built for the world — co-founded by two builders who believe every business, anywhere on earth, deserves the same level of security and engineering excellence.</p>
       <div class="about-highlight">
         <p>"We don't build products that look good in demos. We build systems that hold up under real pressure — anywhere in the world."</p>
@@ -1326,25 +1310,21 @@ document.querySelectorAll('.tilt-card').forEach(card=>{
   });
 });
 
-// ══ Region slot cycler (GSAP-powered) ═══════════════
+// ══ Region slot cycler ═══════════════════════════════
 (function(){
   const regions = ['Africa','Europe','Asia','Americas','The World'];
   const slot = document.getElementById('region-slot');
   if(!slot) return;
-  slot.innerHTML = `<span class="region-word">${regions[0]}</span>`;
-  const wordEl = slot.querySelector('.region-word');
-  gsap.set(wordEl, {opacity:1, y:0});
+  slot.textContent = regions[0];
+  gsap.set(slot, {opacity:1});
   let idx = 0;
   setInterval(()=>{
     idx = (idx + 1) % regions.length;
-    gsap.to(wordEl, {
-      opacity:0, y:-16, duration:.32, ease:'power2.in',
+    gsap.to(slot, {
+      opacity:0, duration:.3, ease:'power2.in',
       onComplete:()=>{
-        wordEl.textContent = regions[idx];
-        gsap.fromTo(wordEl,
-          {opacity:0, y:16},
-          {opacity:1, y:0, duration:.42, ease:'power3.out'}
-        );
+        slot.textContent = regions[idx];
+        gsap.to(slot, {opacity:1, duration:.4, ease:'power3.out'});
       }
     });
   }, 2400);
