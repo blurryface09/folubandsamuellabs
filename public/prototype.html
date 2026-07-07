@@ -6,7 +6,9 @@
 <title>FSLabs — Intelligence. Security. Trust.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
 <!-- Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -896,7 +898,7 @@ section{position:relative;z-index:3}
       <div class="team-card reveal tilt-card">
         <div class="team-avatar">S</div>
         <div class="team-name">Adeseko Samuel</div>
-        <div class="team-role">Co-Founder · Technical Lead</div>
+        <div class="team-role">Co-Founder &amp; CTO</div>
         <p class="team-bio">Samuel is the builder. A cybersecurity professional and full-stack developer who carries the full technical weight of FSLabs — from system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.</p>
         <div class="team-skills">
           <span class="skill-tag">Cybersecurity</span>
@@ -907,8 +909,8 @@ section{position:relative;z-index:3}
       </div>
       <div class="team-card reveal tilt-card">
         <div class="team-avatar">A</div>
-        <div class="team-name">Akinbayo</div>
-        <div class="team-role">Co-Founder · Business Lead</div>
+        <div class="team-name">Adefolu Akinbayo</div>
+        <div class="team-role">Co-Founder &amp; CEO</div>
         <p class="team-bio">Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.</p>
         <div class="team-skills">
           <span class="skill-tag">Strategy</span>
@@ -1046,7 +1048,7 @@ section{position:relative;z-index:3}
 (function(){
   const canvas = document.getElementById('canvas-bg');
   const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
@@ -1078,7 +1080,7 @@ section{position:relative;z-index:3}
   scene.add(torus2);
 
   // ── Particle field ──────────────────────────────────
-  const COUNT = 2400;
+  const COUNT = 1200;
   const positions = new Float32Array(COUNT * 3);
   const sizes = new Float32Array(COUNT);
   const colors = new Float32Array(COUNT * 3);
@@ -1115,18 +1117,18 @@ section{position:relative;z-index:3}
   const particles = new THREE.Points(pGeo, pMat);
   scene.add(particles);
 
-  // ── Small floating cubes ────────────────────────────
+  // ── Small floating cubes (reduced for perf) ─────────
   const cubes = [];
-  for(let i=0; i<10; i++){
+  for(let i=0; i<5; i++){
     const s = .04+Math.random()*.06;
     const m = new THREE.Mesh(
       new THREE.BoxGeometry(s,s,s),
-      new THREE.MeshBasicMaterial({color:GOLD, transparent:true, opacity:.25+Math.random()*.3, wireframe:Math.random()>.5})
+      new THREE.MeshBasicMaterial({color:GOLD, transparent:true, opacity:.2+Math.random()*.25, wireframe:true})
     );
     m.position.set((Math.random()-.5)*8,(Math.random()-.5)*8,(Math.random()-.5)*4);
     m.userData = {
-      rx:Math.random()*.01-.005, ry:Math.random()*.01-.005,
-      fy:.003+Math.random()*.005, phase:Math.random()*Math.PI*2
+      rx:Math.random()*.008-.004, ry:Math.random()*.008-.004,
+      fy:.002+Math.random()*.003, phase:Math.random()*Math.PI*2
     };
     scene.add(m);
     cubes.push(m);
@@ -1320,33 +1322,28 @@ document.querySelectorAll('.tilt-card').forEach(card=>{
   });
 });
 
-// ══ Region slot cycler ══════════════════════════════
+// ══ Region slot cycler (GSAP-powered) ═══════════════
 (function(){
   const regions = ['Africa','Europe','Asia','Americas','The World'];
   const slot = document.getElementById('region-slot');
   if(!slot) return;
-  let current = 0;
-
-  // Wrap existing text in a span
   slot.innerHTML = `<span class="region-word">${regions[0]}</span>`;
-
+  const wordEl = slot.querySelector('.region-word');
+  gsap.set(wordEl, {opacity:1, y:0});
+  let idx = 0;
   setInterval(()=>{
-    const currentWord = slot.querySelector('.region-word');
-    const next = regions[(++current) % regions.length];
-
-    // Slide current word up & out
-    currentWord.classList.add('exit-up');
-
-    // After exit, swap text and slide in from below
-    setTimeout(()=>{
-      currentWord.textContent = next;
-      currentWord.classList.remove('exit-up');
-      currentWord.classList.add('enter-below');
-      // Force reflow so the transition fires
-      void currentWord.offsetWidth;
-      currentWord.classList.remove('enter-below');
-    }, 420);
-  }, 2200);
+    idx = (idx + 1) % regions.length;
+    gsap.to(wordEl, {
+      opacity:0, y:-16, duration:.32, ease:'power2.in',
+      onComplete:()=>{
+        wordEl.textContent = regions[idx];
+        gsap.fromTo(wordEl,
+          {opacity:0, y:16},
+          {opacity:1, y:0, duration:.42, ease:'power3.out'}
+        );
+      }
+    });
+  }, 2400);
 })();
 
 // ══ Smooth nav links ════════════════════════════════
