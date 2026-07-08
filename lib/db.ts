@@ -1,8 +1,3 @@
-// Run `npx prisma generate` after installing dependencies to enable this client.
-// Keeping the singleton boundary here prevents connection churn in Next.js dev mode.
-export {};
-
-/*
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
@@ -18,4 +13,3 @@ export const db =
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = db;
 }
-*/

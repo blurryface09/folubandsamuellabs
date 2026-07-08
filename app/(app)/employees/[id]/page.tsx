@@ -1,0 +1,175 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { deactivateEmployee } from "@/app/(app)/employees/actions";
+import { EmployeeToast } from "@/app/(app)/employees/employee-toast";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { getCurrentOrganization } from "@/lib/current-organization";
+import { db } from "@/lib/db";
+
+type EmployeeDetailsPageProps = {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function formatDate(value: Date | null) {
+  if (!value) {
+    return "Not set";
+  }
+
+  return new Intl.DateTimeFormat("en", {
+    dateStyle: "medium",
+  }).format(value);
+}
+
+function display(value?: string | null) {
+  return value && value.trim().length > 0 ? value : "Not set";
+}
+
+function paramValue(
+  params: Record<string, string | string[] | undefined>,
+  key: string,
+) {
+  const value = params[key];
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function EmployeeDetailsPage({
+  params,
+  searchParams,
+}: EmployeeDetailsPageProps) {
+  const [{ id }, queryParams] = await Promise.all([
+    params,
+    searchParams ?? Promise.resolve({}),
+  ]);
+  const organization = await getCurrentOrganization();
+  const employee = await db.employee.findFirst({
+    where: {
+      id,
+      organizationId: organization.id,
+    },
+    include: {
+      department: {
+        select: {
+          name: true,
+          code: true,
+        },
+      },
+      organizationMember: {
+        include: {
+          user: {
+            select: {
+              email: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!employee) {
+    notFound();
+  }
+
+  return (
+    <section className="space-y-6">
+      <EmployeeToast message={paramValue(queryParams, "toast")} />
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+            Employee profile
+          </p>
+          <h1 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950 sm:text-3xl">
+            {employee.firstName} {employee.lastName}
+          </h1>
+          <p className="mt-2 text-sm text-slate-600">{employee.employeeNumber}</p>
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Link
+            className="inline-flex h-10 items-center justify-center rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            href="/employees"
+          >
+            Back
+          </Link>
+          <Link
+            className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white hover:bg-slate-800"
+            href={`/employees/${employee.id}/edit`}
+          >
+            Edit
+          </Link>
+        </div>
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Profile</CardTitle>
+            <CardDescription>
+              Core staff information scoped to {organization.name}.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <dl className="grid gap-4 sm:grid-cols-2">
+              {[
+                ["Work email", display(employee.workEmail)],
+                ["Phone", display(employee.phone)],
+                ["Job title", display(employee.jobTitle)],
+                [
+                  "Department",
+                  employee.department
+                    ? `${employee.department.name}${employee.department.code ? ` (${employee.department.code})` : ""}`
+                    : "No department",
+                ],
+                ["Employment type", employee.employmentType.replaceAll("_", " ")],
+                ["Status", employee.status.replaceAll("_", " ")],
+                ["Hire date", formatDate(employee.hireDate)],
+                ["Deactivated date", formatDate(employee.terminationDate)],
+              ].map(([label, value]) => (
+                <div className="rounded-md border border-slate-200 p-4" key={label}>
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    {label}
+                  </dt>
+                  <dd className="mt-2 text-sm font-medium text-slate-950">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Account link</CardTitle>
+            <CardDescription>
+              Optional user membership connected to this employee.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="rounded-md border border-slate-200 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Linked user
+              </p>
+              <p className="mt-2 text-sm font-medium text-slate-950">
+                {employee.organizationMember?.user.email ?? "Not linked"}
+              </p>
+            </div>
+            <form action={deactivateEmployee}>
+              <input name="id" type="hidden" value={employee.id} />
+              <Button
+                className="w-full border-red-200 text-red-700 hover:bg-red-50"
+                disabled={employee.status === "SUSPENDED"}
+                type="submit"
+                variant="secondary"
+              >
+                {employee.status === "SUSPENDED"
+                  ? "Employee deactivated"
+                  : "Deactivate employee"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+  );
+}
