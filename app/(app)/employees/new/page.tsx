@@ -1,10 +1,12 @@
 import { createEmployee } from "@/app/(app)/employees/actions";
 import { EmployeeForm } from "@/app/(app)/employees/employee-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentOrganization } from "@/lib/current-organization";
+import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
+import { UserRole } from "@prisma/client";
 
 export default async function NewEmployeePage() {
+  await requireRole(UserRole.HR_MANAGER);
   const organization = await getCurrentOrganization();
   const departments = await db.department.findMany({
     where: { organizationId: organization.id },

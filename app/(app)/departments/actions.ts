@@ -1,10 +1,10 @@
 "use server";
 
-import { EmployeeStatus, Prisma } from "@prisma/client";
+import { EmployeeStatus, Prisma, UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getCurrentOrganization } from "@/lib/current-organization";
+import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
 
 import type { DepartmentFormState } from "./types";
@@ -87,6 +87,7 @@ export async function createDepartment(
   _previousState: DepartmentFormState,
   formData: FormData,
 ): Promise<DepartmentFormState> {
+  await requireRole(UserRole.HR_MANAGER);
   const result = await validateDepartmentForm(formData);
 
   if (Object.keys(result.fieldErrors).length > 0) {
@@ -123,6 +124,7 @@ export async function updateDepartment(
   _previousState: DepartmentFormState,
   formData: FormData,
 ): Promise<DepartmentFormState> {
+  await requireRole(UserRole.HR_MANAGER);
   const departmentId = cleanString(formData.get("id"));
 
   if (!departmentId) {
@@ -167,6 +169,7 @@ export async function updateDepartment(
 }
 
 export async function deactivateDepartment(formData: FormData) {
+  await requireRole(UserRole.HR_MANAGER);
   const organization = await getCurrentOrganization();
   const departmentId = cleanString(formData.get("id"));
 

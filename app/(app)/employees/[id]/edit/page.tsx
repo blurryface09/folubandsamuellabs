@@ -3,14 +3,16 @@ import { notFound } from "next/navigation";
 import { updateEmployee } from "@/app/(app)/employees/actions";
 import { EmployeeForm } from "@/app/(app)/employees/employee-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentOrganization } from "@/lib/current-organization";
+import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
+import { UserRole } from "@prisma/client";
 
 type EditEmployeePageProps = {
   params: Promise<{ id: string }>;
 };
 
 export default async function EditEmployeePage({ params }: EditEmployeePageProps) {
+  await requireRole(UserRole.HR_MANAGER);
   const { id } = await params;
   const organization = await getCurrentOrganization();
   const [employee, departments] = await Promise.all([

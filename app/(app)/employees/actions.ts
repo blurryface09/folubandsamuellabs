@@ -1,10 +1,10 @@
 "use server";
 
-import { EmployeeStatus, EmploymentType, Prisma } from "@prisma/client";
+import { EmployeeStatus, EmploymentType, Prisma, UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getCurrentOrganization } from "@/lib/current-organization";
+import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
 
 import type { EmployeeFormState } from "./types";
@@ -136,6 +136,7 @@ export async function createEmployee(
   _previousState: EmployeeFormState,
   formData: FormData,
 ): Promise<EmployeeFormState> {
+  await requireRole(UserRole.HR_MANAGER);
   const result = await validateEmployeeForm(formData);
 
   if (Object.keys(result.fieldErrors).length > 0) {
@@ -178,6 +179,7 @@ export async function updateEmployee(
   _previousState: EmployeeFormState,
   formData: FormData,
 ): Promise<EmployeeFormState> {
+  await requireRole(UserRole.HR_MANAGER);
   const employeeId = cleanString(formData.get("id"));
 
   if (!employeeId) {
@@ -228,6 +230,7 @@ export async function updateEmployee(
 }
 
 export async function deactivateEmployee(formData: FormData) {
+  await requireRole(UserRole.HR_MANAGER);
   const organization = await getCurrentOrganization();
   const employeeId = cleanString(formData.get("id"));
 

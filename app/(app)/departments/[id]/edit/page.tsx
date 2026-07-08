@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { updateDepartment } from "@/app/(app)/departments/actions";
 import { DepartmentForm } from "@/app/(app)/departments/department-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentOrganization } from "@/lib/current-organization";
+import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
+import { UserRole } from "@prisma/client";
 
 type EditDepartmentPageProps = {
   params: Promise<{ id: string }>;
@@ -13,6 +14,7 @@ type EditDepartmentPageProps = {
 export default async function EditDepartmentPage({
   params,
 }: EditDepartmentPageProps) {
+  await requireRole(UserRole.HR_MANAGER);
   const { id } = await params;
   const organization = await getCurrentOrganization();
   const department = await db.department.findFirst({

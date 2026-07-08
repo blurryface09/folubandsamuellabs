@@ -1,24 +1,70 @@
 import "server-only";
 
+import { UserRole } from "@prisma/client";
+import { redirect } from "next/navigation";
+
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { appRoleLabels, hasMinimumRole } from "@/lib/roles";
 
-export const SEEDED_ORGANIZATION_SLUG = "fslabs-demo";
+export async function getCurrentMembership() {
+  const session = await auth();
 
-export async function getCurrentOrganization() {
-  const organization = await db.organization.findUnique({
-    where: { slug: SEEDED_ORGANIZATION_SLUG },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
+  if (!session?.user?.id || !session.user.organizationId) {
+    redirect("/login");
+  }
+
+  const membership = await db.organizationMember.findFirst({
+    where: {
+      id: session.user.memberId,
+      userId: session.user.id,
+      organizationId: session.user.organizationId,
+      organization: {
+        status: "ACTIVE",
+      },
+    },
+    include: {
+      organization: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          status: true,
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          isPlatformAdmin: true,
+        },
+      },
     },
   });
 
-  if (!organization) {
-    throw new Error(
-      `Seeded organization "${SEEDED_ORGANIZATION_SLUG}" was not found.`,
-    );
+  if (!membership) {
+    redirect("/login?error=SessionExpired");
   }
 
-  return organization;
+  return {
+    ...membership,
+    appRole: appRoleLabels[membership.role],
+  };
+}
+
+export async function getCurrentOrganization() {
+  const membership = await getCurrentMembership();
+
+  return membership.organization;
+}
+
+export async function requireRole(minimumRole: UserRole) {
+  const membership = await getCurrentMembership();
+
+  if (!hasMinimumRole(membership.role, minimumRole)) {
+    redirect("/dashboard?error=AccessDenied");
+  }
+
+  return membership;
 }

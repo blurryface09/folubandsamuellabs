@@ -1,53 +1,70 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const appRoutes = [
-  '/dashboard',
-  '/employees',
-  '/departments',
-  '/attendance',
-  '/leave',
-  '/documents',
-  '/payroll',
-  '/settings',
-]
+  "/dashboard",
+  "/employees",
+  "/departments",
+  "/attendance",
+  "/leave",
+  "/documents",
+  "/payroll",
+  "/settings",
+];
 
-export function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname === '/') {
-    return NextResponse.rewrite(new URL('/prototype.html', request.url))
+const authRoutes = ["/login", "/register"];
+
+const authSecret =
+  process.env.AUTH_SECRET ?? "development-auth-secret-change-before-production";
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (pathname === "/") {
+    return NextResponse.rewrite(new URL("/prototype.html", request.url));
   }
 
-  if (appRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
-    const requestHeaders = new Headers(request.headers)
+  const isAppRoute = appRoutes.some((route) => pathname.startsWith(route));
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+  const token = await getToken({ req: request, secret: authSecret });
 
-    // Replace this placeholder with Auth.js or Clerk session lookup.
-    // The organizationId should come from the authenticated membership, not user input.
-    const organizationId =
-      request.cookies.get('organizationId')?.value ??
-      request.headers.get('x-organization-id')
+  if (isAppRoute && !token) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
+  }
 
-    if (organizationId) {
-      requestHeaders.set('x-organization-id', organizationId)
-    }
+  if (isAuthRoute && token) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  if (isAppRoute && token?.organizationId) {
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set("x-organization-id", String(token.organizationId));
 
     return NextResponse.next({
       request: {
         headers: requestHeaders,
       },
-    })
+    });
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    '/',
-    '/dashboard/:path*',
-    '/employees/:path*',
-    '/departments/:path*',
-    '/attendance/:path*',
-    '/leave/:path*',
-    '/documents/:path*',
-    '/payroll/:path*',
-    '/settings/:path*',
+    "/",
+    "/login",
+    "/register",
+    "/dashboard/:path*",
+    "/employees/:path*",
+    "/departments/:path*",
+    "/attendance/:path*",
+    "/leave/:path*",
+    "/documents/:path*",
+    "/payroll/:path*",
+    "/settings/:path*",
   ],
-}
+};
