@@ -141,6 +141,8 @@ model Department {
   code              String?
   description       String?
   managerEmployeeId String?
+  isActive          Boolean      @default(true)
+  deletedAt         DateTime?
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -151,6 +153,7 @@ model Department {
   @@unique([organizationId, code])
   @@unique([id, organizationId])
   @@index([organizationId])
+  @@index([organizationId, isActive])
   @@index([managerEmployeeId])
 }
 
