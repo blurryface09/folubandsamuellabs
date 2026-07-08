@@ -25,7 +25,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       where: { organizationId: membership.organizationId },
     }),
     db.department.count({
-      where: { organizationId: membership.organizationId, isActive: true },
+      where: { organizationId: membership.organizationId },
     }),
     db.leaveRequest.count({
       where: { organizationId: membership.organizationId, status: "PENDING" },
