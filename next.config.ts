@@ -1,18 +1,26 @@
 import type { NextConfig } from "next";
 
 const securityHeaders = [
-  // Prevent clickjacking — nobody can iframe this site
   { key: "X-Frame-Options", value: "DENY" },
-  // Prevent MIME-type sniffing
   { key: "X-Content-Type-Options", value: "nosniff" },
-  // Force HTTPS for 2 years, include subdomains
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-  // Stop leaking referrer to external sites
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  // Disable browser features we don't use
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
-  // Basic XSS protection for older browsers
   { key: "X-XSS-Protection", value: "1; mode=block" },
+  {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      "script-src 'self'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data:",
+      "connect-src 'self'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join("; "),
+  },
 ];
 
 const nextConfig: NextConfig = {
