@@ -1,0 +1,333 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  HR_MANAGER
+  MANAGER
+  EMPLOYEE
+}
+
+enum OrganizationStatus {
+  TRIALING
+  ACTIVE
+  SUSPENDED
+  CANCELLED
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  ON_LEAVE
+  SUSPENDED
+  TERMINATED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERN
+  TEMPORARY
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  REMOTE
+  HOLIDAY
+  ON_LEAVE
+}
+
+enum LeaveStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum LeaveType {
+  ANNUAL
+  SICK
+  MATERNITY
+  PATERNITY
+  UNPAID
+  COMPASSIONATE
+  STUDY
+  OTHER
+}
+
+enum PaymentStatus {
+  DRAFT
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+model Organization {
+  id             String               @id @default(cuid())
+  name           String
+  slug           String               @unique
+  status         OrganizationStatus   @default(TRIALING)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  members        OrganizationMember[]
+  departments    Department[]
+  employees      Employee[]
+  attendance     Attendance[]
+  leaveRequests  LeaveRequest[]
+  documents      Document[]
+  payrollRecords PayrollRecord[]
+  subscriptions  Subscription[]
+  auditLogs      AuditLog[]
+
+  @@index([status])
+}
+
+model User {
+  id              String               @id @default(cuid())
+  email           String               @unique
+  name            String?
+  image           String?
+  emailVerified   DateTime?
+  isPlatformAdmin Boolean              @default(false)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  memberships     OrganizationMember[]
+  auditLogs       AuditLog[]
+
+  @@index([email])
+  @@index([isPlatformAdmin])
+}
+
+model OrganizationMember {
+  id             String         @id @default(cuid())
+  organizationId String
+  userId         String
+  role           UserRole       @default(EMPLOYEE)
+  title          String?
+  invitedAt      DateTime?
+  joinedAt       DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employee       Employee?
+  uploadedDocs   Document[]     @relation("DocumentUploader")
+  reviewedLeave  LeaveRequest[] @relation("LeaveReviewer")
+  auditLogs      AuditLog[]     @relation("AuditActorMember")
+
+  @@unique([organizationId, userId])
+  @@unique([id, organizationId])
+  @@index([organizationId])
+  @@index([organizationId, role])
+  @@index([userId])
+}
+
+model Department {
+  id                String       @id @default(cuid())
+  organizationId    String
+  name              String
+  code              String?
+  description       String?
+  managerEmployeeId String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  manager           Employee?    @relation("DepartmentManager", fields: [managerEmployeeId, organizationId], references: [id, organizationId], onDelete: NoAction)
+  employees         Employee[]   @relation("DepartmentEmployees")
+
+  @@unique([organizationId, name])
+  @@unique([organizationId, code])
+  @@unique([id, organizationId])
+  @@index([organizationId])
+  @@index([managerEmployeeId])
+}
+
+model Employee {
+  id                   String              @id @default(cuid())
+  organizationId       String
+  organizationMemberId String?
+  departmentId         String?
+  employeeNumber       String
+  firstName            String
+  lastName             String
+  workEmail            String?
+  phone                String?
+  jobTitle             String?
+  employmentType       EmploymentType      @default(FULL_TIME)
+  status               EmployeeStatus      @default(ACTIVE)
+  hireDate             DateTime?
+  terminationDate      DateTime?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  organization         Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationMember   OrganizationMember? @relation(fields: [organizationMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
+  department           Department?         @relation("DepartmentEmployees", fields: [departmentId, organizationId], references: [id, organizationId], onDelete: NoAction)
+  managedDepartments   Department[]        @relation("DepartmentManager")
+  attendance           Attendance[]
+  leaveRequests        LeaveRequest[]
+  documents            Document[]
+  payrollRecords       PayrollRecord[]
+
+  @@unique([organizationId, employeeNumber])
+  @@unique([organizationId, organizationMemberId])
+  @@unique([organizationMemberId, organizationId])
+  @@unique([id, organizationId])
+  @@index([organizationId])
+  @@index([organizationId, departmentId])
+  @@index([organizationId, status])
+  @@index([departmentId])
+  @@index([workEmail])
+}
+
+model Attendance {
+  id             String           @id @default(cuid())
+  organizationId String
+  employeeId     String
+  workDate       DateTime
+  clockIn        DateTime?
+  clockOut       DateTime?
+  status         AttendanceStatus @default(PRESENT)
+  notes          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee       Employee         @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
+
+  @@unique([organizationId, employeeId, workDate])
+  @@index([organizationId])
+  @@index([organizationId, employeeId])
+  @@index([organizationId, status])
+  @@index([organizationId, workDate])
+  @@index([employeeId])
+}
+
+model LeaveRequest {
+  id                 String              @id @default(cuid())
+  organizationId     String
+  employeeId         String
+  reviewedByMemberId String?
+  type               LeaveType
+  startDate          DateTime
+  endDate            DateTime
+  status             LeaveStatus         @default(PENDING)
+  reason             String?
+  reviewerNote       String?
+  reviewedAt         DateTime?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee           Employee            @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
+  reviewedByMember   OrganizationMember? @relation("LeaveReviewer", fields: [reviewedByMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
+
+  @@index([organizationId])
+  @@index([organizationId, employeeId])
+  @@index([organizationId, status])
+  @@index([organizationId, type])
+  @@index([employeeId])
+}
+
+model Document {
+  id                 String              @id @default(cuid())
+  organizationId     String
+  employeeId         String?
+  uploadedByMemberId String?
+  name               String
+  category           String
+  storageKey         String
+  contentType        String?
+  sizeBytes          Int?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee           Employee?           @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
+  uploadedByMember   OrganizationMember? @relation("DocumentUploader", fields: [uploadedByMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
+
+  @@unique([organizationId, storageKey])
+  @@index([organizationId])
+  @@index([organizationId, employeeId])
+  @@index([organizationId, category])
+  @@index([employeeId])
+}
+
+model PayrollRecord {
+  id             String        @id @default(cuid())
+  organizationId String
+  employeeId     String
+  periodStart    DateTime
+  periodEnd      DateTime
+  grossPay       Decimal       @db.Decimal(12, 2)
+  deductions     Decimal       @default(0) @db.Decimal(12, 2)
+  netPay         Decimal       @db.Decimal(12, 2)
+  currency       String        @default("NGN")
+  status         PaymentStatus @default(DRAFT)
+  paidAt         DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee       Employee      @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
+
+  @@unique([organizationId, employeeId, periodStart, periodEnd])
+  @@index([organizationId])
+  @@index([organizationId, employeeId])
+  @@index([organizationId, status])
+  @@index([organizationId, periodStart, periodEnd])
+  @@index([employeeId])
+}
+
+model Subscription {
+  id                     String        @id @default(cuid())
+  organizationId         String
+  plan                   String
+  status                 PaymentStatus @default(PENDING)
+  provider               String?
+  providerCustomerId     String?
+  providerSubscriptionId String?
+  currentPeriodStart     DateTime?
+  currentPeriodEnd       DateTime?
+  canceledAt             DateTime?
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  organization           Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([organizationId, status])
+  @@index([providerCustomerId])
+  @@index([providerSubscriptionId])
+}
+
+model AuditLog {
+  id             String              @id @default(cuid())
+  organizationId String
+  actorUserId    String?
+  actorMemberId  String?
+  action         String
+  entityType     String
+  entityId       String?
+  metadata       Json?
+  ipAddress      String?
+  userAgent      String?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actorUser      User?               @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+  actorMember    OrganizationMember? @relation("AuditActorMember", fields: [actorMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
+
+  @@index([organizationId])
+  @@index([organizationId, action])
+  @@index([organizationId, entityType, entityId])
+  @@index([actorUserId])
+  @@index([actorMemberId])
+  @@index([createdAt])
+}

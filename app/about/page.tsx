@@ -1,4 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description: "Two founders bridging technology and business — connecting companies to real talent and building products that matter. FSLabs, Lagos, Nigeria.",
+  alternates: { canonical: "/about" },
+};
 
 const values = [
   { n: "01", title: "Innovation", desc: "We don't follow trends — we set them. Every solution we build pushes the boundary of what's possible." },

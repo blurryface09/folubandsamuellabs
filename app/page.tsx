@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
-import Image from "next/image";
 
 /* ══════════════════════════════════════════════
    GOLD PARTICLE CANVAS (adapted from 21st.dev)

@@ -1,0 +1,146 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+async function main() {
+  const organization = await prisma.organization.upsert({
+    where: { slug: "fslabs-demo" },
+    update: {
+      name: "FSLabs Demo Organization",
+      status: "ACTIVE",
+    },
+    create: {
+      name: "FSLabs Demo Organization",
+      slug: "fslabs-demo",
+      status: "ACTIVE",
+    },
+  });
+
+  const platformAdmin = await prisma.user.upsert({
+    where: { email: "platform.admin@folubandsamuellabs.com" },
+    update: {
+      name: "Platform Admin",
+      isPlatformAdmin: true,
+    },
+    create: {
+      email: "platform.admin@folubandsamuellabs.com",
+      name: "Platform Admin",
+      isPlatformAdmin: true,
+    },
+  });
+
+  const companyAdmin = await prisma.user.upsert({
+    where: { email: "company.admin@fslabs-demo.test" },
+    update: {
+      name: "Company Admin",
+    },
+    create: {
+      email: "company.admin@fslabs-demo.test",
+      name: "Company Admin",
+    },
+  });
+
+  const companyAdminMember = await prisma.organizationMember.upsert({
+    where: {
+      organizationId_userId: {
+        organizationId: organization.id,
+        userId: companyAdmin.id,
+      },
+    },
+    update: {
+      role: "ADMIN",
+      title: "Company Administrator",
+      joinedAt: new Date(),
+    },
+    create: {
+      organizationId: organization.id,
+      userId: companyAdmin.id,
+      role: "ADMIN",
+      title: "Company Administrator",
+      joinedAt: new Date(),
+    },
+  });
+
+  const department = await prisma.department.upsert({
+    where: {
+      organizationId_code: {
+        organizationId: organization.id,
+        code: "OPS",
+      },
+    },
+    update: {
+      name: "Operations",
+      description: "Demo department for tenant-scoped HR workflows.",
+    },
+    create: {
+      organizationId: organization.id,
+      name: "Operations",
+      code: "OPS",
+      description: "Demo department for tenant-scoped HR workflows.",
+    },
+  });
+
+  const employee = await prisma.employee.upsert({
+    where: {
+      organizationId_employeeNumber: {
+        organizationId: organization.id,
+        employeeNumber: "FSL-0001",
+      },
+    },
+    update: {
+      departmentId: department.id,
+      organizationMemberId: companyAdminMember.id,
+      firstName: "Ada",
+      lastName: "Okafor",
+      workEmail: "ada.okafor@fslabs-demo.test",
+      jobTitle: "HR Operations Lead",
+      employmentType: "FULL_TIME",
+      status: "ACTIVE",
+    },
+    create: {
+      organizationId: organization.id,
+      departmentId: department.id,
+      organizationMemberId: companyAdminMember.id,
+      employeeNumber: "FSL-0001",
+      firstName: "Ada",
+      lastName: "Okafor",
+      workEmail: "ada.okafor@fslabs-demo.test",
+      jobTitle: "HR Operations Lead",
+      employmentType: "FULL_TIME",
+      status: "ACTIVE",
+      hireDate: new Date("2026-01-15T00:00:00.000Z"),
+    },
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      organizationId: organization.id,
+      actorUserId: platformAdmin.id,
+      action: "seed.completed",
+      entityType: "Organization",
+      entityId: organization.id,
+      metadata: {
+        departmentId: department.id,
+        employeeId: employee.id,
+        companyAdminUserId: companyAdmin.id,
+      },
+    },
+  });
+
+  console.log("Seed completed:", {
+    organization: organization.slug,
+    platformAdmin: platformAdmin.email,
+    companyAdmin: companyAdmin.email,
+    department: department.code,
+    employee: employee.employeeNumber,
+  });
+}
+
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

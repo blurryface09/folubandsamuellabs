@@ -1,4 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description: "Software development, cybersecurity, IT consulting, and tech outsourcing services from Folub & Samuel Labs, Lagos, Nigeria.",
+  alternates: { canonical: "/services" },
+};
 
 const services = [
   {

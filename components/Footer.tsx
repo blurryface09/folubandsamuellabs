@@ -1,8 +1,26 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  const appPathPrefixes = [
+    "/dashboard",
+    "/employees",
+    "/departments",
+    "/attendance",
+    "/leave",
+    "/documents",
+    "/payroll",
+    "/settings",
+  ];
+
+  if (appPathPrefixes.some((prefix) => pathname.startsWith(prefix))) {
+    return null;
+  }
+
   return (
     <footer style={{ background: "#030303", borderTop: "1px solid rgba(201,168,76,0.1)", position: "relative", overflow: "hidden" }}>
       {/* Giant watermark */}

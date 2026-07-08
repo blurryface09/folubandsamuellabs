@@ -2,16 +2,33 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const appPathPrefixes = [
+    "/dashboard",
+    "/employees",
+    "/departments",
+    "/attendance",
+    "/leave",
+    "/documents",
+    "/payroll",
+    "/settings",
+  ];
+
+  if (appPathPrefixes.some((prefix) => pathname.startsWith(prefix))) {
+    return null;
+  }
 
   const links = [
     { href: "#services", label: "Services" },
