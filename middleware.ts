@@ -11,18 +11,22 @@ const appRoutes = [
   "/documents",
   "/payroll",
   "/settings",
+  "/my-profile",
 ];
 
 const authRoutes = ["/login", "/register"];
-
-const authSecret =
-  process.env.AUTH_SECRET ?? "development-auth-secret-change-before-production";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/") {
     return NextResponse.rewrite(new URL("/prototype.html", request.url));
+  }
+
+  const authSecret = process.env.AUTH_SECRET;
+  if (!authSecret) {
+    console.error("AUTH_SECRET is not set — blocking access to protected routes");
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   const isAppRoute = appRoutes.some((route) => pathname.startsWith(route));
@@ -66,5 +70,6 @@ export const config = {
     "/documents/:path*",
     "/payroll/:path*",
     "/settings/:path*",
+    "/my-profile/:path*",
   ],
 };
