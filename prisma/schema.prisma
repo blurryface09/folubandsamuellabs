@@ -75,21 +75,22 @@ enum PaymentStatus {
 }
 
 model Organization {
-  id             String               @id @default(cuid())
-  name           String
-  slug           String               @unique
-  status         OrganizationStatus   @default(TRIALING)
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
-  members        OrganizationMember[]
-  departments    Department[]
-  employees      Employee[]
-  attendance     Attendance[]
-  leaveRequests  LeaveRequest[]
-  documents      Document[]
-  payrollRecords PayrollRecord[]
-  subscriptions  Subscription[]
-  auditLogs      AuditLog[]
+  id              String               @id @default(cuid())
+  name            String
+  slug            String               @unique
+  status          OrganizationStatus   @default(TRIALING)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  members         OrganizationMember[]
+  departments     Department[]
+  employees       Employee[]
+  attendance      Attendance[]
+  leaveRequests   LeaveRequest[]
+  documents       Document[]
+  payrollRecords  PayrollRecord[]
+  subscriptions   Subscription[]
+  auditLogs       AuditLog[]
+  employeeInvites EmployeeInvite[]
 
   @@index([status])
 }
@@ -112,21 +113,22 @@ model User {
 }
 
 model OrganizationMember {
-  id             String         @id @default(cuid())
+  id             String           @id @default(cuid())
   organizationId String
   userId         String
-  role           UserRole       @default(EMPLOYEE)
+  role           UserRole         @default(EMPLOYEE)
   title          String?
   invitedAt      DateTime?
   joinedAt       DateTime?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   employee       Employee?
-  uploadedDocs   Document[]     @relation("DocumentUploader")
-  reviewedLeave  LeaveRequest[] @relation("LeaveReviewer")
-  auditLogs      AuditLog[]     @relation("AuditActorMember")
+  uploadedDocs   Document[]       @relation("DocumentUploader")
+  reviewedLeave  LeaveRequest[]   @relation("LeaveReviewer")
+  auditLogs      AuditLog[]       @relation("AuditActorMember")
+  sentInvites    EmployeeInvite[] @relation("EmployeeInviteSender")
 
   @@unique([organizationId, userId])
   @@unique([id, organizationId])
@@ -183,6 +185,7 @@ model Employee {
   leaveRequests        LeaveRequest[]
   documents            Document[]
   payrollRecords       PayrollRecord[]
+  invites              EmployeeInvite[]
 
   @@unique([organizationId, employeeNumber])
   @@unique([organizationId, organizationMemberId])
@@ -193,6 +196,29 @@ model Employee {
   @@index([organizationId, status])
   @@index([departmentId])
   @@index([workEmail])
+}
+
+model EmployeeInvite {
+  id                String              @id @default(cuid())
+  organizationId    String
+  employeeId        String
+  invitedByMemberId String?
+  email             String
+  tokenHash         String              @unique
+  expiresAt         DateTime
+  acceptedAt        DateTime?
+  revokedAt         DateTime?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  organization      Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee          Employee            @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
+  invitedByMember   OrganizationMember? @relation("EmployeeInviteSender", fields: [invitedByMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
+
+  @@index([organizationId])
+  @@index([organizationId, employeeId])
+  @@index([organizationId, email])
+  @@index([expiresAt])
+  @@index([acceptedAt])
 }
 
 model Attendance {

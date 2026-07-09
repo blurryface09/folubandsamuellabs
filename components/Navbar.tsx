@@ -24,8 +24,10 @@ export default function Navbar() {
     "/documents",
     "/payroll",
     "/settings",
+    "/my-profile",
     "/login",
     "/register",
+    "/invite",
   ];
 
   if (appPathPrefixes.some((prefix) => pathname.startsWith(prefix))) {

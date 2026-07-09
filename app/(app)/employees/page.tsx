@@ -1,10 +1,12 @@
-import { EmployeeStatus, EmploymentType, Prisma } from "@prisma/client";
+import { EmployeeStatus, EmploymentType, Prisma, UserRole } from "@prisma/client";
 import Link from "next/link";
 
+import { inviteEmployee } from "@/app/(app)/employees/invite-actions";
 import { EmployeeToast } from "@/app/(app)/employees/employee-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentOrganization } from "@/lib/current-organization";
+import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
+import { inviteStatus } from "@/lib/invite-token";
 
 const statusLabels: Record<EmployeeStatus, string> = {
   ACTIVE: "Active",
@@ -46,6 +48,7 @@ function statusClass(status: EmployeeStatus) {
 }
 
 export default async function EmployeesPage({ searchParams }: EmployeesPageProps) {
+  await requireRole(UserRole.HR_MANAGER);
   const params = (await searchParams) ?? {};
   const organization = await getCurrentOrganization();
   const query = paramValue(params, "q")?.trim() ?? "";
@@ -80,6 +83,18 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
     db.employee.findMany({
       where,
       include: {
+        invites: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          select: {
+            acceptedAt: true,
+            revokedAt: true,
+            expiresAt: true,
+          },
+        },
+        organizationMember: {
+          select: { id: true },
+        },
         department: {
           select: {
             id: true,
@@ -232,17 +247,18 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
             </div>
           ) : (
             <div className="overflow-hidden rounded-md border border-slate-200">
-              <div className="grid grid-cols-[1.3fr_1fr_0.8fr_0.8fr_auto] gap-4 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 max-lg:hidden">
+              <div className="grid grid-cols-[1.3fr_1fr_0.8fr_0.8fr_0.8fr_auto] gap-4 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 max-lg:hidden">
                 <span>Name</span>
                 <span>Department</span>
                 <span>Type</span>
                 <span>Status</span>
+                <span>Invite</span>
                 <span className="text-right">Action</span>
               </div>
               <div className="divide-y divide-slate-200">
                 {employees.map((employee) => (
                   <div
-                    className="grid gap-3 px-4 py-4 lg:grid-cols-[1.3fr_1fr_0.8fr_0.8fr_auto] lg:items-center"
+                    className="grid gap-3 px-4 py-4 lg:grid-cols-[1.3fr_1fr_0.8fr_0.8fr_0.8fr_auto] lg:items-center"
                     key={employee.id}
                   >
                     <div className="min-w-0">
@@ -268,12 +284,30 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
                     >
                       {statusLabels[employee.status]}
                     </span>
-                    <Link
-                      className="inline-flex h-9 items-center justify-center rounded-md border border-slate-200 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 lg:justify-self-end"
-                      href={`/employees/${employee.id}`}
-                    >
-                      View
-                    </Link>
+                    <p className="text-sm text-slate-600">
+                      {employee.organizationMember
+                        ? "Active"
+                        : inviteStatus(employee.invites[0])}
+                    </p>
+                    <div className="flex gap-2 lg:justify-self-end">
+                      {!employee.organizationMember ? (
+                        <form action={inviteEmployee}>
+                          <input name="employeeId" type="hidden" value={employee.id} />
+                          <button
+                            className="inline-flex h-9 items-center justify-center rounded-md border border-slate-200 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                            type="submit"
+                          >
+                            Invite
+                          </button>
+                        </form>
+                      ) : null}
+                      <Link
+                        className="inline-flex h-9 items-center justify-center rounded-md border border-slate-200 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                        href={`/employees/${employee.id}`}
+                      >
+                        View
+                      </Link>
+                    </div>
                   </div>
                 ))}
               </div>

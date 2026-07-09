@@ -2,11 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { deactivateEmployee } from "@/app/(app)/employees/actions";
+import { inviteEmployee } from "@/app/(app)/employees/invite-actions";
 import { EmployeeToast } from "@/app/(app)/employees/employee-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentOrganization } from "@/lib/current-organization";
+import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
+import { inviteStatus } from "@/lib/invite-token";
+import { UserRole } from "@prisma/client";
 
 type EmployeeDetailsPageProps = {
   params: Promise<{ id: string }>;
@@ -43,6 +46,7 @@ export default async function EmployeeDetailsPage({
     params,
     searchParams ?? Promise.resolve({}),
   ]);
+  await requireRole(UserRole.HR_MANAGER);
   const organization = await getCurrentOrganization();
   const employee = await db.employee.findFirst({
     where: {
@@ -66,6 +70,19 @@ export default async function EmployeeDetailsPage({
           },
         },
       },
+      invites: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        include: {
+          invitedByMember: {
+            include: {
+              user: {
+                select: { email: true, name: true },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
@@ -76,6 +93,14 @@ export default async function EmployeeDetailsPage({
   return (
     <section className="space-y-6">
       <EmployeeToast message={paramValue(queryParams, "toast")} />
+      {paramValue(queryParams, "invite") ? (
+        <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          <p className="font-medium">Invite link created</p>
+          <p className="mt-2 break-all font-mono text-xs">
+            {paramValue(queryParams, "invite")}
+          </p>
+        </div>
+      ) : null}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -154,6 +179,29 @@ export default async function EmployeeDetailsPage({
                 {employee.organizationMember?.user.email ?? "Not linked"}
               </p>
             </div>
+            <div className="rounded-md border border-slate-200 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Invite status
+              </p>
+              <p className="mt-2 text-sm font-medium text-slate-950">
+                {employee.organizationMember
+                  ? "Account active"
+                  : inviteStatus(employee.invites[0])}
+              </p>
+              {employee.invites[0] ? (
+                <p className="mt-1 text-xs text-slate-500">
+                  Expires {formatDate(employee.invites[0].expiresAt)}
+                </p>
+              ) : null}
+            </div>
+            {!employee.organizationMember ? (
+              <form action={inviteEmployee}>
+                <input name="employeeId" type="hidden" value={employee.id} />
+                <Button className="w-full" type="submit">
+                  {employee.invites[0] ? "Resend invite" : "Invite employee"}
+                </Button>
+              </form>
+            ) : null}
             <form action={deactivateEmployee}>
               <input name="id" type="hidden" value={employee.id} />
               <Button

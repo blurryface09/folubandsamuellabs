@@ -1,8 +1,18 @@
 import { PrismaClient } from "@prisma/client";
+import { randomBytes, scryptSync } from "crypto";
 
 const prisma = new PrismaClient();
 
+function hashPassword(password) {
+  const salt = randomBytes(16).toString("hex");
+  const hash = scryptSync(password, salt, 64).toString("hex");
+
+  return `scrypt:${salt}:${hash}`;
+}
+
 async function main() {
+  const demoPasswordHash = hashPassword("Password123!");
+
   const organization = await prisma.organization.upsert({
     where: { slug: "fslabs-demo" },
     update: {
@@ -21,11 +31,15 @@ async function main() {
     update: {
       name: "Platform Admin",
       isPlatformAdmin: true,
+      passwordHash: demoPasswordHash,
+      emailVerified: new Date(),
     },
     create: {
       email: "platform.admin@folubandsamuellabs.com",
       name: "Platform Admin",
       isPlatformAdmin: true,
+      passwordHash: demoPasswordHash,
+      emailVerified: new Date(),
     },
   });
 
@@ -33,10 +47,14 @@ async function main() {
     where: { email: "company.admin@fslabs-demo.test" },
     update: {
       name: "Company Admin",
+      passwordHash: demoPasswordHash,
+      emailVerified: new Date(),
     },
     create: {
       email: "company.admin@fslabs-demo.test",
       name: "Company Admin",
+      passwordHash: demoPasswordHash,
+      emailVerified: new Date(),
     },
   });
 
@@ -112,6 +130,36 @@ async function main() {
     },
   });
 
+  const inviteReadyEmployee = await prisma.employee.upsert({
+    where: {
+      organizationId_employeeNumber: {
+        organizationId: organization.id,
+        employeeNumber: "FSL-0002",
+      },
+    },
+    update: {
+      departmentId: department.id,
+      firstName: "Samuel",
+      lastName: "Bello",
+      workEmail: "samuel.bello@fslabs-demo.test",
+      jobTitle: "Operations Associate",
+      employmentType: "FULL_TIME",
+      status: "ACTIVE",
+    },
+    create: {
+      organizationId: organization.id,
+      departmentId: department.id,
+      employeeNumber: "FSL-0002",
+      firstName: "Samuel",
+      lastName: "Bello",
+      workEmail: "samuel.bello@fslabs-demo.test",
+      jobTitle: "Operations Associate",
+      employmentType: "FULL_TIME",
+      status: "ACTIVE",
+      hireDate: new Date("2026-02-01T00:00:00.000Z"),
+    },
+  });
+
   await prisma.auditLog.create({
     data: {
       organizationId: organization.id,
@@ -122,6 +170,7 @@ async function main() {
       metadata: {
         departmentId: department.id,
         employeeId: employee.id,
+        inviteReadyEmployeeId: inviteReadyEmployee.id,
         companyAdminUserId: companyAdmin.id,
       },
     },
@@ -133,6 +182,7 @@ async function main() {
     companyAdmin: companyAdmin.email,
     department: department.code,
     employee: employee.employeeNumber,
+    inviteReadyEmployee: inviteReadyEmployee.employeeNumber,
   });
 }
 

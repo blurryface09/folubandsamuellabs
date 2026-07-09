@@ -16,6 +16,11 @@ export const appRoutes: AppRoute[] = [
     description: "Employee records, lifecycle status, and assignments.",
   },
   {
+    href: "/my-profile",
+    label: "My Profile",
+    description: "Personal employee portal for the signed-in staff member.",
+  },
+  {
     href: "/departments",
     label: "Departments",
     description: "Teams, reporting lines, and department ownership.",

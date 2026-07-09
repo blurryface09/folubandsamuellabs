@@ -15,8 +15,10 @@ export default function Footer() {
     "/documents",
     "/payroll",
     "/settings",
+    "/my-profile",
     "/login",
     "/register",
+    "/invite",
   ];
 
   if (appPathPrefixes.some((prefix) => pathname.startsWith(prefix))) {
