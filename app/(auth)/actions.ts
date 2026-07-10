@@ -5,8 +5,9 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { signIn, signOut } from "@/lib/auth";
+import { createAndSendVerificationEmail } from "@/lib/account-email";
 import { db } from "@/lib/db";
-import { hashPassword } from "@/lib/password";
+import { hashPassword, validatePasswordStrength } from "@/lib/password";
 
 type AuthFormState = {
   ok: boolean;
@@ -28,11 +29,7 @@ function slugify(value: string) {
 }
 
 function validatePassword(password: string | null) {
-  if (!password || password.length < 8) {
-    return "Use at least 8 characters.";
-  }
-
-  return null;
+  return validatePasswordStrength(password);
 }
 
 export async function loginAction(
@@ -119,6 +116,10 @@ export async function registerCompanyAction(
   const slug = baseSlug || `company-${Date.now()}`;
 
   try {
+    let createdUser:
+      | { id: string; email: string; name: string | null }
+      | undefined;
+
     await db.$transaction(async (tx) => {
       const organization = await tx.organization.create({
         data: {
@@ -135,6 +136,7 @@ export async function registerCompanyAction(
           passwordHash: hashPassword(password!),
         },
       });
+      createdUser = { id: user.id, email: user.email, name: user.name };
 
       await tx.organizationMember.create({
         data: {
@@ -156,6 +158,14 @@ export async function registerCompanyAction(
         },
       });
     });
+
+    if (createdUser) {
+      await createAndSendVerificationEmail({
+        userId: createdUser.id,
+        email: createdUser.email,
+        name: createdUser.name,
+      });
+    }
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {

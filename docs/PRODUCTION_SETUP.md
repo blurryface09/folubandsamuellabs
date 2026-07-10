@@ -1,6 +1,6 @@
 # Production Setup
 
-This app uses PostgreSQL for HR metadata, private S3 storage for staff documents, and SES or Resend for employee invitation email.
+This app uses PostgreSQL for HR metadata, private S3 storage for staff documents, and SES or Resend for employee invitation, password reset, and email verification email.
 
 ## Required Environment Variables
 
@@ -24,6 +24,8 @@ RESEND_API_KEY="re_..."
 ```
 
 `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` must stay server-side only. Do not prefix them with `NEXT_PUBLIC_`.
+
+`AUTH_SECRET` is required in production build and runtime. Generate it with a cryptographically secure random value and keep it stable between deployments.
 
 ## Private S3 Bucket
 
@@ -75,6 +77,14 @@ The app sends employee invitation emails through Amazon SES when `AWS_SES_REGION
 
 Invitation emails include the company name, employee name, expiry time, and secure invite link. Raw invite tokens are not written to logs.
 
+## Password Reset And Email Verification
+
+Password reset links and email verification links use single-use hashed tokens stored in PostgreSQL. Raw tokens are only used to build outbound email links and are never logged.
+
+Reset links expire after 1 hour. Verification links expire after 24 hours.
+
+Users may sign in before verification, but sensitive HR actions such as staff, document, and organization management require a verified email address.
+
 ## Security Notes
 
 - All document reads, uploads, and deletes are scoped by `organizationId`.
@@ -84,3 +94,4 @@ Invitation emails include the company name, employee name, expiry time, and secu
 - File names are sanitized and object keys are generated server-side.
 - Uploads validate MIME type, file extension, and a 10 MB size limit.
 - Document upload, download, deletion, invite sent, and invite resent events are audited in `AuditLog`.
+- Password reset requested/completed, email verified, login success/failure, and account activation are audited where an organization context exists.

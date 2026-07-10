@@ -11,6 +11,20 @@ type InviteEmailInput = {
   expiresAt: Date;
 };
 
+type PasswordResetEmailInput = {
+  to: string;
+  name: string;
+  resetLink: string;
+  expiresAt: Date;
+};
+
+type VerificationEmailInput = {
+  to: string;
+  name: string;
+  verificationLink: string;
+  expiresAt: Date;
+};
+
 type EmailResult =
   | { ok: true; provider: "ses" | "resend"; messageId?: string }
   | { ok: false; provider: "ses" | "resend" | "none"; error: string };
@@ -48,7 +62,17 @@ function htmlInvite(input: InviteEmailInput) {
   `;
 }
 
-export async function sendInviteEmail(input: InviteEmailInput): Promise<EmailResult> {
+async function sendEmail({
+  to,
+  subject,
+  text,
+  html,
+}: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+}): Promise<EmailResult> {
   const from = emailFrom();
 
   if (!from) {
@@ -67,20 +91,14 @@ export async function sendInviteEmail(input: InviteEmailInput): Promise<EmailRes
         new SendEmailCommand({
           FromEmailAddress: from,
           Destination: {
-            ToAddresses: [input.to],
+            ToAddresses: [to],
           },
           Content: {
             Simple: {
-              Subject: {
-                Data: `You're invited to ${input.companyName}`,
-              },
+              Subject: { Data: subject },
               Body: {
-                Text: {
-                  Data: textInvite(input),
-                },
-                Html: {
-                  Data: htmlInvite(input),
-                },
+                Text: { Data: text },
+                Html: { Data: html },
               },
             },
           },
@@ -103,17 +121,17 @@ export async function sendInviteEmail(input: InviteEmailInput): Promise<EmailRes
     return {
       ok: false,
       provider: "none",
-      error: "Configure AWS_SES_REGION or RESEND_API_KEY for invite emails.",
+      error: "Configure AWS_SES_REGION or RESEND_API_KEY for email delivery.",
     };
   }
 
   try {
     const response = await new Resend(resendKey).emails.send({
       from,
-      to: input.to,
-      subject: `You're invited to ${input.companyName}`,
-      text: textInvite(input),
-      html: htmlInvite(input),
+      to,
+      subject,
+      text,
+      html,
     });
 
     if (response.error) {
@@ -132,4 +150,61 @@ export async function sendInviteEmail(input: InviteEmailInput): Promise<EmailRes
       error: error instanceof Error ? error.message : "Resend delivery failed.",
     };
   }
+}
+
+export async function sendInviteEmail(input: InviteEmailInput): Promise<EmailResult> {
+  return sendEmail({
+    to: input.to,
+    subject: `You're invited to ${input.companyName}`,
+    text: textInvite(input),
+    html: htmlInvite(input),
+  });
+}
+
+export async function sendPasswordResetEmail(
+  input: PasswordResetEmailInput,
+): Promise<EmailResult> {
+  return sendEmail({
+    to: input.to,
+    subject: "Reset your Folub & Samuel Labs HR password",
+    text: [
+      `Hi ${input.name},`,
+      "",
+      `Reset your password: ${input.resetLink}`,
+      "",
+      `This link expires ${input.expiresAt.toUTCString()}.`,
+    ].join("\n"),
+    html: `
+      <div style="font-family:Arial,sans-serif;color:#0f172a;line-height:1.6">
+        <h1 style="font-size:20px;margin:0 0 12px">Reset your password</h1>
+        <p>Hi ${input.name}, use the button below to reset your password.</p>
+        <p><a href="${input.resetLink}" style="display:inline-block;background:#020617;color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none">Reset password</a></p>
+        <p style="color:#475569;font-size:14px">This link expires ${input.expiresAt.toUTCString()}.</p>
+      </div>
+    `,
+  });
+}
+
+export async function sendVerificationEmail(
+  input: VerificationEmailInput,
+): Promise<EmailResult> {
+  return sendEmail({
+    to: input.to,
+    subject: "Verify your Folub & Samuel Labs HR email",
+    text: [
+      `Hi ${input.name},`,
+      "",
+      `Verify your email: ${input.verificationLink}`,
+      "",
+      `This link expires ${input.expiresAt.toUTCString()}.`,
+    ].join("\n"),
+    html: `
+      <div style="font-family:Arial,sans-serif;color:#0f172a;line-height:1.6">
+        <h1 style="font-size:20px;margin:0 0 12px">Verify your email</h1>
+        <p>Hi ${input.name}, verify your email to unlock sensitive HR actions.</p>
+        <p><a href="${input.verificationLink}" style="display:inline-block;background:#020617;color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none">Verify email</a></p>
+        <p style="color:#475569;font-size:14px">This link expires ${input.expiresAt.toUTCString()}.</p>
+      </div>
+    `,
+  });
 }

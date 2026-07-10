@@ -37,6 +37,7 @@ export async function getCurrentMembership() {
           id: true,
           email: true,
           name: true,
+          emailVerified: true,
           isPlatformAdmin: true,
         },
       },
@@ -62,8 +63,22 @@ export async function getCurrentOrganization() {
 export async function requireRole(minimumRole: UserRole) {
   const membership = await getCurrentMembership();
 
+  if (!membership.user.emailVerified) {
+    redirect("/dashboard?error=EmailVerificationRequired");
+  }
+
   if (!hasMinimumRole(membership.role, minimumRole)) {
     redirect("/dashboard?error=AccessDenied");
+  }
+
+  return membership;
+}
+
+export async function requireVerifiedUser() {
+  const membership = await getCurrentMembership();
+
+  if (!membership.user.emailVerified) {
+    redirect("/dashboard?error=EmailVerificationRequired");
   }
 
   return membership;

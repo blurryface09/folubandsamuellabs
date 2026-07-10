@@ -11,6 +11,15 @@ function hashPassword(password) {
 }
 
 async function main() {
+  if (
+    process.env.NODE_ENV === "production" &&
+    process.env.ALLOW_PRODUCTION_SEED !== "true"
+  ) {
+    throw new Error(
+      "Refusing to seed production. Set ALLOW_PRODUCTION_SEED=true only for an intentional controlled seed.",
+    );
+  }
+
   const demoPasswordHash = hashPassword("Password123!");
 
   const organization = await prisma.organization.upsert({

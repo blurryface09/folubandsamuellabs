@@ -1,6 +1,11 @@
-import { UserRole } from "@prisma/client";
+export type UserRoleName =
+  | "OWNER"
+  | "ADMIN"
+  | "HR_MANAGER"
+  | "MANAGER"
+  | "EMPLOYEE";
 
-export const appRoleLabels: Record<UserRole, string> = {
+export const appRoleLabels: Record<UserRoleName, string> = {
   OWNER: "company_admin",
   ADMIN: "company_admin",
   HR_MANAGER: "hr_officer",
@@ -14,7 +19,7 @@ export type AppRole =
   | "team_lead"
   | "employee";
 
-const roleRank: Record<UserRole, number> = {
+const roleRank: Record<UserRoleName, number> = {
   OWNER: 4,
   ADMIN: 4,
   HR_MANAGER: 3,
@@ -22,10 +27,10 @@ const roleRank: Record<UserRole, number> = {
   EMPLOYEE: 1,
 };
 
-export function hasMinimumRole(role: UserRole, minimumRole: UserRole) {
+export function hasMinimumRole(role: UserRoleName, minimumRole: UserRoleName) {
   return roleRank[role] >= roleRank[minimumRole];
 }
 
-export function canManageWorkspace(role: UserRole) {
-  return hasMinimumRole(role, UserRole.HR_MANAGER);
+export function canManageWorkspace(role: UserRoleName) {
+  return hasMinimumRole(role, "HR_MANAGER");
 }

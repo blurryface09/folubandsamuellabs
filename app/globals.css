@@ -12,6 +12,8 @@
   --text: #F5F0E8;
   --muted: rgba(245,240,232,0.4);
   --mono: rgba(245,240,232,0.28);
+  --font-exo2: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-roboto-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
   /* exchange page legacy */
   --background: #050505;

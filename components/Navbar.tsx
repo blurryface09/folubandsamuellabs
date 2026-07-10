@@ -27,6 +27,9 @@ export default function Navbar() {
     "/my-profile",
     "/login",
     "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/verify-email",
     "/invite",
   ];
 

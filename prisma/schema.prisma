@@ -117,20 +117,65 @@ model Organization {
 }
 
 model User {
-  id              String               @id @default(cuid())
-  email           String               @unique
-  passwordHash    String?
-  name            String?
-  image           String?
-  emailVerified   DateTime?
-  isPlatformAdmin Boolean              @default(false)
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
-  memberships     OrganizationMember[]
-  auditLogs       AuditLog[]
+  id                      String                   @id @default(cuid())
+  email                   String                   @unique
+  passwordHash            String?
+  name                    String?
+  image                   String?
+  emailVerified           DateTime?
+  isPlatformAdmin         Boolean                  @default(false)
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  memberships             OrganizationMember[]
+  auditLogs               AuditLog[]
+  passwordResetTokens     PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
 
   @@index([email])
   @@index([isPlatformAdmin])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([usedAt])
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([usedAt])
+}
+
+model LoginThrottle {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  failedCount   Int       @default(0)
+  lockedUntil   DateTime?
+  lastFailedAt  DateTime?
+  lastSuccessAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([lockedUntil])
 }
 
 model OrganizationMember {
@@ -220,12 +265,12 @@ model Employee {
 }
 
 model EmployeeInvite {
-  id                String              @id @default(cuid())
+  id                String               @id @default(cuid())
   organizationId    String
   employeeId        String
   invitedByMemberId String?
   email             String
-  tokenHash         String              @unique
+  tokenHash         String               @unique
   expiresAt         DateTime
   deliveryStatus    InviteDeliveryStatus @default(PENDING)
   deliveryProvider  String?
@@ -233,11 +278,11 @@ model EmployeeInvite {
   sentAt            DateTime?
   acceptedAt        DateTime?
   revokedAt         DateTime?
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  organization      Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  employee          Employee            @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
-  invitedByMember   OrganizationMember? @relation("EmployeeInviteSender", fields: [invitedByMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  organization      Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee          Employee             @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
+  invitedByMember   OrganizationMember?  @relation("EmployeeInviteSender", fields: [invitedByMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
 
   @@index([organizationId])
   @@index([organizationId, employeeId])
@@ -295,22 +340,22 @@ model LeaveRequest {
 }
 
 model Document {
-  id                 String              @id @default(cuid())
+  id                 String                  @id @default(cuid())
   organizationId     String
   employeeId         String?
   uploadedByMemberId String?
   name               String
-  category           DocumentType        @default(OTHER)
+  category           DocumentType            @default(OTHER)
   storageProvider    DocumentStorageProvider @default(LOCAL)
   storageKey         String
   bucket             String?
   contentType        String?
   sizeBytes          Int?
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  employee           Employee?           @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
-  uploadedByMember   OrganizationMember? @relation("DocumentUploader", fields: [uploadedByMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+  organization       Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  employee           Employee?               @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Cascade)
+  uploadedByMember   OrganizationMember?     @relation("DocumentUploader", fields: [uploadedByMemberId, organizationId], references: [id, organizationId], onDelete: NoAction)
 
   @@unique([organizationId, storageKey])
   @@index([organizationId])

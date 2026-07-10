@@ -25,3 +25,27 @@ export function verifyPassword(password: string, storedHash?: string | null) {
 
   return actual.length === expected.length && timingSafeEqual(actual, expected);
 }
+
+export function validatePasswordStrength(password?: string | null) {
+  if (!password || password.length < 10) {
+    return "Use at least 10 characters.";
+  }
+
+  if (!/[a-z]/.test(password)) {
+    return "Add at least one lowercase letter.";
+  }
+
+  if (!/[A-Z]/.test(password)) {
+    return "Add at least one uppercase letter.";
+  }
+
+  if (!/[0-9]/.test(password)) {
+    return "Add at least one number.";
+  }
+
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    return "Add at least one symbol.";
+  }
+
+  return null;
+}

@@ -1,19 +1,7 @@
 import type { Metadata } from "next";
-import { Exo_2, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-const exo2 = Exo_2({
-  variable: "--font-exo2",
-  subsets: ["latin"],
-  weight: ["300","400","500","600","700","800","900"],
-});
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
-  weight: ["300","400","500","700"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://folubandsamuellabs.com"),
@@ -58,7 +46,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${exo2.variable} ${robotoMono.variable}`}>
+    <html lang="en">
       <head>
         <script
           type="application/ld+json"

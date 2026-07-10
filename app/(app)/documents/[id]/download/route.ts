@@ -1,13 +1,12 @@
 import { readFile } from "fs/promises";
 
-import { UserRole } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 import { auth } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { db } from "@/lib/db";
+import { canAccessEmployeeDocument } from "@/lib/document-authorization";
 import { createDocumentDownloadUrl, storagePathForKey } from "@/lib/document-storage";
-import { hasMinimumRole } from "@/lib/roles";
 
 type DownloadRouteProps = {
   params: Promise<{ id: string }>;
@@ -43,14 +42,15 @@ export async function GET(_request: Request, { params }: DownloadRouteProps) {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  const canManageDocuments = hasMinimumRole(
-    session.user.role,
-    UserRole.HR_MANAGER,
-  );
-  const ownsDocument =
-    document.employee?.organizationMemberId === session.user.memberId;
-
-  if (!canManageDocuments && !ownsDocument) {
+  if (
+    !canAccessEmployeeDocument({
+      role: session.user.role,
+      sessionOrganizationId: session.user.organizationId,
+      documentOrganizationId: document.organizationId,
+      sessionMemberId: session.user.memberId,
+      employeeOrganizationMemberId: document.employee?.organizationMemberId,
+    })
+  ) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 

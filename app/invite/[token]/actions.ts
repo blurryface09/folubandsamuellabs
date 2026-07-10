@@ -4,9 +4,11 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { signIn } from "@/lib/auth";
+import { createAndSendVerificationEmail } from "@/lib/account-email";
 import { db } from "@/lib/db";
 import { hashInviteToken } from "@/lib/invite-token";
-import { hashPassword } from "@/lib/password";
+import { hashPassword, validatePasswordStrength } from "@/lib/password";
+import { isSingleUseTokenUsable } from "@/lib/token-policy";
 
 type AcceptInviteState = {
   ok: boolean;
@@ -31,8 +33,10 @@ export async function acceptInviteAction(
     return { ok: false, message: "Invite token is missing." };
   }
 
-  if (!password || password.length < 8) {
-    fieldErrors.password = "Use at least 8 characters.";
+  const passwordError = validatePasswordStrength(password);
+
+  if (passwordError) {
+    fieldErrors.password = passwordError;
   }
 
   if (Object.keys(fieldErrors).length > 0) {
@@ -54,9 +58,11 @@ export async function acceptInviteAction(
 
   if (
     !invite ||
-    invite.revokedAt ||
-    invite.acceptedAt ||
-    invite.expiresAt < new Date() ||
+    !isSingleUseTokenUsable({
+      expiresAt: invite.expiresAt,
+      usedAt: invite.acceptedAt,
+      revokedAt: invite.revokedAt,
+    }) ||
     invite.organization.status !== "ACTIVE"
   ) {
     return {
@@ -66,6 +72,9 @@ export async function acceptInviteAction(
   }
 
   const email = invite.email.toLowerCase();
+  let activatedUser:
+    | { id: string; email: string; name: string | null }
+    | undefined;
 
   await db.$transaction(async (tx) => {
     const user = await tx.user.upsert({
@@ -73,15 +82,14 @@ export async function acceptInviteAction(
       update: {
         name: `${invite.employee.firstName} ${invite.employee.lastName}`,
         passwordHash: hashPassword(password!),
-        emailVerified: new Date(),
       },
       create: {
         email,
         name: `${invite.employee.firstName} ${invite.employee.lastName}`,
         passwordHash: hashPassword(password!),
-        emailVerified: new Date(),
       },
     });
+    activatedUser = { id: user.id, email: user.email, name: user.name };
 
     const member = await tx.organizationMember.upsert({
       where: {
@@ -123,7 +131,27 @@ export async function acceptInviteAction(
         acceptedAt: new Date(),
       },
     });
+
+    await tx.auditLog.create({
+      data: {
+        organizationId: invite.organizationId,
+        actorUserId: user.id,
+        actorMemberId: member.id,
+        action: "invite.accepted",
+        entityType: "EmployeeInvite",
+        entityId: invite.id,
+        metadata: { employeeId: invite.employeeId },
+      },
+    });
   });
+
+  if (activatedUser) {
+    await createAndSendVerificationEmail({
+      userId: activatedUser.id,
+      email: activatedUser.email,
+      name: activatedUser.name,
+    });
+  }
 
   try {
     await signIn("credentials", {

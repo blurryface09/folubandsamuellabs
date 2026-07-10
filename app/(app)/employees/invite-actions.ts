@@ -5,12 +5,11 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getCurrentMembership } from "@/lib/current-organization";
+import { requireRole } from "@/lib/current-organization";
 import { writeAuditLog } from "@/lib/audit";
 import { db } from "@/lib/db";
 import { sendInviteEmail } from "@/lib/email";
 import { createInviteToken, hashInviteToken, inviteExpiryDate } from "@/lib/invite-token";
-import { hasMinimumRole } from "@/lib/roles";
 
 function cleanString(value: FormDataEntryValue | null) {
   const nextValue = typeof value === "string" ? value.trim() : "";
@@ -30,11 +29,7 @@ async function appOrigin() {
 }
 
 export async function inviteEmployee(formData: FormData) {
-  const membership = await getCurrentMembership();
-
-  if (!hasMinimumRole(membership.role, UserRole.HR_MANAGER)) {
-    redirect("/dashboard?error=AccessDenied");
-  }
+  const membership = await requireRole(UserRole.HR_MANAGER);
 
   const employeeId = cleanString(formData.get("employeeId"));
 

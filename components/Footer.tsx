@@ -18,6 +18,9 @@ export default function Footer() {
     "/my-profile",
     "/login",
     "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/verify-email",
     "/invite",
   ];
 

@@ -6,11 +6,10 @@ import { DocumentType, UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getCurrentMembership, requireRole } from "@/lib/current-organization";
+import { requireRole } from "@/lib/current-organization";
 import { writeAuditLog } from "@/lib/audit";
 import { db } from "@/lib/db";
 import { deleteStoredDocument, saveDocumentFile } from "@/lib/document-storage";
-import { hasMinimumRole } from "@/lib/roles";
 
 const documentTypes = new Set(Object.values(DocumentType));
 
@@ -110,11 +109,7 @@ export async function uploadEmployeeDocument(formData: FormData) {
 }
 
 export async function deleteEmployeeDocument(formData: FormData) {
-  const membership = await getCurrentMembership();
-
-  if (!hasMinimumRole(membership.role, UserRole.HR_MANAGER)) {
-    redirect("/dashboard?error=AccessDenied");
-  }
+  const membership = await requireRole(UserRole.HR_MANAGER);
 
   const documentId = cleanString(formData.get("documentId"));
   const employeeId = cleanString(formData.get("employeeId"));

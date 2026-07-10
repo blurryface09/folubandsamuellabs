@@ -5,6 +5,15 @@ import { UserRole } from "@prisma/client";
 import { db } from "@/lib/db";
 import { appRoleLabels } from "@/lib/roles";
 import { verifyPassword } from "@/lib/password";
+import { isLoginLocked, recordLoginFailure, recordLoginSuccess } from "@/lib/auth-security";
+
+function authSecret() {
+  if (!process.env.AUTH_SECRET && process.env.NODE_ENV === "production") {
+    throw new Error("AUTH_SECRET is required in production.");
+  }
+
+  return process.env.AUTH_SECRET;
+}
 
 declare module "next-auth" {
   interface Session {
@@ -45,10 +54,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60 * 8,
+    updateAge: 60 * 15,
   },
-  secret:
-    process.env.AUTH_SECRET ?? "development-auth-secret-change-before-production",
+  secret: authSecret(),
   trustHost: true,
+  useSecureCookies: process.env.NODE_ENV === "production",
   providers: [
     Credentials({
       credentials: {
@@ -69,6 +80,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
+        if (await isLoginLocked(email)) {
+          return null;
+        }
+
         const user = await db.user.findUnique({
           where: { email },
           include: {
@@ -82,14 +97,43 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         });
 
         if (!user || !verifyPassword(password, user.passwordHash)) {
+          await recordLoginFailure(email);
+          const membership = user?.memberships[0];
+
+          if (membership) {
+            await db.auditLog.create({
+              data: {
+                organizationId: membership.organizationId,
+                actorUserId: user.id,
+                actorMemberId: membership.id,
+                action: "auth.login_failed",
+                entityType: "User",
+                entityId: user.id,
+              },
+            });
+          }
+
           return null;
         }
 
         const membership = user.memberships[0];
 
         if (!membership || membership.organization.status !== "ACTIVE") {
+          await recordLoginFailure(email);
           return null;
         }
+
+        await recordLoginSuccess(email);
+        await db.auditLog.create({
+          data: {
+            organizationId: membership.organizationId,
+            actorUserId: user.id,
+            actorMemberId: membership.id,
+            action: "auth.login_success",
+            entityType: "User",
+            entityId: user.id,
+          },
+        });
 
         return {
           id: user.id,
