@@ -74,6 +74,16 @@ enum PaymentStatus {
   CANCELLED
 }
 
+enum DocumentType {
+  CV
+  CONTRACT
+  OFFER_LETTER
+  ID_CARD
+  CERTIFICATE
+  PAYSLIP
+  OTHER
+}
+
 model Organization {
   id              String               @id @default(cuid())
   name            String
@@ -274,7 +284,7 @@ model Document {
   employeeId         String?
   uploadedByMemberId String?
   name               String
-  category           String
+  category           DocumentType        @default(OTHER)
   storageKey         String
   contentType        String?
   sizeBytes          Int?

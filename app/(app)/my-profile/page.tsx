@@ -1,3 +1,4 @@
+import { EmployeeDocumentList } from "@/app/(app)/employees/document-list";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCurrentMembership } from "@/lib/current-organization";
 import { db } from "@/lib/db";
@@ -26,6 +27,21 @@ export default async function MyProfilePage() {
         select: {
           name: true,
           code: true,
+        },
+      },
+      documents: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          uploadedByMember: {
+            include: {
+              user: {
+                select: {
+                  email: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -60,39 +76,53 @@ export default async function MyProfilePage() {
           </CardContent>
         </Card>
       ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              {employee.firstName} {employee.lastName}
-            </CardTitle>
-            <CardDescription>{employee.employeeNumber}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <dl className="grid gap-4 sm:grid-cols-2">
-              {[
-                ["Work email", display(employee.workEmail)],
-                ["Phone", display(employee.phone)],
-                ["Job title", display(employee.jobTitle)],
-                [
-                  "Department",
-                  employee.department
-                    ? `${employee.department.name}${employee.department.code ? ` (${employee.department.code})` : ""}`
-                    : "No department",
-                ],
-                ["Employment type", employee.employmentType.replaceAll("_", " ")],
-                ["Status", employee.status.replaceAll("_", " ")],
-                ["Hire date", formatDate(employee.hireDate)],
-              ].map(([label, value]) => (
-                <div className="rounded-md border border-slate-200 p-4" key={label}>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    {label}
-                  </dt>
-                  <dd className="mt-2 text-sm font-medium text-slate-950">{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </CardContent>
-        </Card>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                {employee.firstName} {employee.lastName}
+              </CardTitle>
+              <CardDescription>{employee.employeeNumber}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid gap-4 sm:grid-cols-2">
+                {[
+                  ["Work email", display(employee.workEmail)],
+                  ["Phone", display(employee.phone)],
+                  ["Job title", display(employee.jobTitle)],
+                  [
+                    "Department",
+                    employee.department
+                      ? `${employee.department.name}${employee.department.code ? ` (${employee.department.code})` : ""}`
+                      : "No department",
+                  ],
+                  ["Employment type", employee.employmentType.replaceAll("_", " ")],
+                  ["Status", employee.status.replaceAll("_", " ")],
+                  ["Hire date", formatDate(employee.hireDate)],
+                ].map(([label, value]) => (
+                  <div className="rounded-md border border-slate-200 p-4" key={label}>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                      {label}
+                    </dt>
+                    <dd className="mt-2 text-sm font-medium text-slate-950">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>My documents</CardTitle>
+              <CardDescription>
+                Files shared with your employee profile.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <EmployeeDocumentList documents={employee.documents} />
+            </CardContent>
+          </Card>
+        </div>
       )}
     </section>
   );

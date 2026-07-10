@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { deactivateEmployee } from "@/app/(app)/employees/actions";
+import { EmployeeDocumentList } from "@/app/(app)/employees/document-list";
+import { EmployeeDocumentUploadForm } from "@/app/(app)/employees/document-upload-form";
 import { inviteEmployee } from "@/app/(app)/employees/invite-actions";
 import { EmployeeToast } from "@/app/(app)/employees/employee-toast";
 import { Button } from "@/components/ui/button";
@@ -83,6 +85,21 @@ export default async function EmployeeDetailsPage({
           },
         },
       },
+      documents: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          uploadedByMember: {
+            include: {
+              user: {
+                select: {
+                  email: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
@@ -92,7 +109,10 @@ export default async function EmployeeDetailsPage({
 
   return (
     <section className="space-y-6">
-      <EmployeeToast message={paramValue(queryParams, "toast")} />
+      <EmployeeToast
+        message={paramValue(queryParams, "toast")}
+        type={paramValue(queryParams, "toastType")}
+      />
       {paramValue(queryParams, "invite") ? (
         <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
           <p className="font-medium">Invite link created</p>
@@ -218,6 +238,19 @@ export default async function EmployeeDetailsPage({
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Documents</CardTitle>
+          <CardDescription>
+            Upload and manage onboarding files for this employee.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <EmployeeDocumentUploadForm employeeId={employee.id} />
+          <EmployeeDocumentList documents={employee.documents} canDelete />
+        </CardContent>
+      </Card>
     </section>
   );
 }
