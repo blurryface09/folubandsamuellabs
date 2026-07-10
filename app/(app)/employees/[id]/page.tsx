@@ -209,9 +209,20 @@ export default async function EmployeeDetailsPage({
                   : inviteStatus(employee.invites[0])}
               </p>
               {employee.invites[0] ? (
-                <p className="mt-1 text-xs text-slate-500">
-                  Expires {formatDate(employee.invites[0].expiresAt)}
-                </p>
+                <div className="mt-2 space-y-1 text-xs text-slate-500">
+                  <p>Expires {formatDate(employee.invites[0].expiresAt)}</p>
+                  <p>
+                    Delivery {employee.invites[0].deliveryStatus.toLowerCase()}
+                    {employee.invites[0].sentAt
+                      ? ` on ${formatDate(employee.invites[0].sentAt)}`
+                      : ""}
+                  </p>
+                  {employee.invites[0].deliveryError ? (
+                    <p className="text-red-600">
+                      {employee.invites[0].deliveryError}
+                    </p>
+                  ) : null}
+                </div>
               ) : null}
             </div>
             {!employee.organizationMember ? (

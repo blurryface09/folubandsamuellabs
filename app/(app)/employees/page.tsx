@@ -56,6 +56,7 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
   const status = paramValue(params, "status") ?? "";
   const employmentType = paramValue(params, "employmentType") ?? "";
   const toast = paramValue(params, "toast");
+  const toastType = paramValue(params, "toastType");
 
   const where: Prisma.EmployeeWhereInput = {
     organizationId: organization.id,
@@ -90,6 +91,7 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
             acceptedAt: true,
             revokedAt: true,
             expiresAt: true,
+            deliveryStatus: true,
           },
         },
         organizationMember: {
@@ -123,7 +125,7 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
 
   return (
     <section className="space-y-6">
-      <EmployeeToast message={toast} />
+      <EmployeeToast message={toast} type={toastType} />
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -287,7 +289,9 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
                     <p className="text-sm text-slate-600">
                       {employee.organizationMember
                         ? "Active"
-                        : inviteStatus(employee.invites[0])}
+                        : employee.invites[0]?.deliveryStatus === "FAILED"
+                          ? "Email failed"
+                          : inviteStatus(employee.invites[0])}
                     </p>
                     <div className="flex gap-2 lg:justify-self-end">
                       {!employee.organizationMember ? (
@@ -297,7 +301,7 @@ export default async function EmployeesPage({ searchParams }: EmployeesPageProps
                             className="inline-flex h-9 items-center justify-center rounded-md border border-slate-200 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
                             type="submit"
                           >
-                            Invite
+                            {employee.invites[0] ? "Resend" : "Invite"}
                           </button>
                         </form>
                       ) : null}

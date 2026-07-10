@@ -84,6 +84,17 @@ enum DocumentType {
   OTHER
 }
 
+enum DocumentStorageProvider {
+  LOCAL
+  S3
+}
+
+enum InviteDeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
 model Organization {
   id              String               @id @default(cuid())
   name            String
@@ -216,6 +227,10 @@ model EmployeeInvite {
   email             String
   tokenHash         String              @unique
   expiresAt         DateTime
+  deliveryStatus    InviteDeliveryStatus @default(PENDING)
+  deliveryProvider  String?
+  deliveryError     String?
+  sentAt            DateTime?
   acceptedAt        DateTime?
   revokedAt         DateTime?
   createdAt         DateTime            @default(now())
@@ -227,6 +242,7 @@ model EmployeeInvite {
   @@index([organizationId])
   @@index([organizationId, employeeId])
   @@index([organizationId, email])
+  @@index([organizationId, deliveryStatus])
   @@index([expiresAt])
   @@index([acceptedAt])
 }
@@ -285,7 +301,9 @@ model Document {
   uploadedByMemberId String?
   name               String
   category           DocumentType        @default(OTHER)
+  storageProvider    DocumentStorageProvider @default(LOCAL)
   storageKey         String
+  bucket             String?
   contentType        String?
   sizeBytes          Int?
   createdAt          DateTime            @default(now())
@@ -298,6 +316,7 @@ model Document {
   @@index([organizationId])
   @@index([organizationId, employeeId])
   @@index([organizationId, category])
+  @@index([organizationId, storageProvider])
   @@index([employeeId])
 }
 

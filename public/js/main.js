@@ -90,7 +90,6 @@
 
   // ── Mouse tracking ──────────────────────────────────
   let mx=0,my=0, tx=0,ty=0;
-  let scrollY=0;
   document.addEventListener('mousemove',e=>{
     mx=(e.clientX/window.innerWidth-.5)*2;
     my=-(e.clientY/window.innerHeight-.5)*2;
