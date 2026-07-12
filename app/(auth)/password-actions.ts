@@ -95,6 +95,7 @@ export async function resetPasswordAction(
 ): Promise<PasswordActionState> {
   const token = cleanString(formData.get("token"));
   const password = cleanString(formData.get("password"));
+  const confirmPassword = cleanString(formData.get("confirmPassword"));
   const fieldErrors: Record<string, string> = {};
 
   if (!token) {
@@ -105,6 +106,12 @@ export async function resetPasswordAction(
 
   if (passwordError) {
     fieldErrors.password = passwordError;
+  }
+
+  if (!confirmPassword) {
+    fieldErrors.confirmPassword = "Confirm your password.";
+  } else if (password && confirmPassword !== password) {
+    fieldErrors.confirmPassword = "Passwords do not match.";
   }
 
   if (Object.keys(fieldErrors).length > 0) {

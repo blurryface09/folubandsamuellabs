@@ -27,6 +27,7 @@ export async function acceptInviteAction(
 ): Promise<AcceptInviteState> {
   const token = cleanString(formData.get("token"));
   const password = cleanString(formData.get("password"));
+  const confirmPassword = cleanString(formData.get("confirmPassword"));
   const fieldErrors: Record<string, string> = {};
 
   if (!token) {
@@ -37,6 +38,12 @@ export async function acceptInviteAction(
 
   if (passwordError) {
     fieldErrors.password = passwordError;
+  }
+
+  if (!confirmPassword) {
+    fieldErrors.confirmPassword = "Confirm your password.";
+  } else if (password && confirmPassword !== password) {
+    fieldErrors.confirmPassword = "Passwords do not match.";
   }
 
   if (Object.keys(fieldErrors).length > 0) {
@@ -146,11 +153,15 @@ export async function acceptInviteAction(
   });
 
   if (activatedUser) {
-    await createAndSendVerificationEmail({
-      userId: activatedUser.id,
-      email: activatedUser.email,
-      name: activatedUser.name,
-    });
+    try {
+      await createAndSendVerificationEmail({
+        userId: activatedUser.id,
+        email: activatedUser.email,
+        name: activatedUser.name,
+      });
+    } catch {
+      // Account activation already succeeded. Verification can be resent.
+    }
   }
 
   try {

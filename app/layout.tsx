@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { SiteChrome } from "@/components/SiteChrome";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://folubandsamuellabs.com"),
@@ -54,9 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-screen flex flex-col bg-[#050505] text-[#F5F0E8] antialiased">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

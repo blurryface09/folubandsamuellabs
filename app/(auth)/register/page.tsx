@@ -1,24 +1,14 @@
-import Link from "next/link";
-
 import { registerCompanyAction } from "@/app/(auth)/actions";
 import { AuthForm } from "@/app/(auth)/auth-form";
+import { AuthShell } from "@/app/(auth)/auth-shell";
 
 export default function RegisterPage() {
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-24 text-slate-950">
-      <div className="mx-auto w-full max-w-md">
-        <Link className="text-sm font-medium text-slate-500" href="/">
-          Folub & Samuel Labs
-        </Link>
-        <div className="mt-8 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-normal">
-              Register company
-            </h1>
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Create an organization workspace and first company admin.
-            </p>
-          </div>
+    <AuthShell
+      description="Create an organization workspace and the first company admin account."
+      eyebrow="Company setup"
+      title="Register company"
+    >
           <AuthForm
             action={registerCompanyAction}
             fields={[
@@ -41,8 +31,16 @@ export default function RegisterPage() {
               {
                 label: "Password",
                 name: "password",
-                placeholder: "At least 8 characters",
+                placeholder: "10+ chars, number, symbol",
                 type: "password",
+                autoComplete: "new-password",
+              },
+              {
+                label: "Confirm password",
+                name: "confirmPassword",
+                placeholder: "Repeat password",
+                type: "password",
+                autoComplete: "new-password",
               },
             ]}
             footerHref="/login"
@@ -50,8 +48,6 @@ export default function RegisterPage() {
             footerText="Already registered?"
             submitLabel="Create workspace"
           />
-        </div>
-      </div>
-    </main>
+    </AuthShell>
   );
 }

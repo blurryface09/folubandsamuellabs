@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { AuthShell } from "@/app/(auth)/auth-shell";
 import { AuthForm } from "@/app/(auth)/auth-form";
 import { loginAction } from "@/app/(auth)/actions";
 
@@ -22,18 +22,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const reset = paramValue(params, "reset");
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-24 text-slate-950">
-      <div className="mx-auto w-full max-w-md">
-        <Link className="text-sm font-medium text-slate-500" href="/">
-          Folub & Samuel Labs
-        </Link>
-        <div className="mt-8 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-normal">Log in</h1>
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Access your organization workspace.
-            </p>
-          </div>
+    <AuthShell
+      description="Access your organization workspace and continue onboarding staff."
+      eyebrow="Secure access"
+      title="Log in"
+    >
           {error ? (
             <div className="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               Please log in to continue.
@@ -57,12 +50,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 name: "email",
                 placeholder: "admin@company.com",
                 type: "email",
+                autoComplete: "email",
               },
               {
                 label: "Password",
                 name: "password",
                 placeholder: "Your password",
                 type: "password",
+                autoComplete: "current-password",
               },
             ]}
             footerHref="/register"
@@ -75,8 +70,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               Forgot password?
             </Link>
           </p>
-        </div>
-      </div>
-    </main>
+    </AuthShell>
   );
 }

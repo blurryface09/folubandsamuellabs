@@ -12,6 +12,7 @@ import { hashPassword, validatePasswordStrength } from "@/lib/password";
 type AuthFormState = {
   ok: boolean;
   message?: string;
+  successMessage?: string;
   fieldErrors?: Record<string, string>;
 };
 
@@ -84,6 +85,7 @@ export async function registerCompanyAction(
   const fullName = cleanString(formData.get("fullName"));
   const email = cleanString(formData.get("email"))?.toLowerCase();
   const password = cleanString(formData.get("password"));
+  const confirmPassword = cleanString(formData.get("confirmPassword"));
   const fieldErrors: Record<string, string> = {};
 
   if (!companyName) {
@@ -104,6 +106,12 @@ export async function registerCompanyAction(
     fieldErrors.password = passwordError;
   }
 
+  if (!confirmPassword) {
+    fieldErrors.confirmPassword = "Confirm your password.";
+  } else if (password && confirmPassword !== password) {
+    fieldErrors.confirmPassword = "Passwords do not match.";
+  }
+
   if (Object.keys(fieldErrors).length > 0) {
     return {
       ok: false,
@@ -114,12 +122,47 @@ export async function registerCompanyAction(
 
   const baseSlug = slugify(companyName!);
   const slug = baseSlug || `company-${Date.now()}`;
+  const existing = await db.$transaction([
+    db.user.findUnique({
+      where: { email: email! },
+      select: { id: true },
+    }),
+    db.organization.findUnique({
+      where: { slug },
+      select: { id: true },
+    }),
+  ]);
+
+  if (existing[0]) {
+    return {
+      ok: false,
+      fieldErrors: { email: "An account with this email already exists." },
+      message: "Use a different email or log in.",
+    };
+  }
+
+  if (existing[1]) {
+    return {
+      ok: false,
+      fieldErrors: {
+        companyName:
+          "A company workspace with this name already exists. Add a branch, location, or legal suffix.",
+      },
+      message: "Choose a more specific company name.",
+    };
+  }
+
+  let createdUser:
+    | {
+        id: string;
+        email: string;
+        name: string | null;
+        organizationId: string;
+        memberId: string;
+      }
+    | undefined;
 
   try {
-    let createdUser:
-      | { id: string; email: string; name: string | null }
-      | undefined;
-
     await db.$transaction(async (tx) => {
       const organization = await tx.organization.create({
         data: {
@@ -136,9 +179,8 @@ export async function registerCompanyAction(
           passwordHash: hashPassword(password!),
         },
       });
-      createdUser = { id: user.id, email: user.email, name: user.name };
 
-      await tx.organizationMember.create({
+      const member = await tx.organizationMember.create({
         data: {
           organizationId: organization.id,
           userId: user.id,
@@ -147,6 +189,13 @@ export async function registerCompanyAction(
           joinedAt: new Date(),
         },
       });
+      createdUser = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        organizationId: organization.id,
+        memberId: member.id,
+      };
 
       await tx.auditLog.create({
         data: {
@@ -159,16 +208,32 @@ export async function registerCompanyAction(
       });
     });
 
-    if (createdUser) {
-      await createAndSendVerificationEmail({
-        userId: createdUser.id,
-        email: createdUser.email,
-        name: createdUser.name,
-      });
-    }
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
+        const target = Array.isArray(error.meta?.target)
+          ? error.meta.target.join(",")
+          : String(error.meta?.target ?? "");
+
+        if (target.includes("email")) {
+          return {
+            ok: false,
+            fieldErrors: { email: "An account with this email already exists." },
+            message: "Use a different email or log in.",
+          };
+        }
+
+        if (target.includes("slug")) {
+          return {
+            ok: false,
+            fieldErrors: {
+              companyName:
+                "A company workspace with this name already exists. Add a branch, location, or legal suffix.",
+            },
+            message: "Choose a more specific company name.",
+          };
+        }
+
         return {
           ok: false,
           message:
@@ -181,6 +246,35 @@ export async function registerCompanyAction(
       ok: false,
       message: "Could not create company workspace. Please try again.",
     };
+  }
+
+  if (createdUser) {
+    try {
+      const verificationResult = await createAndSendVerificationEmail({
+        userId: createdUser.id,
+        email: createdUser.email,
+        name: createdUser.name,
+      });
+
+      if (!verificationResult.ok) {
+        await db.auditLog.create({
+          data: {
+            organizationId: createdUser.organizationId,
+            actorUserId: createdUser.id,
+            actorMemberId: createdUser.memberId,
+            action: "auth.email_verification_delivery_failed",
+            entityType: "User",
+            entityId: createdUser.id,
+            metadata: {
+              provider: verificationResult.provider,
+              reason: verificationResult.error.slice(0, 200),
+            },
+          },
+        });
+      }
+    } catch {
+      // Workspace registration has already succeeded. Verification can be resent.
+    }
   }
 
   try {
