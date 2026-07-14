@@ -42,7 +42,13 @@ export async function proxy(request: NextRequest) {
 
   const isAppRoute = appRoutes.some((route) => pathname.startsWith(route));
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
-  const token = await getToken({ req: request, secret: authSecret });
+  // On HTTPS the session cookie is "__Secure-authjs.session-token"; getToken
+  // only finds it when told to use the secure cookie name.
+  const token = await getToken({
+    req: request,
+    secret: authSecret,
+    secureCookie: request.nextUrl.protocol === "https:",
+  });
 
   if (isAppRoute && !token) {
     const loginUrl = new URL("/login", request.url);
