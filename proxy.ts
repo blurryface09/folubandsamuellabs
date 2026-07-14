@@ -16,10 +16,21 @@ const appRoutes = [
 
 const authRoutes = ["/login", "/register"];
 
+// Hosts that serve the HR workspace directly (no marketing landing page).
+const workforceHosts = ["fs-workforce.vercel.app"];
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const host = request.headers.get("host") ?? "";
+  const isWorkforceHost = workforceHosts.some(
+    (workforceHost) => host === workforceHost || host.startsWith("workforce."),
+  );
 
   if (pathname === "/") {
+    if (isWorkforceHost) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
     return NextResponse.rewrite(new URL("/prototype.html", request.url));
   }
 

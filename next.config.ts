@@ -11,7 +11,10 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self'",
+      // React streams Suspense/loading.tsx content and the RSC payload via
+      // inline scripts; blocking them leaves every skeleton stuck forever.
+      // TODO: replace 'unsafe-inline' with a nonce-based CSP set in proxy.ts.
+      `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data:",
