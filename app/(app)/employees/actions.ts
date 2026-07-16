@@ -4,8 +4,10 @@ import { EmployeeStatus, EmploymentType, Prisma, UserRole } from "@prisma/client
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { writeAuditLog } from "@/lib/audit";
 import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
+import { deleteStoredDocument } from "@/lib/document-storage";
 
 import type { EmployeeFormState } from "./types";
 
@@ -254,4 +256,225 @@ export async function deactivateEmployee(formData: FormData) {
   revalidatePath("/employees");
   revalidatePath(`/employees/${employeeId}`);
   redirect("/employees?toast=Employee%20deactivated");
+}
+
+const assignableRoles = new Set<UserRole>([
+  UserRole.ADMIN,
+  UserRole.HR_MANAGER,
+  UserRole.MANAGER,
+  UserRole.EMPLOYEE,
+]);
+
+export async function updateMemberRole(formData: FormData) {
+  const viewer = await requireRole(UserRole.ADMIN);
+  const memberId = cleanString(formData.get("memberId"));
+  const role = cleanString(formData.get("role"));
+  const employeeId = cleanString(formData.get("employeeId"));
+  const back = employeeId ? `/employees/${employeeId}` : "/employees";
+
+  if (!memberId || !role || !assignableRoles.has(role as UserRole)) {
+    redirect(`${back}?toast=Choose%20a%20valid%20workspace%20role&toastType=error`);
+  }
+
+  if (memberId === viewer.id) {
+    redirect(`${back}?toast=You%20cannot%20change%20your%20own%20role&toastType=error`);
+  }
+
+  const member = await db.organizationMember.findFirst({
+    where: {
+      id: memberId!,
+      organizationId: viewer.organizationId,
+    },
+    include: {
+      user: {
+        select: { email: true },
+      },
+    },
+  });
+
+  if (!member) {
+    redirect(`${back}?toast=Member%20not%20found&toastType=error`);
+  }
+
+  if (member!.role === UserRole.OWNER) {
+    redirect(`${back}?toast=The%20owner%20role%20cannot%20be%20changed&toastType=error`);
+  }
+
+  await db.organizationMember.update({
+    where: { id: member!.id },
+    data: { role: role as UserRole },
+  });
+
+  await writeAuditLog({
+    organizationId: viewer.organizationId,
+    actorUserId: viewer.userId,
+    actorMemberId: viewer.id,
+    action: "member.role_updated",
+    entityType: "OrganizationMember",
+    entityId: member!.id,
+    metadata: {
+      email: member!.user.email,
+      fromRole: member!.role,
+      toRole: role!,
+    },
+  });
+
+  revalidatePath(back);
+  redirect(`${back}?toast=Workspace%20role%20updated`);
+}
+
+export async function removeMemberAccess(formData: FormData) {
+  const viewer = await requireRole(UserRole.ADMIN);
+  const memberId = cleanString(formData.get("memberId"));
+  const employeeId = cleanString(formData.get("employeeId"));
+  const back = employeeId ? `/employees/${employeeId}` : "/employees";
+
+  if (!memberId) {
+    redirect(`${back}?toast=Missing%20member%20id&toastType=error`);
+  }
+
+  if (memberId === viewer.id) {
+    redirect(`${back}?toast=You%20cannot%20remove%20your%20own%20access&toastType=error`);
+  }
+
+  const member = await db.organizationMember.findFirst({
+    where: {
+      id: memberId!,
+      organizationId: viewer.organizationId,
+    },
+    include: {
+      user: {
+        select: { email: true },
+      },
+    },
+  });
+
+  if (!member) {
+    redirect(`${back}?toast=Member%20not%20found&toastType=error`);
+  }
+
+  if (member!.role === UserRole.OWNER) {
+    redirect(`${back}?toast=The%20owner%27s%20access%20cannot%20be%20removed&toastType=error`);
+  }
+
+  // Nullable references block member deletion (NoAction FKs); detach them first.
+  await db.$transaction([
+    db.employee.updateMany({
+      where: { organizationId: viewer.organizationId, organizationMemberId: member!.id },
+      data: { organizationMemberId: null },
+    }),
+    db.document.updateMany({
+      where: { organizationId: viewer.organizationId, uploadedByMemberId: member!.id },
+      data: { uploadedByMemberId: null },
+    }),
+    db.employeeInvite.updateMany({
+      where: { organizationId: viewer.organizationId, invitedByMemberId: member!.id },
+      data: { invitedByMemberId: null },
+    }),
+    db.leaveRequest.updateMany({
+      where: { organizationId: viewer.organizationId, reviewedByMemberId: member!.id },
+      data: { reviewedByMemberId: null },
+    }),
+    db.auditLog.updateMany({
+      where: { organizationId: viewer.organizationId, actorMemberId: member!.id },
+      data: { actorMemberId: null },
+    }),
+    db.organizationMember.delete({
+      where: { id: member!.id },
+    }),
+  ]);
+
+  await writeAuditLog({
+    organizationId: viewer.organizationId,
+    actorUserId: viewer.userId,
+    actorMemberId: viewer.id,
+    action: "member.access_removed",
+    entityType: "OrganizationMember",
+    entityId: member!.id,
+    metadata: {
+      email: member!.user.email,
+      role: member!.role,
+    },
+  });
+
+  revalidatePath(back);
+  revalidatePath("/employees");
+  redirect(`${back}?toast=Workspace%20access%20removed`);
+}
+
+export async function deleteEmployee(formData: FormData) {
+  const viewer = await requireRole(UserRole.ADMIN);
+  const employeeId = cleanString(formData.get("id"));
+
+  if (!employeeId) {
+    redirect("/employees?toast=Missing%20employee%20id&toastType=error");
+  }
+
+  const employee = await db.employee.findFirst({
+    where: {
+      id: employeeId!,
+      organizationId: viewer.organizationId,
+    },
+    include: {
+      documents: {
+        select: {
+          storageProvider: true,
+          storageKey: true,
+          bucket: true,
+        },
+      },
+    },
+  });
+
+  if (!employee) {
+    redirect("/employees?toast=Employee%20not%20found&toastType=error");
+  }
+
+  // Best-effort cleanup of stored files; DB rows cascade with the employee.
+  for (const document of employee!.documents) {
+    try {
+      await deleteStoredDocument({
+        storageProvider: document.storageProvider,
+        storageKey: document.storageKey,
+        bucket: document.bucket,
+      });
+    } catch {
+      // Ignore storage failures so a missing file cannot block the delete.
+    }
+  }
+
+  await db.$transaction([
+    // Department.manager is a NoAction FK and would block the delete.
+    db.department.updateMany({
+      where: {
+        organizationId: viewer.organizationId,
+        managerEmployeeId: employee!.id,
+      },
+      data: { managerEmployeeId: null },
+    }),
+    db.employee.delete({
+      where: {
+        id_organizationId: {
+          id: employee!.id,
+          organizationId: viewer.organizationId,
+        },
+      },
+    }),
+  ]);
+
+  await writeAuditLog({
+    organizationId: viewer.organizationId,
+    actorUserId: viewer.userId,
+    actorMemberId: viewer.id,
+    action: "employee.deleted",
+    entityType: "Employee",
+    entityId: employee!.id,
+    metadata: {
+      employeeNumber: employee!.employeeNumber,
+      name: `${employee!.firstName} ${employee!.lastName}`,
+    },
+  });
+
+  revalidatePath("/employees");
+  redirect("/employees?toast=Employee%20record%20deleted");
 }

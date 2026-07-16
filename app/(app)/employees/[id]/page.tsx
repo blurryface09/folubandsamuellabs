@@ -1,17 +1,39 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { deactivateEmployee } from "@/app/(app)/employees/actions";
+import {
+  deactivateEmployee,
+  deleteEmployee,
+  removeMemberAccess,
+  updateMemberRole,
+} from "@/app/(app)/employees/actions";
+import { ConfirmSubmitButton } from "@/app/(app)/employees/confirm-submit-button";
 import { EmployeeDocumentList } from "@/app/(app)/employees/document-list";
 import { EmployeeDocumentUploadForm } from "@/app/(app)/employees/document-upload-form";
 import { inviteEmployee } from "@/app/(app)/employees/invite-actions";
 import { EmployeeToast } from "@/app/(app)/employees/employee-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentOrganization, requireRole } from "@/lib/current-organization";
+import { requireRole } from "@/lib/current-organization";
 import { db } from "@/lib/db";
 import { inviteStatus } from "@/lib/invite-token";
+import { hasMinimumRole } from "@/lib/roles";
 import { UserRole } from "@prisma/client";
+
+const roleLabels: Record<UserRole, string> = {
+  OWNER: "Owner",
+  ADMIN: "Admin",
+  HR_MANAGER: "HR Manager",
+  MANAGER: "Manager",
+  EMPLOYEE: "Employee",
+};
+
+const assignableRoles: UserRole[] = [
+  UserRole.ADMIN,
+  UserRole.HR_MANAGER,
+  UserRole.MANAGER,
+  UserRole.EMPLOYEE,
+];
 
 type EmployeeDetailsPageProps = {
   params: Promise<{ id: string }>;
@@ -48,8 +70,9 @@ export default async function EmployeeDetailsPage({
     params,
     searchParams ?? Promise.resolve({}),
   ]);
-  await requireRole(UserRole.HR_MANAGER);
-  const organization = await getCurrentOrganization();
+  const viewer = await requireRole(UserRole.HR_MANAGER);
+  const organization = viewer.organization;
+  const isAdmin = hasMinimumRole(viewer.role, UserRole.ADMIN);
   const employee = await db.employee.findFirst({
     where: {
       id,
@@ -198,7 +221,62 @@ export default async function EmployeeDetailsPage({
               <p className="mt-2 text-sm font-medium text-slate-950">
                 {employee.organizationMember?.user.email ?? "Not linked"}
               </p>
+              {employee.organizationMember ? (
+                <p className="mt-1 text-xs text-slate-500">
+                  Workspace role: {roleLabels[employee.organizationMember.role]}
+                </p>
+              ) : null}
             </div>
+            {employee.organizationMember &&
+            isAdmin &&
+            employee.organizationMember.role !== UserRole.OWNER &&
+            employee.organizationMember.id !== viewer.id ? (
+              <div className="space-y-3 rounded-md border border-slate-200 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Workspace access
+                </p>
+                <form action={updateMemberRole} className="flex gap-2">
+                  <input
+                    name="memberId"
+                    type="hidden"
+                    value={employee.organizationMember.id}
+                  />
+                  <input name="employeeId" type="hidden" value={employee.id} />
+                  <select
+                    className="h-10 min-w-0 flex-1 rounded-md border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
+                    defaultValue={employee.organizationMember.role}
+                    name="role"
+                  >
+                    {assignableRoles.map((role) => (
+                      <option key={role} value={role}>
+                        {roleLabels[role]}
+                      </option>
+                    ))}
+                  </select>
+                  <Button type="submit" variant="secondary">
+                    Update
+                  </Button>
+                </form>
+                <p className="text-xs leading-5 text-slate-500">
+                  Admins can view and manage employees, documents, and settings.
+                </p>
+                <form action={removeMemberAccess}>
+                  <input
+                    name="memberId"
+                    type="hidden"
+                    value={employee.organizationMember.id}
+                  />
+                  <input name="employeeId" type="hidden" value={employee.id} />
+                  <ConfirmSubmitButton
+                    className="w-full border-red-200 text-red-700 hover:bg-red-50"
+                    confirmMessage={`Remove workspace access for ${employee.organizationMember.user.email}? They will no longer be able to log in to ${organization.name}. The employee record stays.`}
+                    variant="secondary"
+                  >
+                    Remove workspace access
+                  </ConfirmSubmitButton>
+                </form>
+              </div>
+            ) : null}
             <div className="rounded-md border border-slate-200 p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Invite status
@@ -262,6 +340,32 @@ export default async function EmployeeDetailsPage({
           <EmployeeDocumentList documents={employee.documents} canDelete />
         </CardContent>
       </Card>
+
+      {isAdmin ? (
+        <Card className="border-red-200">
+          <CardHeader>
+            <CardTitle className="text-red-700">Danger zone</CardTitle>
+            <CardDescription>
+              Permanently delete this employee record, including documents,
+              invites, and history. This cannot be undone.
+              {employee.organizationMember
+                ? " The linked user keeps workspace access until it is removed above."
+                : ""}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form action={deleteEmployee}>
+              <input name="id" type="hidden" value={employee.id} />
+              <ConfirmSubmitButton
+                className="bg-red-600 hover:bg-red-700 focus-visible:ring-red-600"
+                confirmMessage={`Permanently delete ${employee.firstName} ${employee.lastName} (${employee.employeeNumber})? Documents, invites, and history are removed. This cannot be undone.`}
+              >
+                Delete employee record
+              </ConfirmSubmitButton>
+            </form>
+          </CardContent>
+        </Card>
+      ) : null}
     </section>
   );
 }
