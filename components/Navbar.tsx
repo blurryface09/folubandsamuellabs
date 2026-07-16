@@ -41,6 +41,7 @@ export default function Navbar() {
     { href: "#services", label: "Services" },
     { href: "#about", label: "About" },
     { href: "#team", label: "Team" },
+    { href: "/training", label: "Training" },
     { href: "/exchange", label: "FS Exchange" },
     { href: "#contact", label: "Contact" },
   ];

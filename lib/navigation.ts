@@ -83,9 +83,9 @@ export const navGroups: NavGroup[] = [
       {
         href: "/leave",
         label: "Leave",
-        description: "Leave policies, balances, approvals, and calendars.",
+        description: "Leave balances, requests, and approvals.",
         icon: CalendarDays,
-        status: "soon",
+        status: "live",
       },
       {
         href: "/payroll",

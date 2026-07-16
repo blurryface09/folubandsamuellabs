@@ -77,9 +77,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       label: "Pending leave",
       value: pendingLeave,
       icon: CalendarDays,
-      href: null,
-      detail: "Leave module coming soon",
-      soon: true,
+      href: "/leave",
+      detail: "Requests awaiting a decision",
     },
     {
       label: "Payroll records",
