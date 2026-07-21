@@ -12,6 +12,8 @@ const chromeLessRoutes = [
   "/reset-password",
   "/verify-email",
   "/invite",
+  // FOLUB Builders is a separate brand with its own nav/footer.
+  "/folub",
 ];
 
 function shouldHideChrome(pathname: string) {

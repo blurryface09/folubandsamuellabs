@@ -147,6 +147,38 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   FOLUB BUILDERS — real-estate brand (separate company). Navy + gold on warm
+   white. Scoped so it never inherits the FSLabs dark/gold monospace theme.
+--------------------------------------------------------------------------- */
+.folub {
+  --f-navy: #213A54;
+  --f-navy-ink: #16283A;
+  --f-navy-soft: #2C4A67;
+  --f-gold: #C6A24A;
+  --f-gold-light: #D9BE7C;
+  --f-gold-deep: #A9863A;
+  --f-paper: #F7F4EE;
+  --f-paper-2: #EFEAE0;
+  --f-ink: #1B2A38;
+  --f-muted: #6E6A5F;
+  --f-hair: #E2DCD0;
+
+  color-scheme: light;
+  background: var(--f-paper);
+  color: var(--f-ink);
+  font-family: var(--font-exo2);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.folub .font-display {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.015em;
+}
+.folub ::selection { background: rgba(198, 162, 74, 0.28); color: #16283A; }
+.folub :focus-visible { outline: 2px solid var(--f-gold); outline-offset: 3px; }
+
+/* ---------------------------------------------------------------------------
    HR workspace — the (app) route group renders a light SaaS UI and must not
    inherit the dark/gold monospace marketing theme above.
 --------------------------------------------------------------------------- */
