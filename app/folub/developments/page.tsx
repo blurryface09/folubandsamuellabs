@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FolubPageHeader } from "@/components/folub/FolubPageHeader";
+import { ComingSoon } from "@/components/folub/ComingSoon";
 
 export const metadata: Metadata = {
   title: "Developments",
@@ -11,6 +12,12 @@ export const metadata: Metadata = {
 
 type Phase = "completed" | "under-construction" | "selling";
 
+/*
+ * Real developments go here. Empty until FOLUB provides real projects — the
+ * page shows a "coming soon" state while this array is empty. To add one, push
+ * an object matching the shape below (phase: "completed" | "under-construction"
+ * | "selling", progress: 0–100).
+ */
 const developments: {
   name: string;
   location: string;
@@ -18,44 +25,7 @@ const developments: {
   units: string;
   progress: number;
   blurb: string;
-}[] = [
-  {
-    name: "Emerald Court",
-    location: "Lekki Phase 1, Lagos",
-    phase: "selling",
-    units: "24 units",
-    progress: 85,
-    blurb:
-      "A gated estate of 4- and 5-bedroom detached homes built around a central green, with 24/7 security and managed facilities.",
-  },
-  {
-    name: "Aurora Terraces",
-    location: "Gwarinpa, Abuja",
-    phase: "under-construction",
-    units: "36 units",
-    progress: 45,
-    blurb:
-      "Contemporary 3-bedroom terraces designed for young professionals and growing families — now available off-plan at introductory pricing.",
-  },
-  {
-    name: "The Grove",
-    location: "Ibeju-Lekki, Lagos",
-    phase: "completed",
-    units: "36 units",
-    progress: 100,
-    blurb:
-      "A fully delivered and sold-out estate — our proof that a FOLUB handover matches the showroom, every single time.",
-  },
-  {
-    name: "Palm Heights",
-    location: "Victoria Island, Lagos",
-    phase: "selling",
-    units: "12 residences",
-    progress: 70,
-    blurb:
-      "Luxury penthouses and apartments in the heart of the island, with panoramic views and premium in-house finishes.",
-  },
-];
+}[] = [];
 
 const phaseMeta: Record<Phase, { label: string; className: string }> = {
   completed: { label: "Completed", className: "bg-[#6E6A5F] text-[#F1EADB]" },
@@ -69,10 +39,16 @@ export default function DevelopmentsPage() {
       <FolubPageHeader
         eyebrow="Build"
         title="Estates and developments, ground to keys."
-        subtitle="Every FOLUB development is acquired, designed, built, and sold in-house. Here's what we've delivered, what's rising now, and what's available to buy into."
+        subtitle="Every FOLUB development is acquired, designed, built, and sold in-house — from private residences to gated estates and mixed-use projects."
       />
 
       <section className="mx-auto max-w-6xl px-6 py-16">
+        {developments.length === 0 ? (
+          <ComingSoon
+            title="Our next developments are taking shape."
+            message="We're planning our upcoming estates and mixed-use projects. Register your interest to be the first to hear when they launch."
+          />
+        ) : (
         <div className="flex flex-col gap-14">
           {developments.map((d, i) => {
             const meta = phaseMeta[d.phase];
@@ -121,6 +97,7 @@ export default function DevelopmentsPage() {
             );
           })}
         </div>
+        )}
       </section>
 
       {/* CTA band */}

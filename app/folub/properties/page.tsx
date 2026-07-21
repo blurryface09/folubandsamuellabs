@@ -16,7 +16,7 @@ export default function PropertiesPage() {
       <FolubPageHeader
         eyebrow="Buy · Off-plan"
         title="Find where you belong."
-        subtitle="Move-in-ready homes and off-plan opportunities, priced transparently. Filter by availability and book a private viewing whenever you're ready."
+        subtitle="Move-in-ready homes and off-plan opportunities, priced transparently — book a private viewing whenever you're ready."
       />
       <PropertiesClient properties={properties} />
     </>

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { PropertyCard, type Property, type PropertyStatus } from "@/components/folub/PropertyCard";
+import { ComingSoon } from "@/components/folub/ComingSoon";
 
 type Filter = "all" | PropertyStatus;
 
@@ -25,6 +26,18 @@ export function PropertiesClient({ properties }: { properties: Property[] }) {
       return matchesStatus && matchesQuery;
     });
   }, [properties, filter, query]);
+
+  // No real listings yet — show a clean coming-soon state, no filters.
+  if (properties.length === 0) {
+    return (
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <ComingSoon
+          title="Our next homes are on the way."
+          message="We're preparing new listings across Lagos and Abuja. Register your interest and we'll be in touch the moment a home becomes available."
+        />
+      </section>
+    );
+  }
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">

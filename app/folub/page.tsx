@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/folub/Reveal";
 import { PropertyCard } from "@/components/folub/PropertyCard";
+import { ComingSoon } from "@/components/folub/ComingSoon";
 import { properties } from "@/lib/folub/properties";
 
 const stats = [
@@ -139,26 +140,39 @@ export default function FolubHome() {
                   Featured
                 </p>
                 <h2 className="font-display mt-4 text-3xl font-medium text-[#1B2A38] md:text-4xl">
-                  Available now.
+                  {featured.length > 0 ? "Available now." : "New homes, coming soon."}
                 </h2>
               </div>
             </Reveal>
-            <Reveal>
-              <Link
-                href="/folub/properties"
-                className="text-sm font-semibold text-[#213A54] underline-offset-4 hover:text-[#A9863A] hover:underline"
-              >
-                View all properties →
-              </Link>
-            </Reveal>
-          </div>
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((p, i) => (
-              <Reveal key={p.slug} delay={i * 100}>
-                <PropertyCard property={p} />
+            {featured.length > 0 && (
+              <Reveal>
+                <Link
+                  href="/folub/properties"
+                  className="text-sm font-semibold text-[#213A54] underline-offset-4 hover:text-[#A9863A] hover:underline"
+                >
+                  View all properties →
+                </Link>
               </Reveal>
-            ))}
+            )}
           </div>
+          {featured.length > 0 ? (
+            <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {featured.map((p, i) => (
+                <Reveal key={p.slug} delay={i * 100}>
+                  <PropertyCard property={p} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <Reveal>
+              <div className="mt-12">
+                <ComingSoon
+                  title="Our next homes are on the way."
+                  message="We're preparing new listings across Lagos and Abuja. Register your interest and we'll reach out the moment a home becomes available."
+                />
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 
