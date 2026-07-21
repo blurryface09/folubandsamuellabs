@@ -1,8 +1,5 @@
 import Link from "next/link";
 import { Reveal } from "@/components/folub/Reveal";
-import { PropertyCard } from "@/components/folub/PropertyCard";
-import { ComingSoon } from "@/components/folub/ComingSoon";
-import { properties } from "@/lib/folub/properties";
 
 const stats = [
   { n: "240+", l: "Units delivered" },
@@ -19,19 +16,17 @@ const services = [
   },
   {
     k: "Buy",
-    t: "Find your home",
-    d: "Browse move-in-ready homes and off-plan opportunities with transparent pricing and flexible payment plans. Book a private viewing whenever you're ready.",
+    t: "Acquisition & sales",
+    d: "We help clients buy and sell with a team that knows the market — handling valuation, documentation, and qualified buyers with complete transparency.",
   },
   {
     k: "Sell",
-    t: "Sell your property",
-    d: "List with a team that knows the market. We handle valuation, marketing, and qualified buyers so your property sells for what it's worth, faster.",
+    t: "Facility management",
+    d: "Our relationship doesn't end at handover. We manage and maintain properties long after the keys change hands, protecting your investment for the long term.",
   },
 ];
 
 export default function FolubHome() {
-  const featured = properties.slice(0, 3);
-
   return (
     <>
       {/* ───────────────────────── HERO ───────────────────────── */}
@@ -75,16 +70,16 @@ export default function FolubHome() {
           <Reveal delay={240}>
             <div className="mt-9 flex flex-wrap gap-4">
               <Link
-                href="/folub/properties"
+                href="/folub/contact"
                 className="rounded bg-[#C6A24A] px-7 py-3.5 text-sm font-semibold text-[#16283A] transition-colors hover:bg-[#D9BE7C]"
               >
-                View available properties
+                Get in touch
               </Link>
               <Link
-                href="/folub/contact"
+                href="/folub/about"
                 className="rounded border border-[#EAE3D4]/35 px-7 py-3.5 text-sm font-semibold text-[#EAE3D4] transition-colors hover:border-[#D9BE7C] hover:text-[#D9BE7C]"
               >
-                Book a private viewing
+                About FOLUB
               </Link>
             </div>
           </Reveal>
@@ -127,52 +122,6 @@ export default function FolubHome() {
               </div>
             </Reveal>
           ))}
-        </div>
-      </section>
-
-      {/* ─────────────────── FEATURED PROPERTIES ─────────────────── */}
-      <section className="bg-[#EFEAE0]">
-        <div className="mx-auto max-w-6xl px-6 py-24">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <Reveal>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#A9863A]">
-                  Featured
-                </p>
-                <h2 className="font-display mt-4 text-3xl font-medium text-[#1B2A38] md:text-4xl">
-                  {featured.length > 0 ? "Available now." : "New homes, coming soon."}
-                </h2>
-              </div>
-            </Reveal>
-            {featured.length > 0 && (
-              <Reveal>
-                <Link
-                  href="/folub/properties"
-                  className="text-sm font-semibold text-[#213A54] underline-offset-4 hover:text-[#A9863A] hover:underline"
-                >
-                  View all properties →
-                </Link>
-              </Reveal>
-            )}
-          </div>
-          {featured.length > 0 ? (
-            <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((p, i) => (
-                <Reveal key={p.slug} delay={i * 100}>
-                  <PropertyCard property={p} />
-                </Reveal>
-              ))}
-            </div>
-          ) : (
-            <Reveal>
-              <div className="mt-12">
-                <ComingSoon
-                  title="Our next homes are on the way."
-                  message="We're preparing new listings across Lagos and Abuja. Register your interest and we'll reach out the moment a home becomes available."
-                />
-              </div>
-            </Reveal>
-          )}
         </div>
       </section>
 
@@ -238,18 +187,18 @@ export default function FolubHome() {
         <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-20 md:flex-row md:items-center">
           <div>
             <h2 className="font-display text-3xl font-medium text-[#F3ECDD] md:text-4xl">
-              Ready to find where you belong?
+              Let&apos;s build something that lasts.
             </h2>
             <p className="mt-3 max-w-lg text-[#C7CFD8]">
-              Book a private viewing or talk to our team about buying, selling,
-              or developing with FOLUB.
+              Talk to our team about buying, selling, developing, or partnering
+              with FOLUB Builders.
             </p>
           </div>
           <Link
             href="/folub/contact"
             className="shrink-0 rounded bg-[#C6A24A] px-8 py-4 text-sm font-semibold text-[#16283A] transition-colors hover:bg-[#D9BE7C]"
           >
-            Book a viewing
+            Get in touch
           </Link>
         </div>
       </section>

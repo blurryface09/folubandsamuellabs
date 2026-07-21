@@ -31,12 +31,6 @@ const principles = [
   },
 ];
 
-const leadership = [
-  { name: "Managing Director", role: "Strategy & Development" },
-  { name: "Head of Construction", role: "Engineering & Delivery" },
-  { name: "Head of Sales", role: "Client & Market" },
-];
-
 export default function AboutPage() {
   return (
     <>
@@ -103,25 +97,21 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* leadership */}
+      {/* team preview */}
       <section className="bg-[#EFEAE0]">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="font-display text-3xl text-[#1B2A38] md:text-4xl">The team</h2>
-          <p className="mt-3 max-w-xl text-[#6E6A5F]">
-            The people accountable for every project, from ground-breaking to handover.
-          </p>
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            {leadership.map((m) => (
-              <div key={m.name} className="text-center">
-                <div
-                  className="mx-auto h-40 w-40 rounded-full"
-                  style={{ background: "linear-gradient(135deg,#2C4A67,#16283A)" }}
-                />
-                <h3 className="mt-5 text-lg font-semibold text-[#1B2A38]">{m.name}</h3>
-                <p className="text-sm text-[#A9863A]">{m.role}</p>
-              </div>
-            ))}
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-6 py-20 md:flex-row md:items-end">
+          <div>
+            <h2 className="font-display text-3xl text-[#1B2A38] md:text-4xl">The people behind FOLUB</h2>
+            <p className="mt-3 max-w-xl text-[#6E6A5F]">
+              A team accountable for every project, from ground-breaking to handover.
+            </p>
           </div>
+          <Link
+            href="/folub/team"
+            className="rounded border border-[#213A54]/25 px-6 py-3.5 text-sm font-semibold text-[#213A54] transition-colors hover:border-[#C6A24A]"
+          >
+            Meet the team →
+          </Link>
         </div>
       </section>
 

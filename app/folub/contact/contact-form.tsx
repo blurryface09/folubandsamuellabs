@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 const intents = [
-  "Book a viewing",
-  "Buy a property",
-  "Sell my property",
-  "Develop with FOLUB",
   "General enquiry",
+  "Buying a property",
+  "Selling a property",
+  "Development / partnership",
+  "Careers",
 ];
 
 type Status = "idle" | "sending" | "success" | "error";
@@ -18,9 +17,6 @@ const fieldClass =
 const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-[#6E6A5F]";
 
 export function ContactForm() {
-  const searchParams = useSearchParams();
-  const prefilledProperty = searchParams.get("property") ?? "";
-
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
@@ -99,17 +95,6 @@ export function ContactForm() {
             ))}
           </select>
         </div>
-      </div>
-
-      <div>
-        <label htmlFor="property" className={labelClass}>Property of interest</label>
-        <input
-          id="property"
-          name="property"
-          defaultValue={prefilledProperty}
-          className={fieldClass}
-          placeholder="e.g. The Cedar — Ikoyi (optional)"
-        />
       </div>
 
       <div>

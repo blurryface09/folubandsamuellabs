@@ -5,19 +5,19 @@ const columns = [
   {
     title: "Company",
     links: [
+      { href: "/folub", label: "Home" },
       { href: "/folub/about", label: "About us" },
-      { href: "/folub/developments", label: "Developments" },
-      { href: "/folub/properties", label: "Properties" },
+      { href: "/folub/team", label: "Our team" },
       { href: "/folub/contact", label: "Contact" },
     ],
   },
   {
-    title: "Services",
+    title: "What we do",
     links: [
-      { href: "/folub/properties?intent=buy", label: "Buy a home" },
-      { href: "/folub/properties?intent=sell", label: "Sell your property" },
-      { href: "/folub/developments", label: "Property development" },
-      { href: "/folub/contact", label: "Facility management" },
+      { href: "/folub/about", label: "Property development" },
+      { href: "/folub/about", label: "Buying & selling" },
+      { href: "/folub/about", label: "Facility management" },
+      { href: "/folub/contact", label: "Work with us" },
     ],
   },
 ];

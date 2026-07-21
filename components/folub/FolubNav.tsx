@@ -5,9 +5,8 @@ import Link from "next/link";
 import { FolubLockup } from "@/components/folub/FolubLogo";
 
 const links = [
-  { href: "/folub/properties", label: "Properties" },
-  { href: "/folub/developments", label: "Developments" },
   { href: "/folub/about", label: "About" },
+  { href: "/folub/team", label: "Team" },
   { href: "/folub/contact", label: "Contact" },
 ];
 
@@ -53,7 +52,7 @@ export function FolubNav() {
             href="/folub/contact"
             className="rounded bg-[#C6A24A] px-5 py-2.5 text-sm font-semibold text-[#16283A] transition-colors hover:bg-[#D9BE7C]"
           >
-            Book a viewing
+            Get in touch
           </Link>
         </nav>
 
@@ -92,7 +91,7 @@ export function FolubNav() {
               onClick={() => setOpen(false)}
               className="mt-2 rounded bg-[#C6A24A] px-5 py-3 text-center font-semibold text-[#16283A]"
             >
-              Book a viewing
+              Get in touch
             </Link>
           </div>
         </nav>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { FolubPageHeader } from "@/components/folub/FolubPageHeader";
 import { ContactForm } from "./contact-form";
 
@@ -21,9 +20,9 @@ export default function ContactPage() {
   return (
     <>
       <FolubPageHeader
-        eyebrow="Book a viewing"
-        title="Let's talk about where you belong."
-        subtitle="Buying, selling, or developing — tell us what you need and the right person on our team will get back to you within one business day."
+        eyebrow="Contact us"
+        title="Let's start a conversation."
+        subtitle="Buying, selling, developing, or partnering — tell us what you need and the right person on our team will get back to you within one business day."
       />
 
       <section className="mx-auto max-w-6xl px-6 py-16">
@@ -54,9 +53,7 @@ export default function ContactPage() {
 
           {/* form */}
           <div className="rounded-lg border border-[#E2DCD0] bg-white p-8 shadow-[0_18px_45px_-32px_rgba(22,40,58,0.45)]">
-            <Suspense fallback={null}>
-              <ContactForm />
-            </Suspense>
+            <ContactForm />
           </div>
         </div>
       </section>
