@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FOLUB Builders | Build. Buy. Sell.",
     description:
-      "Premium residential and commercial real estate — developed, sold, and managed in-house.",
+      "Premium residential and commercial real estate, developed, sold, and managed by our own team.",
     url: "https://folubandsamuellabs.com/folub",
     siteName: "FOLUB Builders",
     locale: "en_NG",

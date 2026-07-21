@@ -5,7 +5,7 @@ import { FolubPageHeader } from "@/components/folub/FolubPageHeader";
 export const metadata: Metadata = {
   title: "Team",
   description:
-    "Meet the people behind FOLUB Builders — the leadership and specialists accountable for every project, from ground-breaking to handover.",
+    "Meet the people behind FOLUB Builders. The leadership and specialists who stay accountable for every project, from the first day on site to the day you get your keys.",
   alternates: { canonical: "/folub/team" },
 };
 
@@ -26,7 +26,7 @@ const leadership: Member[] = [
   {
     name: "Adefolu Akinbayo",
     role: "CEO & Founder",
-    bio: "Founder of FOLUB Builders — the name itself comes from Adefolu. Sets the company's vision and standard, leading strategy and development from the ground up.",
+    bio: "Founder of FOLUB Builders. The name itself comes from Adefolu. He sets the vision and the standard, and leads strategy and development from the ground up.",
   },
   {
     name: "Adeseko Samuel",
@@ -38,15 +38,15 @@ const leadership: Member[] = [
 const departments = [
   {
     t: "Development",
-    d: "Acquisition, design, and project planning — turning land into homes worth living in.",
+    d: "Acquisition, design, and planning that turns land into homes worth living in.",
   },
   {
     t: "Construction",
-    d: "In-house engineers and site teams who build to last, with no sub-contracted shortcuts.",
+    d: "Our own engineers and site teams who build to last, with no shortcuts and no strangers on site.",
   },
   {
     t: "Sales & Client Care",
-    d: "The people you'll actually talk to — from first enquiry through to handover.",
+    d: "The people you will actually talk to, from your first enquiry through to handover.",
   },
   {
     t: "Facility Management",
@@ -60,7 +60,7 @@ export default function TeamPage() {
       <FolubPageHeader
         eyebrow="Our team"
         title="The people who build it."
-        subtitle="FOLUB is a team of developers, engineers, and specialists who take one project as seriously as the next — and stay accountable from ground-breaking to handover."
+        subtitle="FOLUB is a team of developers, engineers, and specialists who take one project as seriously as the next, and stay accountable from the first day on site to the day you get your keys."
       />
 
       {/* leadership */}

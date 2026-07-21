@@ -54,7 +54,7 @@ export function ContactForm() {
         </div>
         <h3 className="font-display mt-5 text-2xl text-[#213A54]">Message received.</h3>
         <p className="mt-2 max-w-sm text-[#6E6A5F]">
-          Thanks for reaching out — a member of the FOLUB team will get back to you
+          Thanks for reaching out. A member of the FOLUB team will get back to you
           within one business day. Check your inbox for a confirmation.
         </p>
         <button

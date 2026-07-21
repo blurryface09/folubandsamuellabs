@@ -37,8 +37,8 @@ export function FolubFooter() {
             </span>
           </div>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-[#95A2AE]">
-            We build, buy, and sell property built to outlast the years — from
-            private residences to mixed-use developments.
+            We build, buy, and sell property made to outlast the years, from
+            private homes to mixed use developments.
           </p>
         </div>
 

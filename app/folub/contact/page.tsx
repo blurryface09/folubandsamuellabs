@@ -22,7 +22,7 @@ export default function ContactPage() {
       <FolubPageHeader
         eyebrow="Contact us"
         title="Let's start a conversation."
-        subtitle="Buying, selling, developing, or partnering — tell us what you need and the right person on our team will get back to you within one business day."
+        subtitle="Buying, selling, developing, or partnering with us. Tell us what you need and the right person on our team will get back to you within one business day."
       />
 
       <section className="mx-auto max-w-6xl px-6 py-16">

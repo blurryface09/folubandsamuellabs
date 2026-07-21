@@ -5,7 +5,7 @@ import { FolubPageHeader } from "@/components/folub/FolubPageHeader";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "FOLUB Builders develops, buys, and sells premium property in-house — from foundation to finish. Our story, our standard, and the people behind it.",
+    "FOLUB Builders develops, buys, and sells premium property with our own team, from foundation to finish. Our story, our standard, and the people behind it.",
   alternates: { canonical: "/folub/about" },
 };
 
@@ -13,13 +13,13 @@ const stats = [
   { n: "18 yrs", l: "Building experience" },
   { n: "240+", l: "Units delivered" },
   { n: "12", l: "Estates developed" },
-  { n: "100%", l: "Built in-house" },
+  { n: "100%", l: "Built by our own team" },
 ];
 
 const principles = [
   {
     t: "We build what we sell",
-    d: "No sub-contracted shortcuts and no middlemen. FOLUB designs, engineers, and finishes every project with one accountable team — so the standard never slips between the promise and the property.",
+    d: "No shortcuts and no middlemen. FOLUB designs, engineers, and finishes every project with one accountable team, so the standard never slips between the promise and the property.",
   },
   {
     t: "Transparency by default",
@@ -37,7 +37,7 @@ export default function AboutPage() {
       <FolubPageHeader
         eyebrow="Our story"
         title="A gold standard in every square metre."
-        subtitle="FOLUB Builders is a real-estate developer that builds, buys, and sells property end to end — crafted for people who invest in permanence, not trends."
+        subtitle="FOLUB Builders is a property developer that builds, buys, and sells homes from start to finish, made for people who invest in permanence, not trends."
       />
 
       {/* narrative */}
@@ -51,15 +51,15 @@ export default function AboutPage() {
           </div>
           <div className="space-y-4 text-[#4A5560]">
             <p className="leading-relaxed">
-              FOLUB Builders began with a simple frustration — too many homes that
-              looked the part on viewing day and fell short by handover. We set out
-              to close that gap by keeping the whole process under one roof:
+              FOLUB Builders began with a simple frustration. Too many homes looked
+              the part on viewing day and fell short by the time you moved in. We set
+              out to close that gap by keeping the whole process under one roof:
               acquisition, design, construction, and sale.
             </p>
             <p className="leading-relaxed">
               Today we develop residential and commercial property across Lagos and
-              Abuja, from private residences to gated estates and mixed-use
-              developments — and we manage many of them long after the keys change
+              Abuja, from private residences to gated estates and mixed use
+              developments, and we manage many of them long after the keys change
               hands.
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function AboutPage() {
           <div>
             <h2 className="font-display text-3xl text-[#1B2A38] md:text-4xl">The people behind FOLUB</h2>
             <p className="mt-3 max-w-xl text-[#6E6A5F]">
-              A team accountable for every project, from ground-breaking to handover.
+              A team that stays accountable for every project, from the first day on site to the day you get your keys.
             </p>
           </div>
           <Link

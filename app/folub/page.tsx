@@ -1,101 +1,107 @@
 import Link from "next/link";
 import { Reveal } from "@/components/folub/Reveal";
+import { HouseScene } from "@/components/folub/HouseScene";
 
-const stats = [
-  { n: "240+", l: "Units delivered" },
-  { n: "12", l: "Estates developed" },
-  { n: "18 yrs", l: "Building trust" },
-  { n: "100%", l: "In-house build" },
+const promises = [
+  { t: "One team, start to finish", d: "From the first block to the front door, the same people stay accountable." },
+  { t: "Built to last", d: "Materials and workmanship chosen for the decades, not the photos." },
+  { t: "Honest pricing", d: "Clear figures and clear paperwork. You always know what you are paying for." },
+  { t: "Here after handover", d: "We look after what we build long after the keys change hands." },
 ];
 
 const services = [
   {
     k: "Build",
-    t: "Property development",
-    d: "We acquire land and develop residential and commercial projects end to end — designed, engineered, and finished in-house to a single, uncompromising standard.",
+    t: "We develop",
+    d: "We find the right land and raise homes on it that people are proud to live in, designed and built by our own team to one exacting standard.",
   },
   {
     k: "Buy",
-    t: "Acquisition & sales",
-    d: "We help clients buy and sell with a team that knows the market — handling valuation, documentation, and qualified buyers with complete transparency.",
+    t: "We sell",
+    d: "We guide buyers and sellers through the whole journey with honest advice, clear documentation, and none of the usual guesswork.",
   },
   {
-    k: "Sell",
-    t: "Facility management",
-    d: "Our relationship doesn't end at handover. We manage and maintain properties long after the keys change hands, protecting your investment for the long term.",
+    k: "Keep",
+    t: "We manage",
+    d: "Our work does not stop at handover. We maintain and care for the properties we build so your investment keeps its value for years.",
   },
 ];
 
 export default function FolubHome() {
   return (
     <>
-      {/* ───────────────────────── HERO ───────────────────────── */}
-      <section className="relative overflow-hidden bg-[#16283A] text-[#EFE9DC]">
-        {/* ambient gold + blueprint texture */}
+      {/* ───────────────────────── HERO (3D) ───────────────────────── */}
+      <section className="relative flex min-h-screen items-center overflow-hidden bg-[#16283A] text-[#EFE9DC]">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.55]"
-          style={{
-            background:
-              "radial-gradient(120% 90% at 85% -10%, rgba(198,162,74,0.18), transparent 55%), linear-gradient(180deg, #16283A 0%, #213A54 100%)",
-          }}
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "linear-gradient(180deg, #101F2C 0%, #16283A 55%, #1D3348 100%)" }}
         />
+        <HouseScene />
+        {/* legibility scrim on the left */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              "linear-gradient(#C6A24A 1px, transparent 1px), linear-gradient(90deg, #C6A24A 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-          }}
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "linear-gradient(90deg, rgba(16,31,44,0.92) 0%, rgba(16,31,44,0.55) 40%, rgba(16,31,44,0) 70%)" }}
         />
-        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-28 md:pt-36">
+
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
           <Reveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[#D9BE7C]">
-              Build · Buy · Sell
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#D9BE7C]">
+              FOLUB Builders
             </p>
           </Reveal>
-          <Reveal delay={80}>
-            <h1 className="font-display mt-5 max-w-[16ch] text-4xl font-medium leading-[1.05] md:text-6xl lg:text-7xl">
-              Homes built to <em className="italic text-[#D9BE7C]">outlast</em> the years.
+          <Reveal delay={120}>
+            <h1 className="font-display mt-6 max-w-[15ch] text-4xl font-medium leading-[1.03] md:text-6xl lg:text-7xl">
+              Homes worth <em className="italic text-[#D9BE7C]">coming home</em> to.
             </h1>
           </Reveal>
-          <Reveal delay={160}>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-[#C7CFD8] md:text-lg">
-              FOLUB Builders develops, sells, and manages premium residential and
-              commercial property — crafted for people who invest in permanence,
-              not trends.
+          <Reveal delay={220}>
+            <p className="mt-7 max-w-xl text-base leading-relaxed text-[#C7CFD8] md:text-lg">
+              We design, build, and sell beautiful property across Nigeria. The
+              standard you see the day you collect your keys is the standard you
+              live with for years after.
             </p>
           </Reveal>
-          <Reveal delay={240}>
-            <div className="mt-9 flex flex-wrap gap-4">
+          <Reveal delay={320}>
+            <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/folub/contact"
-                className="rounded bg-[#C6A24A] px-7 py-3.5 text-sm font-semibold text-[#16283A] transition-colors hover:bg-[#D9BE7C]"
+                className="rounded bg-[#C6A24A] px-8 py-4 text-sm font-semibold text-[#16283A] transition-colors hover:bg-[#D9BE7C]"
               >
-                Get in touch
+                Start a conversation
               </Link>
               <Link
-                href="/folub/about"
-                className="rounded border border-[#EAE3D4]/35 px-7 py-3.5 text-sm font-semibold text-[#EAE3D4] transition-colors hover:border-[#D9BE7C] hover:text-[#D9BE7C]"
+                href="/folub/team"
+                className="rounded border border-[#EAE3D4]/35 px-8 py-4 text-sm font-semibold text-[#EAE3D4] transition-colors hover:border-[#D9BE7C] hover:text-[#D9BE7C]"
               >
-                About FOLUB
+                Meet the team
               </Link>
             </div>
           </Reveal>
+        </div>
 
-          <Reveal delay={320}>
-            <dl className="mt-16 grid grid-cols-2 gap-x-10 gap-y-8 border-t border-white/10 pt-10 sm:grid-cols-4">
-              {stats.map((s) => (
-                <div key={s.l}>
-                  <dt className="font-display text-3xl text-[#D9BE7C] md:text-4xl">{s.n}</dt>
-                  <dd className="mt-2 text-xs uppercase tracking-[0.14em] text-[#9FAAB5]">
-                    {s.l}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
+        {/* scroll cue */}
+        <div className="pointer-events-none absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[#9FAAB5]">
+          <span className="text-[0.62rem] uppercase tracking-[0.3em]">Scroll</span>
+          <span className="h-10 w-px bg-gradient-to-b from-[#D9BE7C] to-transparent" />
+        </div>
+      </section>
+
+      {/* ───────────────────── PROMISES STRIP ───────────────────── */}
+      <section className="border-b border-[#E2DCD0] bg-[#F7F4EE]">
+        <div className="mx-auto grid max-w-6xl gap-8 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
+          {promises.map((p, i) => (
+            <Reveal key={p.t} delay={i * 80}>
+              <div>
+                <div className="h-[3px] w-8 bg-[#C6A24A]" />
+                <h3 className="mt-4 text-sm font-bold uppercase tracking-[0.08em] text-[#213A54]">
+                  {p.t}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#6E6A5F]">{p.d}</p>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
@@ -109,7 +115,7 @@ export default function FolubHome() {
         </Reveal>
         <Reveal delay={80}>
           <h2 className="font-display mt-6 max-w-2xl text-3xl font-medium leading-tight text-[#1B2A38] md:text-4xl">
-            One team for the whole journey — from ground to keys.
+            One team, from the first block to the front door.
           </h2>
         </Reveal>
         <div className="mt-14 grid gap-8 md:grid-cols-3">
@@ -126,46 +132,32 @@ export default function FolubHome() {
       </section>
 
       {/* ───────────────────── WHY FOLUB ───────────────────── */}
-      <section className="mx-auto max-w-6xl px-6 py-24">
-        <div className="grid items-center gap-14 md:grid-cols-2">
+      <section className="bg-[#EFEAE0]">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 px-6 py-24 md:grid-cols-2">
           <Reveal>
             <div>
               <div className="h-[3px] w-14 bg-[#C6A24A]" />
               <blockquote className="font-display mt-7 text-2xl italic leading-snug text-[#1B2A38] md:text-3xl">
-                Quiet confidence. Structure you can trust. A gold standard in
-                every square metre.
+                Quiet confidence. Structure you can trust. A standard you can feel
+                in every room.
               </blockquote>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-[#6E6A5F]">
-                The standard you see in the showroom is the standard you get at
-                handover. We design, build, and sell in-house — so nothing gets
-                lost between the promise and the property.
+                What you see when you first walk through is exactly what you get on
+                the day you move in. We design, build, and sell with our own team,
+                so nothing is lost between the promise and the property.
               </p>
             </div>
           </Reveal>
           <Reveal delay={120}>
             <div className="flex flex-col gap-6">
               {[
-                {
-                  h: "Built in-house",
-                  p: "No sub-contracted shortcuts. From foundation to finish, one accountable team.",
-                },
-                {
-                  h: "Transparent pricing",
-                  p: "Clear figures and structured payment plans. No surprises at signing.",
-                },
-                {
-                  h: "Prime locations",
-                  p: "We build where value holds — established neighbourhoods and growth corridors.",
-                },
-                {
-                  h: "After handover",
-                  p: "Facility management and support that continues long after you get the keys.",
-                },
+                { h: "Built by our own hands", p: "No shortcuts and no strangers on site. One team you can hold to account." },
+                { h: "Nothing hidden", p: "Clear prices, verified titles, and paperwork you can actually read." },
+                { h: "The right places", p: "We build where value grows, in neighbourhoods people want to stay in." },
+                { h: "For the long run", p: "Care and maintenance that carries on well past the day you settle in." },
               ].map((v) => (
                 <div key={v.h} className="border-l-2 border-[#C6A24A] pl-5">
-                  <h4 className="text-sm font-bold uppercase tracking-[0.08em] text-[#213A54]">
-                    {v.h}
-                  </h4>
+                  <h4 className="text-sm font-bold uppercase tracking-[0.08em] text-[#213A54]">{v.h}</h4>
                   <p className="mt-1.5 text-sm text-[#6E6A5F]">{v.p}</p>
                 </div>
               ))}
@@ -179,19 +171,16 @@ export default function FolubHome() {
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.5]"
-          style={{
-            background:
-              "radial-gradient(90% 120% at 15% 0%, rgba(198,162,74,0.20), transparent 60%)",
-          }}
+          style={{ background: "radial-gradient(90% 120% at 15% 0%, rgba(198,162,74,0.20), transparent 60%)" }}
         />
         <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-20 md:flex-row md:items-center">
           <div>
             <h2 className="font-display text-3xl font-medium text-[#F3ECDD] md:text-4xl">
-              Let&apos;s build something that lasts.
+              Let us build something that lasts.
             </h2>
             <p className="mt-3 max-w-lg text-[#C7CFD8]">
-              Talk to our team about buying, selling, developing, or partnering
-              with FOLUB Builders.
+              Whether you want to buy, sell, develop, or partner with us, our team
+              would love to hear from you.
             </p>
           </div>
           <Link
