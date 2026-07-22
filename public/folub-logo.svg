@@ -1,0 +1,22 @@
+<svg width="320" height="360" viewBox="0 0 320 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FOLUB Builders">
+  <!-- mark -->
+  <g transform="translate(110 20) scale(1.0)">
+    <path d="M14 45 L48 21 L48 64 L41 86 L14 86 Z" fill="#213A54"/>
+    <path d="M22 45 h20 v6 h-13 v6.5 h11 v6 h-11 v13 h-7 Z" fill="#FFFFFF"/>
+    <path d="M52 21 L86 45 L86 86 L59 86 L52 64 Z" fill="#C6A24A"/>
+    <path d="M60 45 h10.5 a7.5 7.5 0 0 1 4.6 13 a7.8 7.8 0 0 1 -4.6 14 H60 Z M66.5 50.5 v7 h4 a3.5 3.5 0 0 0 0 -7 Z M66.5 63.5 v8 h4.2 a4 4 0 0 0 0 -8 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+    <g fill="#C6A24A">
+      <rect x="45.5" y="72" width="4.2" height="4.2"/>
+      <rect x="50.3" y="72" width="4.2" height="4.2"/>
+      <rect x="45.5" y="76.8" width="4.2" height="4.2"/>
+      <rect x="50.3" y="76.8" width="4.2" height="4.2"/>
+    </g>
+  </g>
+  <!-- wordmark -->
+  <text x="160" y="270" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="700" letter-spacing="10" fill="#213A54">FOLUB</text>
+  <g>
+    <line x1="96" y1="300" x2="128" y2="300" stroke="#C6A24A" stroke-width="2"/>
+    <text x="160" y="308" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="600" letter-spacing="10" fill="#C6A24A">BUILDERS</text>
+    <line x1="192" y1="300" x2="224" y2="300" stroke="#C6A24A" stroke-width="2"/>
+  </g>
+</svg>
