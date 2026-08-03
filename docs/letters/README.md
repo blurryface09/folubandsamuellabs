@@ -1,22 +1,22 @@
 # FSLabs Official Correspondence
 
-Print-ready letterhead for **Folub & Samuel Labs Limited** (RC 9637480), plus the
-letters issued on it.
+Letterhead ready to print for **Folub & Samuel Labs Limited** (RC 9637480), plus
+the letters issued on it.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `letterhead.css` | The official letterhead. Shared stylesheet — do not fork it per letter. |
-| `render.sh` | Renders letterhead HTML to print-ready A4 PDF via headless Chromium. |
-| `fonts/` | Great Vibes, the signature face. SIL Open Font License 1.1 — see `fonts/OFL.txt`. |
-| `2026-08-03-offer-of-employment-abdulahi-samiat.html` | Offer of employment — Content Strategist. |
+| `letterhead.css` | The official letterhead. Shared stylesheet, so do not fork it per letter. |
+| `render.sh` | Renders letterhead HTML to an A4 PDF ready to print, via headless Chromium. |
+| `fonts/` | Great Vibes, the signature face. SIL Open Font License 1.1. See `fonts/OFL.txt`. |
+| `2026-08-03-offer-of-employment-abdulahi-samiat.html` | Offer of employment, Content Strategist. |
 | `2026-08-03-offer-email-abdulahi-samiat.md` | Covering email to send with the offer above. |
 
 Brand assets live in `public/`:
 
-- `fslabs-logo-lockup.png` — full FS mark + FSLABS wordmark, transparent background. Used in the letterhead band.
-- `fslabs-mark-gold.png` — FS mark only, transparent background.
+- `fslabs-logo-lockup.png`: the full FS mark plus FSLABS wordmark, transparent background. Used in the letterhead band.
+- `fslabs-mark-gold.png`: the FS mark on its own, transparent background.
 
 ## Rendering
 
@@ -44,17 +44,16 @@ intact:
 The `thead`/`tfoot` wrapper is deliberate: print engines repeat table headers and
 footers on every page, so the letterhead and footer appear on page 1 **and** on
 every continuation page. A `position: fixed` header does not survive Chromium's
-paged layout — it lands in the wrong place. Don't switch back to it.
+paged layout, because it lands in the wrong place. Don't switch back to it.
 
 Naming convention: `YYYY-MM-DD-<subject>-<recipient>.html`.
 
 ### Available classes
 
-`.doc-meta` (reference + date row) · `.recipient` · `.subject` · `h2.section` ·
-`h3.subsection` · `table.terms` (label/value rows) · `ul.clean` (gold square
-bullets) · `ol.legal` (numbered clauses) · `.callout` · `.signoff` + `.sig` ·
-`.accept-grid` (side-by-side signature and date) · `.page-break` ·
-`.avoid-break`.
+`.doc-meta` (reference and date row) · `.recipient` · `.subject` · `h2.section` ·
+`h3.subsection` · `table.terms` (label and value rows) · `ul.clean` (gold square
+bullets) · `ol.legal` (numbered clauses) · `.callout` · `.signoff` with `.sig` ·
+`.accept-grid` (signature beside date) · `.page-break` · `.avoid-break`.
 
 ### Signing a letter
 
@@ -68,4 +67,4 @@ rule, add `sig__rule--signed` and nest the name inside:
 ```
 
 The name is set in Great Vibes, in signature blue, sitting on the rule. A
-counterparty's signature line stays blank — plain `.sig__rule`.
+counterparty's signature line stays blank, so use a plain `.sig__rule` there.
