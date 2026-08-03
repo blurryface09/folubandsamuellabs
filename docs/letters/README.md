@@ -9,7 +9,9 @@ letters issued on it.
 | --- | --- |
 | `letterhead.css` | The official letterhead. Shared stylesheet — do not fork it per letter. |
 | `render.sh` | Renders letterhead HTML to print-ready A4 PDF via headless Chromium. |
+| `fonts/` | Great Vibes, the signature face. SIL Open Font License 1.1 — see `fonts/OFL.txt`. |
 | `2026-08-03-offer-of-employment-abdulahi-samiat.html` | Offer of employment — Content Strategist. |
+| `2026-08-03-offer-email-abdulahi-samiat.md` | Covering email to send with the offer above. |
 
 Brand assets live in `public/`:
 
@@ -53,3 +55,17 @@ Naming convention: `YYYY-MM-DD-<subject>-<recipient>.html`.
 bullets) · `ol.legal` (numbered clauses) · `.callout` · `.signoff` + `.sig` ·
 `.accept-grid` (side-by-side signature and date) · `.page-break` ·
 `.avoid-break`.
+
+### Signing a letter
+
+To have the issuer's name appear as an executed signature rather than a blank
+rule, add `sig__rule--signed` and nest the name inside:
+
+```html
+<div class="sig__rule sig__rule--signed">
+  <span class="sig__mark">Adeseko Samuel</span>
+</div>
+```
+
+The name is set in Great Vibes, in signature blue, sitting on the rule. A
+counterparty's signature line stays blank — plain `.sig__rule`.

@@ -23,6 +23,14 @@
   margin: 12mm 17mm 11mm;
 }
 
+/* Signature face — Great Vibes, SIL Open Font License 1.1 (see fonts/OFL.txt) */
+@font-face {
+  font-family: "Great Vibes";
+  src: url("fonts/GreatVibes-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --gold: #c9a84c;
   --gold-bright: #f0c040;
@@ -327,7 +335,23 @@ ol.legal > li::marker {
 
 .sig__rule {
   border-bottom: 0.6pt solid var(--ink);
-  height: 13mm;
+  height: 11mm;
+}
+
+/* Executed signature: the name set in the script face, sitting on the rule. */
+.sig__rule--signed {
+  position: relative;
+}
+
+.sig__mark {
+  position: absolute;
+  left: 2mm;
+  bottom: 0.4mm;
+  font-family: "Great Vibes", cursive;
+  font-size: 24pt;
+  line-height: 1;
+  color: #1c2a55;
+  white-space: nowrap;
 }
 
 .sig__name {
@@ -348,7 +372,7 @@ ol.legal > li::marker {
 .accept-grid {
   display: flex;
   gap: 12mm;
-  margin-top: 4mm;
+  margin-top: 2.5mm;
 }
 
 .accept-grid .sig {
