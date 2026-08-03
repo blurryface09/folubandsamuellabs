@@ -1,0 +1,196 @@
+/* ============================================================
+   Résumé stylesheet
+   Single column, A4, real selectable text so applicant tracking
+   systems can read it. No layout tables, no images, no columns
+   that scramble reading order.
+   ============================================================ */
+
+@page {
+  size: A4;
+  margin: 14mm 16mm;
+}
+
+:root {
+  --ink: #14140f;
+  --ink-soft: #3a3a33;
+  --ink-faint: #6b6b62;
+  --rule: #c8c8c0;
+  --accent: #8b6914;
+  --sans: "Liberation Sans", Arial, Helvetica, sans-serif;
+  --mono: "DejaVu Sans Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 9.9pt;
+  line-height: 1.43;
+  color: var(--ink);
+  background: #ffffff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ---------- Header ---------- */
+
+.name {
+  font-size: 21pt;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.tagline {
+  font-family: var(--mono);
+  font-size: 7.8pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 2.4mm;
+}
+
+.contact {
+  font-size: 9.2pt;
+  color: var(--ink-soft);
+  margin-top: 2.6mm;
+}
+
+.contact span + span::before {
+  content: " · ";
+  color: var(--rule);
+}
+
+.header-rule {
+  height: 1.4pt;
+  background: var(--accent);
+  margin: 3.4mm 0 4.2mm;
+}
+
+/* ---------- Sections ---------- */
+
+h2 {
+  font-size: 9.4pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 4.3mm 0 2.2mm;
+  padding-bottom: 1.2mm;
+  border-bottom: 0.5pt solid var(--rule);
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h2:first-of-type {
+  margin-top: 0;
+}
+
+p {
+  margin: 0 0 2.6mm;
+  text-align: justify;
+}
+
+/* ---------- Entries ---------- */
+
+.entry {
+  margin-bottom: 2.8mm;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+.entry__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6mm;
+}
+
+.entry__role {
+  font-weight: 700;
+  font-size: 10.2pt;
+}
+
+.entry__when {
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.entry__where {
+  font-size: 9.2pt;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-bottom: 1.4mm;
+}
+
+/* ---------- Lists ---------- */
+
+ul {
+  margin: 0;
+  padding-left: 4.6mm;
+}
+
+li {
+  margin-bottom: 1.1mm;
+  text-align: justify;
+}
+
+li::marker {
+  color: var(--accent);
+}
+
+/* ---------- Skills ---------- */
+
+.skills {
+  margin: 0;
+}
+
+.skills dt {
+  font-family: var(--mono);
+  font-size: 7.6pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 2.2mm;
+}
+
+.skills dt:first-child {
+  margin-top: 0;
+}
+
+.skills dd {
+  margin: 0.6mm 0 0;
+  font-size: 9.6pt;
+}
+
+.closing {
+  font-size: 9pt;
+  color: var(--ink-faint);
+  margin-top: 2.6mm;
+}
+
+/* On screen, approximate the printed sheet. */
+@media screen {
+  html {
+    background: #d9d9d4;
+  }
+
+  body {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 10mm auto;
+    padding: 14mm 16mm;
+    box-shadow: 0 2mm 8mm rgba(0, 0, 0, 0.18);
+  }
+}
