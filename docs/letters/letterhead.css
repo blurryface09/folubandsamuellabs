@@ -1,0 +1,382 @@
+/* ============================================================
+   FSLabs — Official Letterhead
+   Folub & Samuel Labs Limited · RC 9637480
+   Shared stylesheet for all official correspondence.
+
+   Structure required by this stylesheet (see any letter in this
+   folder for a working example):
+
+     <table class="sheet">
+       <thead> ... letterhead band ...  </thead>
+       <tfoot> ... footer band ...      </tfoot>
+       <tbody> ... document body ...    </tbody>
+     </table>
+
+   The thead/tfoot approach is used deliberately: print engines
+   repeat table headers and footers on every page, so the
+   letterhead appears on page 1 and on every continuation page.
+   Print/PDF target: A4.
+   ============================================================ */
+
+@page {
+  size: A4;
+  margin: 12mm 17mm 11mm;
+}
+
+:root {
+  --gold: #c9a84c;
+  --gold-bright: #f0c040;
+  --gold-deep: #8b6914;
+  --ink: #14140f;
+  --ink-soft: #3d3d35;
+  --ink-faint: #6f6f66;
+  --rule: rgba(201, 168, 76, 0.35);
+  --sans: "Liberation Sans", Arial, Helvetica, sans-serif;
+  --mono: "DejaVu Sans Mono", "Roboto Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 9.9pt;
+  line-height: 1.5;
+  color: var(--ink);
+  background: #ffffff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+table.sheet {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.sheet > thead > tr > td {
+  padding: 0 0 5.5mm;
+}
+
+table.sheet > tfoot > tr > td {
+  padding: 4mm 0 0;
+}
+
+table.sheet > tbody > tr > td {
+  padding: 0;
+  vertical-align: top;
+}
+
+/* ---------- Letterhead band (repeats on every page) ---------- */
+
+.letterhead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10mm;
+  padding-bottom: 2.4mm;
+}
+
+.letterhead__logo {
+  height: 19mm;
+  width: auto;
+  display: block;
+}
+
+.letterhead__org {
+  text-align: right;
+  line-height: 1.4;
+}
+
+.letterhead__name {
+  font-weight: 700;
+  font-size: 8.8pt;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.letterhead__tag {
+  font-family: var(--mono);
+  font-size: 6pt;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-top: 1.1mm;
+}
+
+.letterhead__meta {
+  font-family: var(--mono);
+  font-size: 6.2pt;
+  letter-spacing: 0.03em;
+  color: var(--ink-faint);
+  margin-top: 2mm;
+}
+
+.letterhead__rule {
+  height: 1.6pt;
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright) 38%, var(--gold) 62%, rgba(201, 168, 76, 0));
+}
+
+/* ---------- Footer band (repeats on every page) ---------- */
+
+.sheet-footer {
+  padding-top: 2.2mm;
+  border-top: 0.5pt solid var(--rule);
+  font-family: var(--mono);
+  font-size: 6pt;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  gap: 6mm;
+}
+
+.sheet-footer strong {
+  color: var(--gold-deep);
+  font-weight: 700;
+}
+
+/* ---------- Document body ---------- */
+
+.doc-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 7.4pt;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-bottom: 2.6mm;
+  margin-bottom: 6mm;
+  border-bottom: 0.5pt solid rgba(201, 168, 76, 0.18);
+}
+
+.recipient {
+  margin-bottom: 6mm;
+  line-height: 1.45;
+}
+
+.recipient__name {
+  font-weight: 700;
+  font-size: 10.6pt;
+}
+
+.recipient__line {
+  font-family: var(--mono);
+  font-size: 7.6pt;
+  color: var(--ink-soft);
+}
+
+.subject {
+  font-weight: 700;
+  font-size: 10.8pt;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-bottom: 2mm;
+  margin-bottom: 5mm;
+  border-bottom: 1.2pt solid var(--gold);
+  display: table; /* shrink-to-fit so the gold rule tracks the text */
+}
+
+p {
+  margin: 0 0 3.4mm;
+  text-align: justify;
+}
+
+h2.section {
+  font-weight: 700;
+  font-size: 9.8pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 6.5mm 0 3mm;
+  padding-left: 2.6mm;
+  border-left: 2.4pt solid var(--gold);
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h3.subsection {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 7.8pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin: 4.4mm 0 1.8mm;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+/* ---------- Terms table ---------- */
+
+table.terms {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 3mm;
+  font-size: 9.4pt;
+}
+
+table.terms th,
+table.terms td {
+  text-align: left;
+  vertical-align: top;
+  padding: 1.7mm 2.6mm;
+  border-bottom: 0.5pt solid rgba(20, 20, 15, 0.1);
+}
+
+table.terms th {
+  width: 40mm;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 7.2pt;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+table.terms tr:first-child th,
+table.terms tr:first-child td {
+  border-top: 0.5pt solid rgba(20, 20, 15, 0.1);
+}
+
+/* ---------- Lists ---------- */
+
+ul,
+ol {
+  margin: 0 0 3mm;
+  padding-left: 5mm;
+}
+
+li {
+  margin-bottom: 1.4mm;
+  text-align: justify;
+}
+
+ul.clean {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul.clean > li {
+  position: relative;
+  padding-left: 5mm;
+}
+
+ul.clean > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.5mm;
+  width: 2.1mm;
+  height: 2.1mm;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold-deep));
+}
+
+ol.legal {
+  padding-left: 6mm;
+}
+
+ol.legal > li {
+  margin-bottom: 2.2mm;
+}
+
+ol.legal > li::marker {
+  font-weight: 700;
+  color: var(--gold-deep);
+}
+
+/* ---------- Callout ---------- */
+
+.callout {
+  border: 0.5pt solid var(--rule);
+  border-left: 2.4pt solid var(--gold);
+  background: rgba(201, 168, 76, 0.045);
+  padding: 3mm 3.4mm;
+  margin: 0 0 4mm;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Signature blocks ---------- */
+
+.signoff {
+  margin-top: 6mm;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.sig {
+  margin-top: 4mm;
+  width: 76mm;
+}
+
+/* The issuing signature carries a longer "for and on behalf of" line. */
+.signoff .sig {
+  width: 96mm;
+}
+
+.sig__rule {
+  border-bottom: 0.6pt solid var(--ink);
+  height: 13mm;
+}
+
+.sig__name {
+  font-weight: 700;
+  font-size: 9.8pt;
+  margin-top: 1.4mm;
+}
+
+.sig__role {
+  font-family: var(--mono);
+  font-size: 7pt;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
+.accept-grid {
+  display: flex;
+  gap: 12mm;
+  margin-top: 4mm;
+}
+
+.accept-grid .sig {
+  flex: 1;
+  width: auto;
+  margin-top: 0;
+}
+
+.page-break {
+  page-break-before: always;
+  break-before: page;
+}
+
+.avoid-break {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* On-screen preview approximates a printed sheet. */
+@media screen {
+  html {
+    background: #d9d9d4;
+  }
+
+  body {
+    width: 210mm;
+    margin: 10mm auto;
+    padding: 12mm 17mm 11mm;
+    box-shadow: 0 2mm 8mm rgba(0, 0, 0, 0.18);
+  }
+}
