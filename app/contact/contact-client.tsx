@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 
+import { CONTACT_INBOX, SITE_DOMAIN } from "@/lib/site";
+
 const inputClass = "w-full bg-transparent border-b border-white/10 focus:border-[#c9a84c] outline-none py-4 text-white placeholder-white/20 text-sm tracking-wide transition-colors";
 const labelClass = "block text-[10px] tracking-[0.2em] uppercase text-white/30 mb-2";
 
@@ -27,7 +29,7 @@ export function ContactClient() {
       if (!res.ok) throw new Error();
       setSubmitted(true);
     } catch {
-      setError("Something went wrong. Email us directly at admin@folubandsamuellabs.com");
+      setError(`Something went wrong. Email us directly at ${CONTACT_INBOX}`);
     } finally {
       setLoading(false);
     }
@@ -58,8 +60,8 @@ export function ContactClient() {
               <p className="text-[10px] tracking-[0.2em] text-white/25 uppercase mb-5">Reach Us</p>
               <div className="space-y-5">
                 {[
-                  { label: "Email", value: "admin@folubandsamuellabs.com" },
-                  { label: "Website", value: "folubandsamuellabs.com" },
+                  { label: "Email", value: CONTACT_INBOX },
+                  { label: "Website", value: SITE_DOMAIN },
                   { label: "Location", value: "Nigeria · Remote Worldwide" },
                 ].map((c) => (
                   <div key={c.label}>

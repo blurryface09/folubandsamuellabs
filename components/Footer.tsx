@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+
+import { CONTACT_INBOX } from "@/lib/site";
 import { usePathname } from "next/navigation";
 
 export default function Footer() {
@@ -60,7 +62,7 @@ export default function Footer() {
           {[
             { title: "Company", links: [{ label: "About", href: "#about" }, { label: "Team", href: "#team" }, { label: "Services", href: "#services" }, { label: "Contact", href: "#contact" }] },
             { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "FS Exchange", href: "/exchange" }] },
-            { title: "Contact", links: [{ label: "Lagos, Nigeria", href: "#" }, { label: "admin@folubandsamuellabs.com", href: "mailto:admin@folubandsamuellabs.com" }] },
+            { title: "Contact", links: [{ label: "Lagos, Nigeria", href: "#" }, { label: CONTACT_INBOX, href: `mailto:${CONTACT_INBOX}` }] },
           ].map(col => (
             <div key={col.title}>
               <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", marginBottom: 20, fontWeight: 700 }}>{col.title}</p>

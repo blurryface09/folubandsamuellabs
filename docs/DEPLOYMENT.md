@@ -18,14 +18,14 @@ Set these in Vercel Project Settings:
 ```bash
 DATABASE_URL="postgresql://..."
 AUTH_SECRET="long-random-secret"
-APP_URL="https://your-vercel-domain.com"
+APP_URL="https://fslabs.tech"
 
 AWS_REGION="us-east-1"
 AWS_ACCESS_KEY_ID="..."
 AWS_SECRET_ACCESS_KEY="..."
 AWS_S3_BUCKET="private-hr-documents-bucket"
 
-EMAIL_FROM="Folub & Samuel Labs HR <hr@your-domain.com>"
+EMAIL_FROM="Folub & Samuel Labs HR <hr@fslabs.tech>"
 AWS_SES_REGION="us-east-1"
 # or
 RESEND_API_KEY="re_..."
@@ -35,9 +35,36 @@ Optional:
 
 ```bash
 ALLOW_PRODUCTION_SEED="false"
+# Overrides the public domain baked into lib/site.ts. Only set this to point a
+# preview deployment at a different hostname — production uses the default.
+NEXT_PUBLIC_SITE_DOMAIN="fslabs.tech"
 ```
 
 Never expose AWS credentials or tokens with `NEXT_PUBLIC_`.
+
+## Public Domain
+
+The public domain lives in one place: `lib/site.ts`. Everything that needs a
+canonical URL, a `mailto:`, or a Resend `from:` address derives from it —
+metadata, `sitemap.xml`, `robots.txt`, and the three mail routes.
+
+Two files hold the domain as a literal because they cannot import TypeScript:
+
+- `public/prototype.html` — the marketing homepage. `proxy.ts` rewrites `/` to
+  this static file, so its `canonical`, `og:`, and `twitter:` tags are what
+  crawlers actually index for the site root. Editing `app/layout.tsx` alone does
+  not change them.
+- `prisma/seed.mjs` — the seeded platform-admin address, run via plain `node`.
+
+To move domains, change `lib/site.ts` and those two files.
+
+### Resend
+
+Transactional mail sends from `contact@` and `exchange@` on the public domain.
+Resend rejects mail from an unverified domain, so the contact and enquiry forms
+fail until the domain is verified and its DKIM/SPF records are live at the
+registrar. `admin@` on the same domain also has to receive mail, or internal
+enquiry notifications go nowhere.
 
 ## Neon Setup
 

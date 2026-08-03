@@ -36,7 +36,7 @@ async function main() {
   });
 
   const platformAdmin = await prisma.user.upsert({
-    where: { email: "platform.admin@folubandsamuellabs.com" },
+    where: { email: "platform.admin@fslabs.tech" },
     update: {
       name: "Platform Admin",
       isPlatformAdmin: true,
@@ -44,7 +44,7 @@ async function main() {
       emailVerified: new Date(),
     },
     create: {
-      email: "platform.admin@folubandsamuellabs.com",
+      email: "platform.admin@fslabs.tech",
       name: "Platform Admin",
       isPlatformAdmin: true,
       passwordHash: demoPasswordHash,

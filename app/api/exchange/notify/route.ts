@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
+import { CONTACT_INBOX, MAIL_FROM } from "@/lib/site";
+
 export async function POST(req: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const { type, name, email, details } = await req.json();
@@ -18,8 +20,8 @@ export async function POST(req: Request) {
     .join("");
 
   const { error } = await resend.emails.send({
-    from: "FSLabs Exchange <exchange@folubandsamuellabs.com>",
-    to: "admin@folubandsamuellabs.com",
+    from: MAIL_FROM.fslabsExchange,
+    to: CONTACT_INBOX,
     replyTo: email,
     subject: `[Exchange] ${type} — ${name}`,
     html: `

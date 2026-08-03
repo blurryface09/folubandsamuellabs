@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FolubNav } from "@/components/folub/FolubNav";
 import { FolubFooter } from "@/components/folub/FolubFooter";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     title: "FOLUB Builders | Build. Buy. Sell.",
     description:
       "Premium residential and commercial real estate, developed, sold, and managed by our own team.",
-    url: "https://folubandsamuellabs.com/folub",
+    url: `${SITE_URL}/folub`,
     siteName: "FOLUB Builders",
     locale: "en_NG",
     type: "website",

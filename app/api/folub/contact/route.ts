@@ -1,9 +1,11 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
+import { CONTACT_INBOX, MAIL_FROM, SITE_DOMAIN, SITE_URL } from "@/lib/site";
+
 /*
  * FOLUB Builders enquiry handler. Uses the same verified Resend domain as the
- * FSLabs form (folubandsamuellabs.com) so deliverability is unchanged; swap the
+ * FSLabs form (see lib/site.ts) so deliverability is unchanged; swap the
  * from/to addresses once a dedicated folubbuilders.com domain is verified.
  */
 export async function POST(req: Request) {
@@ -20,14 +22,14 @@ export async function POST(req: Request) {
   const [{ error }] = await Promise.all([
     // Internal notification
     resend.emails.send({
-      from: "FOLUB Builders <contact@folubandsamuellabs.com>",
-      to: "admin@folubandsamuellabs.com",
+      from: MAIL_FROM.folubBuilders,
+      to: CONTACT_INBOX,
       replyTo: email,
       subject: `New enquiry: ${intent}${property ? ` — ${property}` : ""} from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f7f4ee; border-radius: 8px;">
           <h2 style="color: ${navy}; margin-bottom: 4px;">New FOLUB Builders enquiry</h2>
-          <p style="color: #6E6A5F; font-size: 14px; margin-top: 0;">folubandsamuellabs.com/folub</p>
+          <p style="color: #6E6A5F; font-size: 14px; margin-top: 0;">${SITE_DOMAIN}/folub</p>
           <hr style="border: none; border-top: 1px solid #e2dcd0; margin: 20px 0;" />
           <table style="width: 100%; border-collapse: collapse;">
             <tr><td style="padding: 8px 0; color: #6E6A5F; font-size: 14px; width: 130px;">Name</td><td style="padding: 8px 0; font-weight: 600;">${name}</td></tr>
@@ -45,9 +47,9 @@ export async function POST(req: Request) {
     }),
     // Auto-reply to the enquirer
     resend.emails.send({
-      from: "FOLUB Builders <contact@folubandsamuellabs.com>",
+      from: MAIL_FROM.folubBuilders,
       to: email,
-      replyTo: "admin@folubandsamuellabs.com",
+      replyTo: CONTACT_INBOX,
       subject: "We received your enquiry — FOLUB Builders",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #16283A; color: #EFE9DC; border-radius: 12px; overflow: hidden;">
@@ -67,7 +69,7 @@ export async function POST(req: Request) {
               <p style="color: rgba(239,233,220,0.78); font-size: 14px; line-height: 1.6; margin: 0 0 16px;">
                 Browse our available homes and developments — from move-in-ready residences to off-plan opportunities.
               </p>
-              <a href="https://folubandsamuellabs.com/folub/properties" style="display: inline-block; background: ${gold}; color: #16283A; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 0.03em;">View properties →</a>
+              <a href="${SITE_URL}/folub/properties" style="display: inline-block; background: ${gold}; color: #16283A; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 0.03em;">View properties →</a>
             </div>
           </div>
           <div style="background: rgba(255,255,255,0.03); border-top: 1px solid rgba(198,162,74,0.12); padding: 20px 32px; text-align: center;">
