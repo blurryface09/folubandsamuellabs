@@ -15,8 +15,12 @@ export const SITE_DOMAIN = process.env.NEXT_PUBLIC_SITE_DOMAIN?.trim() || "fslab
 /** Canonical origin, no trailing slash. */
 export const SITE_URL = `https://${SITE_DOMAIN}`;
 
-/** Inbox that receives contact-form and enquiry mail. */
-export const CONTACT_INBOX = `admin@${SITE_DOMAIN}`;
+/**
+ * Inbox that receives contact-form and enquiry mail, and the address shown
+ * publicly on the site. Must be a real mailbox on the domain — it is the Zoho
+ * account's primary address, not an alias.
+ */
+export const CONTACT_INBOX = `folubandsamuel@${SITE_DOMAIN}`;
 
 /**
  * Envelope sender for transactional mail. Must belong to a domain verified in

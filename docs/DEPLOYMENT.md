@@ -62,9 +62,16 @@ To move domains, change `lib/site.ts` and those two files.
 
 Transactional mail sends from `contact@` and `exchange@` on the public domain.
 Resend rejects mail from an unverified domain, so the contact and enquiry forms
-fail until the domain is verified and its DKIM/SPF records are live at the
-registrar. `admin@` on the same domain also has to receive mail, or internal
-enquiry notifications go nowhere.
+fail until the domain is verified and its DKIM/SPF records are live in DNS.
+
+Receiving is a separate concern from sending. `CONTACT_INBOX` in `lib/site.ts`
+(`folubandsamuel@fslabs.tech`) is the Zoho mailbox that receives internal enquiry
+notifications and is displayed publicly on the site — it must be a real mailbox,
+or those notifications go nowhere while the forms still report success.
+
+`contact@` and `exchange@` need to exist as aliases on that mailbox. Resend does
+not require them to be real in order to send, but they appear in the `From`
+header, so a recipient replying directly to one would otherwise bounce.
 
 ## Neon Setup
 
