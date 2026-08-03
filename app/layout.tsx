@@ -24,10 +24,12 @@ export const metadata: Metadata = {
     siteName: "Folub & Samuel Labs",
     locale: "en_NG",
     type: "website",
-    images: [{ url: "/fslabs-logo.PNG", alt: "Folub & Samuel Labs" }],
+    // The 1200x630 card, not the bare logo — social platforms crop to 1.91:1
+    // and render transparency unpredictably.
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Folub & Samuel Labs" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Folub & Samuel Labs",
     description: "Software development, cybersecurity, IT consulting, and tech outsourcing from Lagos, Nigeria.",
   },
@@ -39,7 +41,8 @@ const jsonLd = {
   name: "Folub & Samuel Labs",
   alternateName: "FSLabs",
   url: SITE_URL,
-  logo: `${SITE_URL}/fslabs-logo.PNG`,
+  // Light-background lockup: search results render it on white.
+  logo: `${SITE_URL}/fslabs-logo.png`,
   description: "Software development, cybersecurity, IT consulting, and tech outsourcing company based in Lagos, Nigeria.",
   address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
 };
