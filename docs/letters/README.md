@@ -12,6 +12,12 @@ the letters issued on it.
 | `fonts/` | Great Vibes, the signature face. SIL Open Font License 1.1. See `fonts/OFL.txt`. |
 | `2026-08-03-offer-of-employment-abdulahi-samiat.html` | Offer of employment, Content Strategist. |
 | `2026-08-03-offer-email-abdulahi-samiat.md` | Covering email to send with the offer above. |
+| `2026-08-03-offer-of-employment-olatuja-oyinkansola.html` | Offer of employment, Junior Cloud Engineer (Trainee). |
+| `2026-08-03-offer-email-olatuja-oyinkansola.md` | Covering email to send with the offer above. |
+
+House style for correspondence: no em dashes, no en dashes, and no hyphenated
+compounds in the prose. Rebuild the sentence rather than swapping the dash for a
+comma. Hyphens belong only in code, meaning class names and filenames.
 
 Brand assets live in `public/`:
 
