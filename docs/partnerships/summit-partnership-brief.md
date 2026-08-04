@@ -86,13 +86,22 @@ certification — before we ask for anything.
 | **TailorNow** (tailornow.shop) | Marketplace for custom fashion in Nigeria — connects customers to verified tailors and handles booking, saved measurements, escrow-style payment, production tracking, delivery, reviews, and group/aso-ebi and uniform orders. 20% commission + 3% service charge. | Consumer distribution, payment volume, a merchant category no one else aggregates |
 | **HR & Payroll platform** | Multi-tenant SaaS for Nigerian businesses: employees, departments, attendance, leave, documents, payroll records, audit logs, subscription billing | **Payroll disbursement rails**, enterprise channel, data-residency requirements |
 | **FSLabs Exchange** | Crypto-to-naira and account services — USDT, gift cards, requests processed within ~30 minutes | Payment rails, licensing/compliance, market data |
-| **FOLUB Builders** | Property developer — builds, buys and sells residential/commercial property across Lagos and Abuja. Publicly states 18 years' building experience, 240+ units delivered, 12 estates | Relevant if Norsh is a property business (see §8) |
 
-> **Confirm before outreach:** how we describe the FOLUB Builders relationship — sister brand, group
-> company, or client. It sits in our codebase but the relationship isn't stated there, and getting
-> this wrong in a first meeting is avoidable.
+### 2d. Client delivery track record
 
-### 2d. What we actually need from partnerships
+Separate from our own products, we build for clients — and in a partnership conversation this is the
+more persuasive evidence, because it shows someone else trusted us with their business.
+
+- **FOLUB Builders** — a property development company (builds, buys and sells residential and
+  commercial property across Lagos and Abuja; publicly states 18 years' experience, 240+ units
+  delivered, 12 estates). **A separate company and an FSLabs client** — we built and maintain their
+  web platform. Useful as a reference for any property-sector conversation, including Norsh if the
+  property hypothesis holds (§5.5).
+
+Add other named client work here before the one-pager is finalised — a short, credible list of
+delivered projects is what turns "two founders" from a risk into a proof point.
+
+### 2e. What we actually need from partnerships
 
 In priority order — every ask in §4 should map to one of these:
 
@@ -409,7 +418,7 @@ Candidates, none confirmed:
 
 | Candidate | Assessment |
 | --- | --- |
-| **Norsh Luxury Homes Ltd** (Lagos) | **Now the leading hypothesis.** A Lagos property company — and given FOLUB Builders sits in our portfolio, a property developer is a very plausible summit contact. Would be a natural fit for both software/security services and property collaboration. |
+| **Norsh Luxury Homes Ltd** (Lagos) | **Now the leading hypothesis.** A Lagos property company. We already deliver for a property developer (FOLUB Builders, §2d), so we'd walk in with directly relevant sector experience and a live reference — a strong Mode A conversation. |
 | https://norsh.org | Site exists; content not retrievable, purpose unconfirmed |
 | https://bynorsh.com | Site exists; content not retrievable, appears to be a separate brand |
 | **Norrsken / Norrsken22** | Possible misspelling. If so this is a **high-value investor contact** — Norrsken22 is an Africa-focused growth fund — and should be reframed as a capital conversation, not a commercial partnership. |
@@ -419,8 +428,8 @@ exhibitor list, and confirm the exact legal name. Then fill in: what they do →
 our offer → our ask → watch-outs.
 
 **If it is Norsh Luxury Homes**, the likely shape is: we sell them software (sales/CRM, project
-tracking, client portal — much of which we've already built for FOLUB Builders and could adapt),
-and explore property collaboration on the FOLUB side.
+tracking, client portal), and we can point to FOLUB Builders as a delivered project in the same
+sector — assuming we have their permission to name them (§8).
 
 ---
 
@@ -432,11 +441,12 @@ and explore property collaboration on the FOLUB side.
 2. Our stated differentiator is that both founders work every project. That's a strength in a sales
    conversation and a **scaling question** in a partnership conversation — how do we answer "what
    happens when you have ten clients?" before they ask it?
-3. How do we describe the FOLUB Builders relationship? Settle this before any meeting.
+3. Which client projects can we name publicly? A named reference is worth more than any claim we
+   make about ourselves — and we need the client's permission before we use it.
 
 **On the asks**
 4. If we could only land **one** of these five, which and why?
-5. Which of the six needs in §2d does each partner actually solve — and which need do none of them
+5. Which of the six needs in §2e does each partner actually solve — and which need do none of them
    address?
 6. Where are we asking for something we're not ready to receive? (Enterprise uniform contracts and
    enterprise SaaS procurement are the obvious two.)
@@ -469,7 +479,7 @@ CoralPay and Snapnet first → Open Data Center → LSEG → Norsh once identifi
 - [ ] Traction numbers we're willing to share (clients delivered, products live, Academy cohorts)
 - [ ] Real phone number on the site — the contact pages currently show placeholder numbers
       (`+234 800 000 0000`); fix before we send anyone there
-- [ ] FOLUB Builders relationship settled (§2c)
+- [ ] Permission confirmed to name FOLUB Builders (and any other client) as a reference
 - [ ] Norsh identified; Open Data Center identity confirmed
 - [ ] An owner assigned per company
 
@@ -514,7 +524,7 @@ CoralPay and Snapnet first → Open Data Center → LSEG → Norsh once identifi
 | 2 | Confirm **Open Data Center** = OADC, or correct it | | §5.3 outreach |
 | 3 | Confirm **which LSEG division** we met and the contact's remit | | §5.4 outreach |
 | 4 | Add summit name, date, and per-company contact names | | All outreach |
-| 5 | Settle how we describe the **FOLUB Builders** relationship | | Any meeting where the portfolio comes up |
+| 5 | Get **client permission to name references** (FOLUB Builders and others), and compile the delivered-project list for §2d | | One-pager, and any Mode A pitch |
 | 6 | Agree the traction numbers we'll share externally | | One-pager and all emails |
 | 7 | Replace placeholder phone numbers on the site | | Any outreach that points at our site |
 | 8 | Assess real capacity for a bulk enterprise uniform order (TailorNow) | | Snapnet channel ask |
@@ -560,5 +570,6 @@ estimates — do not quote them back to the company.
 **Norsh** — unresolved; candidates in §5.5.
 
 **FSLabs internal** — service lines, Academy tracks, founder bios and product details taken from
-this repository (`app/about`, `app/services`, `app/training`, `app/exchange`, `app/folub`,
-`prisma/schema.prisma`) and the TailorNow repository.
+this repository (`app/about`, `app/services`, `app/training`, `app/exchange`,
+`prisma/schema.prisma`) and the TailorNow repository. FOLUB Builders details come from the client
+site we built for them (`app/folub`) — a separate company, not an FSLabs product.
