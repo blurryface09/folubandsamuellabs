@@ -1,0 +1,1219 @@
+<title>About Folub &amp; Samuel Labs</title>
+
+<style>
+  /* ─────────────────────────────────────────────────────────
+     Tokens — palette taken from the FSLabs site's own system:
+     gold #C9A84C on near-black #050505, bone text #F5F0E8.
+     Neutrals biased warm toward the gold rather than pure grey.
+     :root is the dark brand default; light is a warm bone
+     inversion that keeps the accent legible.
+     ───────────────────────────────────────────────────────── */
+  :root {
+    --ground:      #050505;
+    --ground-deep: #030303;
+    --surface:     #0C0B08;
+    --text:        #F5F0E8;
+    --text-dim:    rgba(245, 240, 232, 0.62);
+    --text-faint:  rgba(245, 240, 232, 0.40);
+    --gold:        #C9A84C;
+    --gold-lift:   #F0C040;
+    --gold-text:   #C9A84C;
+    --rule:        rgba(201, 168, 76, 0.22);
+    --rule-soft:   rgba(201, 168, 76, 0.11);
+    --shade:       rgba(201, 168, 76, 0.05);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground:      #F7F4ED;
+      --ground-deep: #F2EEE4;
+      --surface:     #FFFDF8;
+      --text:        #16150F;
+      --text-dim:    rgba(22, 21, 15, 0.70);
+      --text-faint:  rgba(22, 21, 15, 0.52);
+      --gold:        #A6822A;
+      --gold-lift:   #7A5B12;
+      --gold-text:   #7A5B12;
+      --rule:        rgba(122, 91, 18, 0.26);
+      --rule-soft:   rgba(122, 91, 18, 0.13);
+      --shade:       rgba(122, 91, 18, 0.05);
+    }
+  }
+
+  /* Viewer's explicit toggle must win over the OS preference, both ways. */
+  :root[data-theme="dark"] {
+    --ground:      #050505;
+    --ground-deep: #030303;
+    --surface:     #0C0B08;
+    --text:        #F5F0E8;
+    --text-dim:    rgba(245, 240, 232, 0.62);
+    --text-faint:  rgba(245, 240, 232, 0.40);
+    --gold:        #C9A84C;
+    --gold-lift:   #F0C040;
+    --gold-text:   #C9A84C;
+    --rule:        rgba(201, 168, 76, 0.22);
+    --rule-soft:   rgba(201, 168, 76, 0.11);
+    --shade:       rgba(201, 168, 76, 0.05);
+  }
+
+  :root[data-theme="light"] {
+    --ground:      #F7F4ED;
+    --ground-deep: #F2EEE4;
+    --surface:     #FFFDF8;
+    --text:        #16150F;
+    --text-dim:    rgba(22, 21, 15, 0.70);
+    --text-faint:  rgba(22, 21, 15, 0.52);
+    --gold:        #A6822A;
+    --gold-lift:   #7A5B12;
+    --gold-text:   #7A5B12;
+    --rule:        rgba(122, 91, 18, 0.26);
+    --rule-soft:   rgba(122, 91, 18, 0.13);
+    --shade:       rgba(122, 91, 18, 0.05);
+  }
+
+  :root {
+    --sans: "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --measure: 68ch;
+    --pad: clamp(20px, 5vw, 56px);
+  }
+
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Shell: one reading column with a gold hairline rail ── */
+  .shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--pad) 96px;
+    border-left: 1px solid var(--rule-soft);
+    border-right: 1px solid var(--rule-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Eyebrow: mono, uppercase, gradient tick — from their site ── */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    margin: 0;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 34px;
+    height: 1px;
+    flex: none;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  /* ── Hero ── */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    padding: clamp(64px, 12vh, 132px) 0 clamp(48px, 8vh, 84px);
+  }
+
+  .mark {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .mark svg { display: block; }
+  /* var() is not honoured in SVG presentation attributes — style via CSS. */
+  .mark svg rect { fill: none; stroke: var(--rule); stroke-width: 1; }
+  .mark svg text { fill: var(--gold-text); }
+
+  .mark-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    line-height: 1.6;
+  }
+
+  .mark-name strong {
+    display: block;
+    color: var(--text);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-weight: 900;
+    font-size: clamp(2.6rem, 8vw, 5.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 15ch;
+  }
+
+  h1 .gilt {
+    background: linear-gradient(96deg, var(--gold-lift), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .standfirst {
+    font-size: clamp(1.02rem, 2.1vw, 1.22rem);
+    line-height: 1.7;
+    color: var(--text-dim);
+    max-width: 54ch;
+    margin: 0;
+  }
+
+  .stamp {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding-top: 8px;
+    border-top: 1px solid var(--rule-soft);
+    margin: 0;
+  }
+
+  .stamp span { white-space: nowrap; }
+  .stamp b { color: var(--gold-text); font-weight: 700; }
+
+  /* ── Contents ── */
+  .toc {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 30px 0 34px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .toc-grid a {
+    display: flex;
+    gap: 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14.5px;
+    line-height: 1.5;
+    padding: 3px 0;
+    transition: color 0.15s ease;
+  }
+
+  .toc-grid a:hover,
+  .toc-grid a:focus-visible { color: var(--gold-text); }
+
+  .toc-grid .num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    padding-top: 4px;
+    flex: none;
+  }
+
+  /* ── Sections ── */
+  .band {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: clamp(52px, 9vh, 88px) 0 0;
+  }
+
+  .band > :is(p, ul, ol, .note, .grid-2, .grid-4, .table-wrap, .steps, .lines, .checklist) {
+    margin: 0;
+  }
+
+  h2 {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 26ch;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 1.06rem;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    margin: 0;
+  }
+
+  .band p {
+    max-width: var(--measure);
+    color: var(--text-dim);
+  }
+
+  .band p.lead {
+    color: var(--text);
+    font-size: 1.06rem;
+  }
+
+  .band a {
+    color: var(--gold-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .band a:hover,
+  .band a:focus-visible { border-bottom-color: var(--gold); }
+
+  strong { color: var(--text); font-weight: 700; }
+
+  em { color: var(--text); font-style: italic; }
+
+  /* ── Divider ── */
+  .rule {
+    height: 1px;
+    border: 0;
+    margin: clamp(52px, 9vh, 88px) 0 0;
+    background: linear-gradient(90deg, transparent, var(--rule), transparent);
+  }
+
+  /* ── Pull quote / tagline ── */
+  .creed {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 26px 28px;
+    background: var(--shade);
+    border-left: 2px solid var(--gold);
+  }
+
+  .creed p {
+    max-width: 58ch;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .creed .attrib {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* ── Fact table ── */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+    text-align: left;
+  }
+
+  caption {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    text-align: left;
+    padding-bottom: 12px;
+  }
+
+  th {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    padding: 0 20px 10px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: bottom;
+  }
+
+  td {
+    padding: 13px 20px 13px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+
+  td:first-child { color: var(--text); }
+  tr:last-child td { border-bottom: 0; }
+
+  .num-cell {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--gold-text);
+    font-weight: 700;
+  }
+
+  /* ── Values: 2×2 ── */
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 26px 24px;
+    background: var(--ground);
+  }
+
+  .cell .tick {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--gold-text);
+  }
+
+  .cell p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--text-dim);
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── Founders: 2 up ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(272px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+  }
+
+  .who {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px 26px;
+    background: var(--ground);
+  }
+
+  .badge {
+    width: 54px;
+    height: 54px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--rule);
+    font-family: var(--sans);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--gold-text);
+  }
+
+  .who .role {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+
+  .who p {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── Service lines: numbered because the site numbers them 01–06 ── */
+  .lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    list-style: none;
+    padding: 0;
+  }
+
+  .line {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 4px 18px;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .line:last-child { border-bottom: 1px solid var(--rule-soft); }
+
+  .line .idx {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--gold-text);
+    padding-top: 4px;
+  }
+
+  .line .tagline {
+    grid-column: 2;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .line p {
+    grid-column: 2;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .chips {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 4px 0 0;
+    margin: 0;
+  }
+
+  .chips li {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border: 1px solid var(--rule-soft);
+    padding: 4px 9px;
+  }
+
+  /* ── Process: a real sequence, so it earns its numbers ── */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(196px, 1fr));
+    gap: 30px 26px;
+    list-style: none;
+    padding: 0;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dot {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--shade);
+    border: 2px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold-text);
+  }
+
+  .step p {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text-dim);
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── Body lists ── */
+  .band ul.plain,
+  .band ol.plain {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    max-width: var(--measure);
+    padding-left: 20px;
+    color: var(--text-dim);
+  }
+
+  .band ul.plain li::marker { color: var(--gold); }
+  .band ol.plain li::marker { color: var(--gold); font-family: var(--mono); font-size: 12px; }
+
+  /* ── Note / caution ── */
+  .note {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 24px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+  }
+
+  .note .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+
+  .note p {
+    font-size: 14.5px;
+    color: var(--text-dim);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  /* ── Products ── */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--rule-soft);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 26px;
+    background: var(--ground);
+  }
+
+  .item .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+
+  .item p {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    max-width: 64ch;
+    margin: 0;
+  }
+
+  /* ── Checklist: open boxes encode genuinely unfinished state ── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    max-width: var(--measure);
+  }
+
+  .checklist li {
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    gap: 14px;
+    align-items: start;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+
+  .checklist li::before {
+    content: "";
+    width: 13px;
+    height: 13px;
+    margin-top: 6px;
+    border: 1px solid var(--rule);
+  }
+
+  /* ── Footer ── */
+  footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: clamp(56px, 10vh, 96px);
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  footer p { margin: 0; max-width: 60ch; line-height: 1.9; letter-spacing: 0.1em; }
+
+  /* ── Focus ── */
+  a:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* ── One restrained load sequence, hero only ── */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero > * {
+      animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero > *:nth-child(1) { animation-delay: 0.04s; }
+    .hero > *:nth-child(2) { animation-delay: 0.12s; }
+    .hero > *:nth-child(3) { animation-delay: 0.2s; }
+    .hero > *:nth-child(4) { animation-delay: 0.28s; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── Print: staff will print this ── */
+  @media print {
+    :root {
+      --ground: #fff; --ground-deep: #fff; --surface: #fff;
+      --text: #000; --text-dim: #222; --text-faint: #555;
+      --gold: #7A5B12; --gold-lift: #7A5B12; --gold-text: #7A5B12;
+      --rule: #bbb; --rule-soft: #ddd; --shade: transparent;
+    }
+    body { font-size: 11pt; line-height: 1.5; }
+    .shell { border: 0; max-width: none; padding: 0; }
+    .toc { display: none; }
+    .hero { padding: 0 0 24px; }
+    .hero > * { animation: none; }
+    h1 { font-size: 30pt; }
+    h1 .gilt { -webkit-text-fill-color: #7A5B12; color: #7A5B12; }
+    .band { padding-top: 22pt; break-inside: avoid; }
+    h2 { font-size: 15pt; break-after: avoid; }
+    h3 { break-after: avoid; }
+    .rule { margin-top: 22pt; }
+  }
+</style>
+
+<div class="shell">
+
+  <header class="hero">
+    <div class="mark">
+      <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="45" height="45"></rect>
+        <text x="23" y="23" font-family="Segoe UI, Roboto, sans-serif"
+              font-size="17" font-weight="900" letter-spacing="-0.5"
+              text-anchor="middle" dominant-baseline="central">FS</text>
+      </svg>
+      <span class="mark-name">
+        <strong>Folub &amp; Samuel Labs</strong>
+        Company overview · internal
+      </span>
+    </div>
+
+    <h1>Your Vision.<br><span class="gilt">Our Execution.</span></h1>
+
+    <p class="standfirst">
+      An introduction to the company — for our team, staff, instructors and collaborators.
+      This is the same story we tell clients, and it only works if all of us tell it the same way.
+    </p>
+
+    <p class="stamp">
+      <span>Lagos, Nigeria</span>
+      <span>RC <b>9637480</b></span>
+      <span>Updated <b>3 Aug 2026</b></span>
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="eyebrow">Contents</p>
+    <ol class="toc-grid">
+      <li><a href="#who"><span class="num">01</span>Who we are</a></li>
+      <li><a href="#founders"><span class="num">02</span>The founders</a></li>
+      <li><a href="#values"><span class="num">03</span>What we stand for</a></li>
+      <li><a href="#services"><span class="num">04</span>What we sell</a></li>
+      <li><a href="#process"><span class="num">05</span>How we work</a></li>
+      <li><a href="#academy"><span class="num">06</span>FSLabs Academy</a></li>
+      <li><a href="#products"><span class="num">07</span>Our products</a></li>
+      <li><a href="#clients"><span class="num">08</span>Our clients</a></li>
+      <li><a href="#language"><span class="num">09</span>How we talk about us</a></li>
+      <li><a href="#contacts"><span class="num">10</span>Who to go to</a></li>
+      <li><a href="#open"><span class="num">11</span>To be completed</a></li>
+    </ol>
+  </nav>
+
+  <!-- 01 ─────────────────────────────────────────── -->
+  <section class="band" id="who">
+    <p class="eyebrow">01 · Who we are</p>
+    <h2>A technology and cybersecurity company, incorporated in Nigeria.</h2>
+
+    <p class="lead">We do three things:</p>
+
+    <ol class="plain">
+      <li><strong>We deliver technology services to clients</strong> — software, security, cloud, data and consulting.</li>
+      <li><strong>We build and run our own products</strong> — a marketplace, an HR platform, an exchange.</li>
+      <li><strong>We train the next generation of engineers</strong> through FSLabs Academy.</li>
+    </ol>
+
+    <div class="creed">
+      <p>Our mission is to be the bridge between technology and business — connecting companies to
+      real talent, delivering world-class tech services, and building products that matter.</p>
+      <span class="attrib">Two founders · one mission</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Company facts</caption>
+        <tbody>
+          <tr><td>Legal name</td><td>Folub and Samuel Labs</td></tr>
+          <tr><td>RC number</td><td class="num-cell">9637480</td></tr>
+          <tr><td>Incorporated in</td><td>Nigeria</td></tr>
+          <tr><td>Base</td><td>Lagos, Nigeria</td></tr>
+          <tr><td>Website</td><td><a href="https://folubandsamuellabs.com">folubandsamuellabs.com</a></td></tr>
+          <tr><td>General email</td><td><a href="mailto:admin@folubandsamuellabs.com">admin@folubandsamuellabs.com</a></td></tr>
+          <tr><td>Phone</td><td><em>To be added — the site currently shows a placeholder.</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 02 ─────────────────────────────────────────── -->
+  <section class="band" id="founders">
+    <p class="eyebrow">02 · The founders</p>
+    <h2>Both founders work directly on every project.</h2>
+
+    <p>That is deliberate. We do not hand work off to junior contractors or offshore teams. When a
+    client engages FSLabs, they get both founders — every single time. It is the model and it is the
+    standard.</p>
+
+    <div class="grid-2">
+      <article class="who">
+        <span class="badge" aria-hidden="true">S</span>
+        <div>
+          <h3>Adeseko Samuel</h3>
+          <span class="role">Co-Founder &amp; Technical Lead</span>
+        </div>
+        <p>Samuel is the builder. A cybersecurity professional and full-stack developer who carries
+        the technical weight of FSLabs — system architecture, backend engineering, security
+        implementation and product delivery. He thinks in systems, ships in weeks, and holds the
+        standard that everything we release has to actually work, scale, and be secure from day one.</p>
+      </article>
+
+      <article class="who">
+        <span class="badge" aria-hidden="true">A</span>
+        <div>
+          <h3>Akinbayo</h3>
+          <span class="role">Co-Founder &amp; Business Lead</span>
+        </div>
+        <p>Akinbayo is the business engine. He drives strategy, client relationships, partnerships
+        and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making
+        sure it moves in the right direction.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 03 ─────────────────────────────────────────── -->
+  <section class="band" id="values">
+    <p class="eyebrow">03 · What we stand for</p>
+    <h2>Four values. Not decoration — this is how work gets judged here.</h2>
+
+    <div class="grid-4">
+      <article class="cell">
+        <span class="tick">01</span>
+        <h3>Innovation</h3>
+        <p>We don't follow trends — we set them. Every solution we build pushes the boundary of
+        what's possible.</p>
+      </article>
+      <article class="cell">
+        <span class="tick">02</span>
+        <h3>Ambition</h3>
+        <p>We think big, move fast, and refuse to settle. Small thinking has no place here.</p>
+      </article>
+      <article class="cell">
+        <span class="tick">03</span>
+        <h3>Integrity</h3>
+        <p>We say what we mean and deliver what we promise. No fluff, no shortcuts, no excuses.</p>
+      </article>
+      <article class="cell">
+        <span class="tick">04</span>
+        <h3>Impact</h3>
+        <p>Technology is just a tool. What matters is what it changes — for our clients and for the
+        world.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 04 ─────────────────────────────────────────── -->
+  <section class="band" id="services">
+    <p class="eyebrow">04 · What we sell</p>
+    <h2>Six service lines. Know these — when someone asks what FSLabs does, this is the answer.</h2>
+
+    <ul class="lines">
+      <li class="line">
+        <span class="idx">01</span>
+        <h3>Software Development</h3>
+        <span class="tagline">Custom-built. Production-ready.</span>
+        <p>We design and build web apps, mobile apps, APIs and enterprise software tailored exactly
+        to requirements — scalable, maintainable, and shipped on time.</p>
+        <ul class="chips">
+          <li>Web &amp; mobile applications</li>
+          <li>API development &amp; integration</li>
+          <li>SaaS product development</li>
+          <li>Legacy system modernisation</li>
+        </ul>
+      </li>
+
+      <li class="line">
+        <span class="idx">02</span>
+        <h3>Cybersecurity</h3>
+        <span class="tagline">Protect what matters most.</span>
+        <p>In today's threat landscape, security is non-negotiable. From penetration testing to full
+        security operations, we build resilient security postures that hold.</p>
+        <ul class="chips">
+          <li>Penetration testing &amp; assessments</li>
+          <li>Security audits &amp; compliance</li>
+          <li>Threat intelligence &amp; monitoring</li>
+          <li>Incident response &amp; recovery</li>
+        </ul>
+      </li>
+
+      <li class="line">
+        <span class="idx">03</span>
+        <h3>IT Consulting</h3>
+        <span class="tagline">Strategy meets execution.</span>
+        <p>We work alongside leadership to evaluate the tech landscape, identify opportunities, and
+        build a roadmap that supports sustainable long-term growth.</p>
+        <ul class="chips">
+          <li>Digital transformation strategy</li>
+          <li>Technology roadmapping</li>
+          <li>IT infrastructure advisory</li>
+          <li>Cloud architecture planning</li>
+        </ul>
+      </li>
+
+      <li class="line">
+        <span class="idx">04</span>
+        <h3>Tech Outsourcing</h3>
+        <span class="tagline">Scale your team, not your costs.</span>
+        <p>Skilled engineers, QA specialists, DevOps leads and technical managers on demand — without
+        the overhead of full-time hiring.</p>
+        <ul class="chips">
+          <li>Dedicated engineering teams</li>
+          <li>Staff augmentation</li>
+          <li>Project-based outsourcing</li>
+          <li>DevOps &amp; cloud management</li>
+        </ul>
+      </li>
+
+      <li class="line">
+        <span class="idx">05</span>
+        <h3>Cloud Solutions</h3>
+        <span class="tagline">Modern infrastructure, built right.</span>
+        <p>We help businesses migrate, manage and optimise cloud environments across AWS, GCP and
+        Azure — from initial setup to cost optimisation.</p>
+        <ul class="chips">
+          <li>Cloud migration</li>
+          <li>Infrastructure as code</li>
+          <li>Cost optimisation</li>
+          <li>Managed cloud services</li>
+        </ul>
+      </li>
+
+      <li class="line">
+        <span class="idx">06</span>
+        <h3>Data &amp; Analytics</h3>
+        <span class="tagline">Turn data into decisions.</span>
+        <p>We unlock the value in data — pipelines, dashboards and AI-powered analytics that give
+        teams clear, actionable insight.</p>
+        <ul class="chips">
+          <li>BI dashboards</li>
+          <li>Data pipeline engineering</li>
+          <li>AI &amp; ML integration</li>
+          <li>KPI reporting systems</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 05 ─────────────────────────────────────────── -->
+  <section class="band" id="process">
+    <p class="eyebrow">05 · How we work</p>
+    <h2>Precision process. Guaranteed delivery.</h2>
+
+    <p>Four stages. Every engagement, no exceptions.</p>
+
+    <ol class="steps">
+      <li class="step">
+        <span class="dot">01</span>
+        <h3>Brief</h3>
+        <p>The client tells us what they need. We listen, ask the right questions, and understand the
+        real problem before touching a keyboard.</p>
+      </li>
+      <li class="step">
+        <span class="dot">02</span>
+        <h3>Scope</h3>
+        <p>We define the work clearly. Realistic timelines. Honest deliverables. No scope creep, no
+        surprises.</p>
+      </li>
+      <li class="step">
+        <span class="dot">03</span>
+        <h3>Build</h3>
+        <p>We do the work. Software gets built, systems get secured, solutions get shipped. No status
+        theatre.</p>
+      </li>
+      <li class="step">
+        <span class="dot">04</span>
+        <h3>Deliver</h3>
+        <p>The client receives something that works, is documented, and is ready for the real world.</p>
+      </li>
+    </ol>
+
+    <div class="creed">
+      <p><strong>That last line is the FSLabs standard.</strong> Works, documented, ready for the
+      real world. If a piece of work fails any of those three, it isn't finished — regardless of the
+      deadline.</p>
+    </div>
+
+    <h3>What this means day to day</h3>
+    <ul class="plain">
+      <li><strong>Understand before building.</strong> Questions early are cheap; rework is not.</li>
+      <li><strong>Scope honestly.</strong> If a timeline isn't realistic, say so during Scope, not during Build.</li>
+      <li><strong>No status theatre.</strong> Report real progress, including problems. Bad news early is a service; bad news late is a failure.</li>
+      <li><strong>Document as you go.</strong> Documentation is part of delivery, not an optional extra.</li>
+      <li><strong>Secure from day one.</strong> Security is not a phase at the end.</li>
+      <li><strong>We respond within 24 hours.</strong> That's the promise on our contact form. Honour it.</li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 06 ─────────────────────────────────────────── -->
+  <section class="band" id="academy">
+    <p class="eyebrow">06 · FSLabs Academy</p>
+    <h2>We train people into real engineering roles.</h2>
+
+    <p>Taught by <strong>practising FSLabs engineers</strong> — not career instructors. The Academy is
+    also our own talent pipeline: strong graduates are people we can hire and place.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Tracks · introductory pricing currently active</caption>
+        <thead>
+          <tr><th scope="col">Track</th><th scope="col">Focus</th><th scope="col">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Full Stack Development</td><td>Frontend · Backend · DevOps</td><td class="num-cell">₦180,000</td></tr>
+          <tr><td>Ethical Hacking Fundamentals</td><td>Cybersecurity · Penetration testing</td><td class="num-cell">₦175,000</td></tr>
+          <tr><td>Machine Learning Foundations</td><td>AI · Data science · Python</td><td class="num-cell">₦170,000</td></tr>
+          <tr><td>Backend Development</td><td>Servers · APIs · Databases</td><td class="num-cell">₦160,000</td></tr>
+          <tr><td>Frontend Development</td><td>UI · React · Responsive design</td><td class="num-cell">₦155,000</td></tr>
+          <tr><td>Prompt Engineering</td><td>AI tools · LLMs · Automation</td><td class="num-cell">₦150,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>These are launch rates, discounted from standard pricing, and cohort sizes are limited. We also
+    run tailored one-on-one and small-group certification programmes, priced by goal.</p>
+
+    <h3>What every student gets</h3>
+    <ul class="plain">
+      <li><strong>Live sessions</strong> — real-time instruction from practising FSLabs engineers</li>
+      <li><strong>Portfolio projects</strong> — 3+ real projects they own and can show employers</li>
+      <li><strong>FSLabs-verified certificate</strong> of completion</li>
+      <li><strong>1-on-1 mentorship</strong> throughout the programme</li>
+      <li><strong>Session recordings</strong> — rewatch every class</li>
+      <li><strong>Alumni community</strong> — lifetime access to the FSLabs builder network</li>
+      <li><strong>Job support</strong> — placement referrals and career guidance</li>
+      <li><strong>Online-first</strong> — attend from anywhere; live in-person on request</li>
+    </ul>
+
+    <div class="note">
+      <span class="label">If you teach for the Academy</span>
+      <p>You are the product. The promise is instruction from people who actually ship, and portfolio
+      projects good enough to get someone hired. Hold that line.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 07 ─────────────────────────────────────────── -->
+  <section class="band" id="products">
+    <p class="eyebrow">07 · Our products</p>
+    <h2>We build and operate our own products — it's how we prove we can do what we sell.</h2>
+
+    <div class="stack">
+      <article class="item">
+        <span class="tag">Marketplace · tailornow.shop</span>
+        <h3>TailorNow</h3>
+        <p>A marketplace for custom fashion in Nigeria. It connects customers to verified tailors and
+        fashion creatives and handles the whole order end to end: discovery and portfolios, a style
+        feed, booking, saved measurements, agreed pricing, payment with automatic split settlement to
+        the creative, production tracking, fabric pickup and delivery, mutual ratings, and disputes.
+        It supports group and aso-ebi orders and corporate uniforms. Revenue model: 20% platform
+        commission plus a 3% service charge.</p>
+      </article>
+
+      <article class="item">
+        <span class="tag">Multi-tenant SaaS</span>
+        <h3>HR &amp; Payroll platform</h3>
+        <p>For Nigerian businesses: employees, departments, attendance, leave requests, documents,
+        payroll records, audit logging and subscription billing. Because it holds employee personal
+        data and salary records, it carries the highest data-protection obligations of anything we
+        run — treat it accordingly.</p>
+      </article>
+
+      <article class="item">
+        <span class="tag">Exchange</span>
+        <h3>FSLabs Exchange</h3>
+        <p>Crypto-to-naira and account services — USDT, gift cards and related requests, processed
+        within about 30 minutes.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 08 ─────────────────────────────────────────── -->
+  <section class="band" id="clients">
+    <p class="eyebrow">08 · Our clients</p>
+    <h2>Client work is the core of the business.</h2>
+
+    <p><strong>FOLUB Builders</strong> — a property development company that builds, buys and sells
+    residential and commercial property across Lagos and Abuja — is a separate company and an FSLabs
+    client, whose web platform we built and maintain.</p>
+
+    <div class="note">
+      <span class="label">Note for the team</span>
+      <p>Never name a client publicly, in a pitch deck, on social media or in a portfolio, without
+      confirming we have their permission. We'll add other delivered projects here as permission is
+      confirmed.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 09 ─────────────────────────────────────────── -->
+  <section class="band" id="language">
+    <p class="eyebrow">09 · How we talk about the company</p>
+    <h2>Consistency matters more than cleverness. Use this language.</h2>
+
+    <div class="creed">
+      <p>Folub &amp; Samuel Labs is a Nigerian technology and cybersecurity company. We build
+      software, secure systems, train engineers, and ship our own products.</p>
+      <span class="attrib">The company, in one sentence</span>
+    </div>
+
+    <div class="creed">
+      <p>We're a two-founder company where both founders work directly on every project — no handoffs
+      to junior contractors or offshore teams.</p>
+      <span class="attrib">Our differentiator, in one sentence</span>
+    </div>
+
+    <p><strong>Naming.</strong> The company is <strong>Folub and Samuel Labs</strong>;
+    <strong>FSLabs</strong> is the short form and is fine everywhere. "FS Labs" as two words is not
+    our house style — use <strong>FSLabs</strong>.</p>
+
+    <h3>Things to get right</h3>
+    <ul class="plain">
+      <li>FOLUB Builders is a <strong>client</strong>, a separate company — not part of FSLabs, and not one of our products.</li>
+      <li>Don't promise timelines to a client without checking with Akinbayo.</li>
+      <li>Don't share client names, client code, pricing or internal delivery economics outside the company.</li>
+      <li>Security work in particular: what we find on a client's systems never leaves FSLabs.</li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 10 ─────────────────────────────────────────── -->
+  <section class="band" id="contacts">
+    <p class="eyebrow">10 · Who to go to</p>
+    <h2>Both founders are on every project. Use that.</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th scope="col">For</th><th scope="col">Go to</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Architecture, security, technical decisions, code review</td><td>Adeseko Samuel</td></tr>
+          <tr><td>Clients, scope, pricing, timelines, partnerships, anything commercial</td><td>Akinbayo</td></tr>
+          <tr><td>Anything you're unsure about</td><td>Ask early — either founder</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>General enquiries reach us at
+    <a href="mailto:admin@folubandsamuellabs.com">admin@folubandsamuellabs.com</a>, and the commitment
+    on our contact form is a response within 24 hours.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 11 ─────────────────────────────────────────── -->
+  <section class="band" id="open">
+    <p class="eyebrow">11 · To be completed</p>
+    <h2>What this document still needs from the founders.</h2>
+
+    <p>These belong here too, but must come from the founders rather than be assumed — so they are
+    deliberately blank rather than guessed.</p>
+
+    <ul class="checklist">
+      <li>Working hours, location and remote-working expectations</li>
+      <li>Leave policy and how to request it</li>
+      <li>Pay cycle and how expenses are claimed</li>
+      <li>Onboarding checklist for a new team member — accounts, access, tools, first week</li>
+      <li>Security and acceptable-use policy — device security, credential handling, client data handling, and what may be put into third-party AI tools</li>
+      <li>Confidentiality and IP terms that apply to staff, contractors and Academy instructors</li>
+      <li>Escalation path for a client incident or a security breach</li>
+      <li>The official company phone number — the site currently shows a placeholder</li>
+      <li>The full list of named client projects we may reference publicly</li>
+      <li>An org chart, once the team is larger than the founders</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Maintained by FSLabs · Folub and Samuel Labs · RC 9637480 · Lagos, Nigeria</p>
+    <p>If something here is out of date or wrong, say so — this document is only useful if it is accurate.</p>
+  </footer>
+
+</div>
