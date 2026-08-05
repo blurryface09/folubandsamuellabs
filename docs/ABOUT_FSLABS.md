@@ -1,0 +1,296 @@
+# About Folub & Samuel Labs
+
+**An introduction to the company — for our team, staff, instructors and collaborators.**
+
+_Last updated: 2026-08-03_
+
+---
+
+## Welcome
+
+If you are reading this, you are working with FSLabs — as an engineer, an instructor, a partner or a
+new team member. This document explains what the company is, what we sell, how we work, and the
+standard we hold ourselves to. Read it once properly. It is the same story we tell clients, and it
+only works if all of us tell it the same way.
+
+---
+
+## 1. Who we are
+
+**Folub and Samuel Labs (FSLabs)** is a technology and cybersecurity company incorporated in Nigeria.
+
+We do three things:
+
+1. **We deliver technology services to clients** — software, security, cloud, data and consulting.
+2. **We build and run our own products** — a marketplace, an HR platform, an exchange.
+3. **We train the next generation of engineers** through FSLabs Academy.
+
+**Our tagline:** _Your Vision. Our Execution._
+
+**Our mission:** to be the bridge between technology and business — connecting companies to real
+talent, delivering world-class tech services, and building products that matter.
+
+### Company facts
+
+| | |
+| --- | --- |
+| **Legal name** | Folub and Samuel Labs |
+| **RC number** | 9637480 |
+| **Incorporated in** | Nigeria |
+| **Base** | Lagos, Nigeria |
+| **Website** | https://folubandsamuellabs.com |
+| **General email** | admin@folubandsamuellabs.com |
+| **Phone** | _(to be added — the site currently shows a placeholder)_ |
+
+---
+
+## 2. The founders
+
+FSLabs is a two-founder company, and that is deliberate. **Both founders work directly on every
+client project.** We do not hand work off to junior contractors or offshore teams. When a client
+engages FSLabs, they get both founders — every single time.
+
+**Adeseko Samuel — Co-Founder & Technical Lead**
+Samuel is the builder. A cybersecurity professional and full-stack developer who carries the
+technical weight of FSLabs — system architecture, backend engineering, security implementation and
+product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we
+release has to actually work, scale, and be secure from day one.
+
+**Akinbayo — Co-Founder & Business Lead**
+Akinbayo is the business engine. He drives strategy, client relationships, partnerships and the
+commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in
+the right direction.
+
+**Two founders. One mission.**
+
+---
+
+## 3. What we stand for
+
+These four values are not decoration. They are how work gets judged here.
+
+**01 · Innovation**
+We don't follow trends — we set them. Every solution we build pushes the boundary of what's possible.
+
+**02 · Ambition**
+We think big, move fast, and refuse to settle. Small thinking has no place here.
+
+**03 · Integrity**
+We say what we mean and deliver what we promise. No fluff, no shortcuts, no excuses.
+
+**04 · Impact**
+Technology is just a tool. What matters is what it changes — for our clients and for the world.
+
+---
+
+## 4. What we sell — our six service lines
+
+Know these. When someone asks what FSLabs does, this is the answer.
+
+### 01 · Software Development
+**Custom-built. Production-ready.**
+We design and build web apps, mobile apps, APIs and enterprise software tailored exactly to
+requirements — scalable, maintainable, and shipped on time.
+Web & mobile applications · API development and integration · SaaS product development · legacy
+system modernisation
+
+### 02 · Cybersecurity
+**Protect what matters most.**
+In today's threat landscape, security is non-negotiable. From penetration testing to full security
+operations, we build resilient security postures that hold.
+Penetration testing and assessments · security audits and compliance · threat intelligence and
+monitoring · incident response and recovery
+
+### 03 · IT Consulting
+**Strategy meets execution.**
+We work alongside leadership to evaluate the tech landscape, identify opportunities, and build a
+roadmap that supports sustainable long-term growth.
+Digital transformation strategy · technology roadmapping · IT infrastructure advisory · cloud
+architecture planning
+
+### 04 · Tech Outsourcing
+**Scale your team, not your costs.**
+Skilled engineers, QA specialists, DevOps leads and technical managers on demand — without the
+overhead of full-time hiring.
+Dedicated engineering teams · staff augmentation · project-based outsourcing · DevOps and cloud
+management
+
+### 05 · Cloud Solutions
+**Modern infrastructure, built right.**
+We help businesses migrate, manage and optimise cloud environments across AWS, GCP and Azure — from
+initial setup to cost optimisation.
+Cloud migration · infrastructure as code · cost optimisation · managed cloud services
+
+### 06 · Data & Analytics
+**Turn data into decisions.**
+We unlock the value in data — pipelines, dashboards and AI-powered analytics that give teams clear,
+actionable insight.
+BI dashboards · data pipeline engineering · AI and ML integration · KPI reporting systems
+
+---
+
+## 5. How we work — the FSLabs process
+
+Four stages. Every engagement, no exceptions.
+
+**01 · Brief**
+The client tells us what they need. We listen, ask the right questions, and understand the real
+problem **before touching a keyboard**.
+
+**02 · Scope**
+We define the work clearly. Realistic timelines. Honest deliverables. No scope creep, no surprises.
+
+**03 · Build**
+We do the work. Software gets built, systems get secured, solutions get shipped. **No status
+theatre.**
+
+**04 · Deliver**
+The client receives something that works, is documented, and is ready for the real world.
+
+**That last line is the FSLabs standard.** Works, documented, ready for the real world. If a piece of
+work fails any of those three, it isn't finished — regardless of the deadline.
+
+### What this means day to day
+
+- **Understand before building.** Questions early are cheap; rework is not.
+- **Scope honestly.** If a timeline isn't realistic, say so during Scope, not during Build.
+- **No status theatre.** Report real progress, including problems. Bad news early is a service; bad
+  news late is a failure.
+- **Document as you go.** Documentation is part of delivery, not an optional extra.
+- **Secure from day one.** Security is not a phase at the end. Samuel's standard: it has to work,
+  scale, and be secure from the start.
+- **We respond within 24 hours.** That's the promise on our contact form. Honour it.
+
+---
+
+## 6. FSLabs Academy
+
+The Academy trains people into real engineering roles, taught by **practising FSLabs engineers** —
+not career instructors. It is also our own talent pipeline: strong graduates are people we can hire
+and place.
+
+### Tracks
+
+| Track | Focus | Introductory price |
+| --- | --- | --- |
+| **Full Stack Development** | Frontend · Backend · DevOps | ₦180,000 |
+| **Ethical Hacking Fundamentals** | Cybersecurity · Penetration testing | ₦175,000 |
+| **Machine Learning Foundations** | AI · Data science · Python | ₦170,000 |
+| **Backend Development** | Servers · APIs · Databases | ₦160,000 |
+| **Frontend Development** | UI · React · Responsive design | ₦155,000 |
+| **Prompt Engineering** | AI tools · LLMs · Automation | ₦150,000 |
+
+Introductory pricing is currently active — these are launch rates, discounted from standard pricing.
+Cohort sizes are limited. We also run tailored one-on-one and small-group certification programmes,
+priced by goal.
+
+### What every student gets
+
+- **Live sessions** — real-time instruction from practising FSLabs engineers
+- **Portfolio projects** — 3+ real projects they own and can show employers
+- **FSLabs-verified certificate** of completion
+- **1-on-1 mentorship** throughout the programme
+- **Session recordings** — rewatch every class
+- **Alumni community** — lifetime access to the FSLabs builder network
+- **Job support** — placement referrals and career guidance
+- **Online-first** — attend from anywhere; live in-person on request
+
+**If you teach for the Academy:** you are the product. The promise is instruction from people who
+actually ship, and portfolio projects good enough to get someone hired. Hold that line.
+
+---
+
+## 7. Our products
+
+We are not only a services company. We build and operate our own products, which is how we prove we
+can do what we sell.
+
+### TailorNow — `tailornow.shop`
+A marketplace for custom fashion in Nigeria. It connects customers to verified tailors and fashion
+creatives and handles the whole order end to end: discovery and portfolios, a style feed, booking,
+saved measurements, agreed pricing, payment with automatic split settlement to the creative,
+production tracking, fabric pickup and delivery, mutual ratings, and disputes. It supports group and
+aso-ebi orders and corporate uniforms. Revenue model: 20% platform commission plus a 3% service
+charge.
+
+### HR & Payroll platform
+Multi-tenant SaaS for Nigerian businesses: employees, departments, attendance, leave requests,
+documents, payroll records, audit logging and subscription billing. Because it holds employee
+personal data and salary records, it carries the highest data-protection obligations of anything we
+run — treat it accordingly.
+
+### FSLabs Exchange
+Crypto-to-naira and account services — USDT, gift cards and related requests, processed within about
+30 minutes.
+
+---
+
+## 8. Our clients
+
+Client work is the core of the business. **FOLUB Builders** — a property development company that
+builds, buys and sells residential and commercial property across Lagos and Abuja — is a separate
+company and an FSLabs client, whose web platform we built and maintain.
+
+> **Note for the team:** never name a client publicly, in a pitch deck, on social media or in a
+> portfolio, without confirming we have their permission. Add other delivered projects to this
+> section as permission is confirmed.
+
+---
+
+## 9. How we talk about the company
+
+Consistency matters more than cleverness here. Use this language.
+
+**In one sentence:**
+> Folub & Samuel Labs is a Nigerian technology and cybersecurity company. We build software, secure
+> systems, train engineers, and ship our own products.
+
+**Our differentiator, in one sentence:**
+> We're a two-founder company where both founders work directly on every project — no handoffs to
+> junior contractors or offshore teams.
+
+**Naming:** the company is **Folub and Samuel Labs**; **FSLabs** is the short form and is fine
+everywhere. "FS Labs" as two words is not our house style — use **FSLabs**.
+
+**Things to get right**
+- FOLUB Builders is a **client**, a separate company — not part of FSLabs, and not one of our products.
+- Don't promise timelines to a client without checking with Akinbayo.
+- Don't share client names, client code, pricing or internal delivery economics outside the company.
+- Security work in particular: what we find on a client's systems never leaves FSLabs.
+
+---
+
+## 10. Who to go to
+
+| For | Go to |
+| --- | --- |
+| Architecture, security, technical decisions, code review | **Adeseko Samuel** |
+| Clients, scope, pricing, timelines, partnerships, anything commercial | **Akinbayo** |
+| Anything you're unsure about | Ask early. Both founders are on every project — use that. |
+
+General enquiries reach us at **admin@folubandsamuellabs.com**, and the commitment on our contact
+form is a response within 24 hours.
+
+---
+
+## 11. To be completed
+
+This document covers who we are and how we work. The following belong here too, but must come from
+the founders rather than be assumed — they are deliberately left blank rather than guessed:
+
+- [ ] Working hours, location and remote-working expectations
+- [ ] Leave policy and how to request it
+- [ ] Pay cycle and how expenses are claimed
+- [ ] Onboarding checklist for a new team member (accounts, access, tools, first week)
+- [ ] Security and acceptable-use policy — device security, credential handling, client data
+      handling, what may be put into third-party AI tools
+- [ ] Confidentiality and IP terms that apply to staff, contractors and Academy instructors
+- [ ] Escalation path for a client incident or a security breach
+- [ ] The official company phone number (the site currently shows a placeholder)
+- [ ] The full list of named client projects we may reference publicly
+- [ ] An org chart, once the team is larger than the founders
+
+---
+
+_Maintained by FSLabs. If something here is out of date or wrong, say so — this document is only
+useful if it is accurate._
