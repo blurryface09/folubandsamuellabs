@@ -14,6 +14,8 @@ the letters issued on it.
 | `2026-08-03-offer-email-abdulahi-samiat.md` | Covering email to send with the offer above. |
 | `2026-08-03-offer-of-employment-olatuja-oyinkansola.html` | Offer of employment, Junior Cloud Engineer (Trainee). |
 | `2026-08-03-offer-email-olatuja-oyinkansola.md` | Covering email to send with the offer above. |
+| `2026-08-03-offer-of-employment-ikenna-abani.html` | Offer of employment, Lead Security Engineer. |
+| `2026-08-03-partnership-opportunities-nigeria-fintech-summit.html` | Partnership briefing on the five summit conversations. |
 
 House style for correspondence: no em dashes, no en dashes, and no hyphenated
 compounds in the prose. Rebuild the sentence rather than swapping the dash for a

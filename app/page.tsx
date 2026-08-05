@@ -251,7 +251,7 @@ function ContactForm() {
           onFocus={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")}
           onBlur={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.15)")} />
       </div>
-      {status === "error" && <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 11, color: "#F87171" }}>Something went wrong. Email us at admin@folubandsamuellabs.com</p>}
+      {status === "error" && <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 11, color: "#F87171" }}>Something went wrong. Email us at folubandsamuel@fslabs.tech</p>}
       <button type="submit" disabled={status === "sending"} style={{
         padding: "15px 24px", background: "linear-gradient(135deg,#C9A84C,#8B6914)",
         color: "#050505", borderRadius: 12, border: "none",
@@ -474,7 +474,7 @@ export default function Home() {
                 </span>
               </h2>
               <div style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.45)", lineHeight: 1.95 }}>
-                <p className="reveal" style={{ marginBottom: 20 }}>Folub and Samuel Labs is a technology and cybersecurity company incorporated in Nigeria. We are a two-founder company where both founders work directly on every client project. That is the model and that is the standard.</p>
+                <p className="reveal" style={{ marginBottom: 20 }}>Folub and Samuel Labs is a technology and cybersecurity company incorporated in Nigeria. We are a company of two founders, and both of us work directly on every client project. That is the model and that is the standard.</p>
                 <p className="reveal">We do not hand off your work to junior contractors or offshore teams. When you engage FSLabs, you get Adeseko Samuel on the technical side and Akinbayo on strategy and delivery. Every single time.</p>
               </div>
             </div>
@@ -524,12 +524,12 @@ export default function Home() {
           <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(360px,1fr))", gap: 20 }}>
             {[
               {
-                initial: "S", name: "Adeseko Samuel", role: "Co-Founder · Technical Lead",
+                initial: "S", name: "Samuel", role: "Cofounder · Technical",
                 bio: "Samuel is the builder. A cybersecurity professional and full stack developer who carries the full technical weight of FSLabs. From system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
                 tags: ["Cybersecurity", "Full Stack", "System Architecture", "Security Ops", "ALX Graduate"],
               },
               {
-                initial: "A", name: "Akinbayo", role: "Co-Founder · Business Lead",
+                initial: "A", name: "Akinbayo", role: "Cofounder · Business",
                 bio: "Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.",
                 tags: ["Strategy", "Operations", "Business Development", "Client Relations", "Cybersecurity"],
               },
@@ -614,7 +614,7 @@ export default function Home() {
               </p>
               <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
                 {[
-                  { label: "Email", value: "admin@folubandsamuellabs.com" },
+                  { label: "Email", value: "folubandsamuel@fslabs.tech" },
                   { label: "Location", value: "Lagos, Nigeria" },
                   { label: "RC Number", value: "9637480" },
                 ].map(item => (

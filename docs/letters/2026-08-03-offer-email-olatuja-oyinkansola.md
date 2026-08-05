@@ -1,7 +1,7 @@
 # Covering email: Offer of Employment, Junior Cloud Engineer (Trainee)
 
 **To:** olatujaoyinkansola@gmail.com
-**From:** admin@folubandsamuellabs.com
+**From:** folubandsamuel@fslabs.tech
 **Attachment:** `2026-08-03-offer-of-employment-olatuja-oyinkansola.pdf`
 
 Pay is deliberately not mentioned. Keep that conversation off email.

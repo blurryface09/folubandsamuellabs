@@ -1,7 +1,7 @@
 # Covering email: Offer of Employment, Content Strategist
 
 **To:** workwithsamiat@gmail.com
-**From:** admin@folubandsamuellabs.com
+**From:** folubandsamuel@fslabs.tech
 **Attachment:** `2026-08-03-offer-of-employment-abdulahi-samiat.pdf`
 
 Pay is deliberately not mentioned. Keep that conversation off email.
