@@ -607,7 +607,7 @@ These are not negotiable. The Staff Policy sets them out in full.
   else's.
 - **Client data never goes into third party AI tools.** No exceptions without written approval from
   Samuel.
-- **No timeline commitments without Akinbayo.**
+- **No timeline or pricing commitments without Akinbayo.** Either founder can take a client conversation, but the commercial commitment is his.
 - **Naming:** FSLabs, one word. The company is Folub and Samuel Labs.
 
 ---
@@ -648,7 +648,8 @@ pitch out loud until it stops sounding rehearsed.
 | For | Go to |
 | --- | --- |
 | Architecture, security, technical decisions, code review | **Adeseko Samuel** |
-| Clients, scope, pricing, timelines, partnerships, anything commercial | **Akinbayo** |
+| Talking to a client | **Either founder.** Both Samuel and Akinbayo attend to clients |
+| Scope, pricing, timelines, partnerships, anything commercial | **Akinbayo** |
 | Something has broken or may have been breached | **Both founders, immediately, whatever the hour** |
 | Anything you are unsure about | Ask early, either founder. Both are on every project, so use that. |
 

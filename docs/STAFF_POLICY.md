@@ -13,7 +13,11 @@ of working with us: hours, leave, pay, what you may and may not do with client m
 work, and what to do when something goes wrong.
 
 Where this document says a founder approves something, that means Adeseko Samuel for technical and
-security matters, and Akinbayo for anything commercial or client facing.
+security matters, and Akinbayo for commercial matters such as pricing and timelines.
+
+**Client contact is either founder.** Both Samuel and Akinbayo attend to clients, so either of them can
+take a client conversation. What does not happen is a client being contacted by anyone other than a
+founder.
 
 If something here is unclear, ask before assuming. That instruction applies to this document as much
 as it does to client work.
@@ -29,7 +33,7 @@ Outside that window, arrange your hours to suit your work and your life. Nobody 
 are online; we are measuring whether the work meets the standard and whether people can reach you
 when it matters.
 
-Where a client requires you on site, that is agreed with Akinbayo in advance and treated as part of
+Where a client requires you on site, that is agreed with a founder in advance and treated as part of
 the engagement.
 
 If you will be unreachable during core hours, say so beforehand. An unannounced silence during core
@@ -162,8 +166,8 @@ breach in ours.
 1. **Do not contact the client yourself.** Not to reassure them, not to ask a question, not to
    apologise.
 2. **Samuel leads containment and diagnosis.**
-3. **Akinbayo is the only person who communicates with the client.** One voice, so no client ever
-   hears a half diagnosed problem.
+3. **Only a founder communicates with the client.** Either Samuel or Akinbayo, and they agree between
+   them who is speaking, so the client hears one voice and never a half diagnosed problem.
 4. **Do not destroy evidence.** Do not wipe logs, reset the machine, or delete anything in an attempt
    to tidy up. Preserve the state.
 5. **Write down what you saw and when**, while it is fresh, including what you were doing when it

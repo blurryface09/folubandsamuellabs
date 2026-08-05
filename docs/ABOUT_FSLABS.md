@@ -278,7 +278,7 @@ everywhere. "FS Labs" as two words is not our house style. Use **FSLabs**.
   as a sister brand, or as one of our products. Our portfolio is TailorNow, the HR and Payroll
   platform, FSLabs Exchange, and UrbanPulse. Nothing else.
 - **A product is not the company.** TailorNow is a product of FSLabs. "The company" means FSLabs.
-- Do not promise timelines to a client without checking with Akinbayo.
+- Either founder can take a client conversation, but do not promise timelines or pricing without checking with Akinbayo.
 - Do not share client names, client code, pricing or internal delivery economics outside the company.
 - **Client data never goes into third party AI tools.** See the Staff Policy.
 - **Security work in particular:** what we find on a client's systems never leaves FSLabs.
@@ -290,7 +290,8 @@ everywhere. "FS Labs" as two words is not our house style. Use **FSLabs**.
 | For | Go to |
 | --- | --- |
 | Architecture, security, technical decisions, code review | **Adeseko Samuel** |
-| Clients, scope, pricing, timelines, partnerships, anything commercial | **Akinbayo** |
+| Talking to a client | **Either founder.** Both Samuel and Akinbayo attend to clients |
+| Scope, pricing, timelines, partnerships, anything commercial | **Akinbayo** |
 | Something has broken or may have been breached | **Both founders, immediately, whatever the hour** |
 | Anything you are unsure about | Ask early, either founder. Both are on every project, so use that. |
 
