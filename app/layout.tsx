@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     siteName: "Folub & Samuel Labs",
     locale: "en_NG",
     type: "website",
-    images: [{ url: "/fslabs-logo.PNG", alt: "Folub & Samuel Labs" }],
+    images: [{ url: "/fslabs-logo-2026.png", alt: "Folub & Samuel Labs" }],
   },
   twitter: {
     card: "summary",
@@ -38,7 +38,7 @@ const jsonLd = {
   name: "Folub & Samuel Labs",
   alternateName: "FSLabs",
   url: "https://fslabs.tech",
-  logo: "https://fslabs.tech/fslabs-logo.PNG",
+  logo: "https://fslabs.tech/fslabs-logo-2026.png",
   description: "Software development, cybersecurity, IT consulting, and tech outsourcing company based in Lagos, Nigeria.",
   address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
 };
