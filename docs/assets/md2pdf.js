@@ -290,6 +290,42 @@ const html = `<!doctype html>
 </body></html>`;
 
 const absOut = path.resolve(outPath);
+
+// Writing a .html target emits a theme aware web page instead of printing a PDF,
+// so the same markdown source backs both outputs.
+if (absOut.endsWith('.html')) {
+  const themed = html.replace('</style>', `
+  /* Dark theme: gold has to lift off a near black ground, so the text gold
+     swaps to the brighter value that fails contrast on white but works here. */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --gold:#D6B457; --gold-bright:#C9A84C; --tint:#111009;
+      --ink:#F5F0E8; --dim:#BDB6A6; --faint:#8B8474; --hair:#2A271E;
+    }
+    body { background:#0A0906; }
+  }
+  :root[data-theme="dark"] {
+    --gold:#D6B457; --gold-bright:#C9A84C; --tint:#111009;
+    --ink:#F5F0E8; --dim:#BDB6A6; --faint:#8B8474; --hair:#2A271E;
+  }
+  :root[data-theme="dark"] body { background:#0A0906; }
+  :root[data-theme="light"] {
+    --gold:#8B6914; --gold-bright:#C9A84C; --tint:#FBF6EA;
+    --ink:#14130E; --dim:#403C34; --faint:#6E6858; --hair:#E6DFCC;
+  }
+  :root[data-theme="light"] body { background:#fff; }
+
+  /* Screen layout: the print page has no margins of its own. */
+  body { max-width:52rem; margin:0 auto; padding:3rem 1.5rem 6rem; font-size:1rem; }
+  .cover { break-after:auto; padding-top:1rem; }
+  h1.part { break-before:auto; margin-top:3rem; }
+  .tw { overflow-x:auto; }
+</style>`);
+  fs.writeFileSync(absOut, themed);
+  console.log('written', absOut, fs.statSync(absOut).size, 'bytes');
+  return;
+}
+
 const tmpHtml = path.join(path.dirname(absOut), '.render.html');
 fs.writeFileSync(tmpHtml, html);
 

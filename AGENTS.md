@@ -78,19 +78,54 @@ pipelines cannot fetch webfonts.
 
 **Tagline:** *Your Vision. Our Execution.* — do not rewrite, extend, or make variants of it.
 
+## House style for all written material
+
+Two rules, both from the founders, both non negotiable:
+
+1. **No em dashes or en dashes.** Use commas, colons, or separate sentences instead. Avoid hyphenated
+   compounds too where a natural unhyphenated phrasing exists: "two founder company", "full stack",
+   "multitenant", "world class", "aso ebi", "crypto to naira", "third party". Keep hyphens only where
+   they appear inside a real filename or path.
+2. **Never publish a document containing drafts, placeholders or blanks.** Anything unagreed goes to
+   `docs/INTERNAL_TODO.md` (founders only), not into a staff facing document with a "to be confirmed"
+   marker against it.
+
+Check both before shipping any document:
+
+```
+python3 -c "import re,sys;t=open(sys.argv[1]).read();print('dashes:',len(re.findall(r'[‐-―]',t)))" <file>
+```
+
 ## Company documents
+
+Staff facing, all circulated:
 
 | Document | What it is |
 | --- | --- |
-| `docs/FSLABS_COMPANY_HANDBOOK.md` | The main handbook — purpose, mission, vision, values, goals, positioning, objection handling, brand voice, onboarding. PDF: `docs/FSLabs-Company-Handbook.pdf` |
-| `docs/ABOUT_FSLABS.md` | Shorter company overview. PDF: `docs/About-FSLabs.pdf`, web: `docs/about-fslabs.html` |
+| `docs/FSLABS_COMPANY_HANDBOOK.md` | The main handbook: purpose, mission, vision, values, the four priorities, positioning, audience profiles, objection handling, brand voice, content pillars, onboarding. PDF: `docs/FSLabs-Company-Handbook.pdf` |
+| `docs/STAFF_POLICY.md` | Hours, leave, pay and commission, client data and AI rules, device security, ownership of work, incident escalation, joining and leaving. PDF: `docs/FSLabs-Staff-Policy.pdf` |
+| `docs/ABOUT_FSLABS.md` | Shorter overview, the version to hand to someone outside the team. PDF: `docs/About-FSLabs.pdf`, web: `docs/about-fslabs.html` |
+
+Founders only, never circulated:
+
+| Document | What it is |
+| --- | --- |
+| `docs/INTERNAL_TODO.md` | What is agreed, and what is still open. Read this before answering "has X been decided?" |
 | `docs/partnerships/summit-partnership-brief.md` | The five summit contacts, our offer and ask for each |
 
-**Preferred document format is PDF.** Build one from any of these markdown sources with:
+### Agreed policy, in short
+
+Remote first, core hours 10:00 to 16:00 WAT. 15 days leave plus public holidays. No fixed payroll yet:
+per engagement fees agreed in writing, plus 10% of total contract value for introducing a client;
+salaries reviewed quarterly with no figure committed. Client owns deliverables on full payment, FSLabs
+keeps reusable components. No client code, data, credentials or security findings in any third party AI
+tool. Incidents go to both founders at once, and only Akinbayo speaks to the client.
+
+**Preferred document format is PDF.** Build one from any markdown source with:
 
 ```
 NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
-  node docs/assets/md2pdf.js <input.md> <output.pdf> "Cover Line 1" "Cover Line 2" \
+  node docs/assets/md2pdf.js <input.md> <output.pdf or .html> "Cover Line 1" "Cover Line 2" \
   "Standfirst sentence." docs/assets/fslabs-logo-transparent.png
 ```
 
