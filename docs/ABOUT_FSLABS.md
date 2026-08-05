@@ -27,7 +27,7 @@ something goes wrong.
 We do three things.
 
 1. **We deliver technology services to clients.** Software, security, cloud, data and consulting.
-2. **We build and run our own products.** A marketplace, an HR platform, an exchange.
+2. **We build and run our own products.** A marketplace, an HR platform, an exchange, and a city intelligence platform in development.
 3. **We train the next generation of engineers** through FSLabs Academy.
 
 **Our tagline:** _Your Vision. Our Execution._
@@ -225,16 +225,33 @@ accordingly.
 Crypto to naira and account services. USDT, gift cards and related requests, processed within about 30
 minutes.
 
+### UrbanPulse
+AI assisted citizen reporting and transport intelligence for African cities. In active development and
+not yet open to users, so describe it as what we are building rather than what we offer. It is our route
+into public sector and smart city work, which none of the other three products reach.
+
 ---
 
-## 8. Our clients
+## 8. Where we are, and our clients
 
-Client work is the core of the business. Alongside our own products we design, build, secure and
-maintain systems for clients across sectors.
+Client work is the core of the business we are building. Be straight about the stage we are at, because
+a claim we cannot back is worth less than an honest position.
 
-> **Note for the team:** never name a client publicly, in a pitch deck, on social media, in a portfolio
-> or in a conversation outside FSLabs, without confirmed written permission. Named projects are listed
-> here once that permission is in place.
+**What we can show.** Four products we designed, built and operate ourselves, three of them working
+today. Teaching experience that predates the company's registration, and a free bootcamp running this
+August. Small paid pieces of work completed.
+
+**What we have not done yet.** No full client project delivered under FSLabs. No paid security
+engagement, so cybersecurity is a capability we are taking to market rather than a delivery history. No
+client we can name as a reference.
+
+None of that is a reason to be apologetic. Building four products is more than most firms at our age can
+show, and it is the honest version of a track record. The Company Handbook has the exact wording for
+answering this when a client asks.
+
+> **Note for the team:** never claim work we have not done, and never name a client publicly, in a pitch
+> deck, on social media, in a portfolio or in a conversation outside FSLabs, without confirmed written
+> permission. Named projects are listed here once that permission is in place.
 
 ---
 
@@ -255,9 +272,11 @@ everywhere. "FS Labs" as two words is not our house style. Use **FSLabs**.
 
 ### Things to get right
 
+- **Never claim work we have not done.** No invented client engagements, and never let our list of
+  service lines be heard as a list of completed projects.
 - **FSLabs is FSLabs.** Never present another company, a client's or anyone else's, as part of FSLabs,
   as a sister brand, or as one of our products. Our portfolio is TailorNow, the HR and Payroll
-  platform, and FSLabs Exchange. Nothing else.
+  platform, FSLabs Exchange, and UrbanPulse. Nothing else.
 - **A product is not the company.** TailorNow is a product of FSLabs. "The company" means FSLabs.
 - Do not promise timelines to a client without checking with Akinbayo.
 - Do not share client names, client code, pricing or internal delivery economics outside the company.

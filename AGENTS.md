@@ -21,6 +21,14 @@ A technology and cybersecurity company incorporated in Nigeria, RC No. 9637480, 
 | **TailorNow** (tailornow.shop) | Marketplace for custom fashion in Nigeria. Separate repo: `blurryface09/tailor-now` |
 | **HR & Payroll platform** | Multitenant SaaS: employees, attendance, leave, payroll, documents |
 | **FSLabs Exchange** | Crypto to naira and account services |
+| **UrbanPulse** | AI assisted citizen reporting and transport intelligence for African cities. In active development. Separate repo: `blurryface09/urbanpulse` (private, TypeScript) |
+
+**Company stage, as of August 2026.** Early. TailorNow, Exchange and the HR platform all work, with the
+HR platform pending a review and debug pass. UrbanPulse is in development. Small paid jobs done, but no
+full client project delivered under FSLabs and **no paid security engagement**, so cybersecurity is a
+capability rather than a delivery history. Teaching happened before registration, and a free bootcamp
+runs in August 2026. **Never write anything that implies a client track record the company does not
+have**, in documents, site copy or commit messages.
 
 **Never conflate the company with a product.** TailorNow is a product of FSLabs, not the company.
 When a document, page or commit refers to "the company", it means FSLabs.

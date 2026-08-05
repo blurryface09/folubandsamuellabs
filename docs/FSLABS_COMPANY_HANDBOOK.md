@@ -50,6 +50,41 @@ founders quarterly and communicated separately, so this handbook stays accurate 
 | **What we are** | A technology and cybersecurity company |
 | **How we earn** | Client services, our own products, the Academy |
 
+### Where we are right now
+
+Read this before anything else in the document, because everything after it depends on knowing what
+stage we are at. We are early, and being straight about that is not a weakness. It only becomes one if
+we hide it, because the first serious client question then exposes us.
+
+**What is real today.**
+
+- **Three products built and working.** TailorNow, FSLabs Exchange and the HR and Payroll platform all
+  exist and can be used. The HR platform needs a review and debug pass before we put it in front of a
+  paying business.
+- **A fourth in active development.** UrbanPulse, our citizen reporting and transport intelligence
+  platform, is being built now. Describe it as in development, not as available.
+- **Small paid jobs done.** Money has come in for small pieces of work.
+- **Teaching already done**, before the company was registered, and a **free bootcamp running this
+  August** as the first cohort under the FSLabs name.
+- **Real security skill.** Samuel is trained and practised in cybersecurity.
+
+**What is not true yet, and must never be implied.**
+
+- **No full client project delivered under FSLabs.** We have not completed and been paid for a
+  substantial engagement.
+- **No paid security engagement.** Cybersecurity is a capability we are taking to market. It is not a
+  delivery history. Nobody has paid FSLabs to test their systems.
+- **No named client references.** Nothing we can point a prospect at.
+- **No recurring revenue.** Everything in Part III about retainers is where we are going, not where we
+  are.
+
+**How to talk about this.** Lead with what we have built, because building three working products is
+genuinely more than most firms our age can show. Then be plainly honest about the rest. The answers in
+section 18 are written to do exactly that, and they are stronger for it than a claim we cannot back.
+
+**The rule:** never describe work we have not done. Not to a client, not on social media, not in a
+proposal, not to make a conversation easier. Read section 21.
+
 ## 2. Why FSLabs exists
 
 Every company has a founding frustration. Ours is about delivery.
@@ -181,18 +216,20 @@ strategic idea in this document. It is why we are not simply an agency.
 >
 > **Academy** staffs Services, and Services credibility fills the Academy
 
-- **Services fund the company.** Client revenue pays for everything else. This is the engine.
+- **Services will fund the company.** Client revenue is what pays for everything else. This is the
+  engine we are building, and today it is running on small jobs rather than full engagements.
 - **Products prove we can do it.** An agency says it can build a marketplace. We point at TailorNow.
-  Products are our portfolio, our research, and eventually our recurring revenue.
+  Right now this is our strongest asset by far, because it is the one claim we can fully back.
 - **The Academy supplies the talent** that lets services grow past two founders, and produces alumni
   who become hires, referrers and clients.
 - **Each one makes the others believable.** A security firm that teaches ethical hacking is more
   credible. A training company whose instructors ship production systems is more credible. A product
   company that also consults understands business, not just code.
 
-**The strategic risk, said out loud:** services revenue is the only line funding the others, and
-services capacity is capped by two founders. Everything in Part III is ultimately about relieving that
-constraint.
+**Two risks, said out loud.** Services capacity is capped by two founders, so growth is constrained
+before it starts. And services is not yet funding anything, because we have not landed a full
+engagement. The first of those is a long problem. The second is the immediate one, and it is why the
+services priority in Part III is written the way it is.
 
 ## 9. Service lines
 
@@ -211,13 +248,18 @@ Know these six. When someone asks what FSLabs does, this is the answer.
 strongest recurring revenue shape. Security testing repeats on a cycle, and outsourced capacity bills
 monthly. Project software work pays well but ends. Bias the pipeline accordingly, and see Part III.
 
+**Say this accurately.** These six are what we sell and what we are equipped to do. They are not a
+list of things we have already delivered for clients. Describe them as our offering, in the present
+tense, and never let a list of capabilities be heard as a list of completed engagements.
+
 ## 10. Products
 
 | Product | What it is | Why it exists |
 | --- | --- | --- |
 | **TailorNow** (tailornow.shop) | Marketplace for custom fashion in Nigeria. Connects customers to verified tailors and creatives, and runs the whole order: discovery and portfolios, a style feed, booking, saved measurements, agreed pricing, payment with automatic split settlement to the creative, production tracking, fabric pickup and delivery, mutual ratings, disputes, plus group and aso ebi orders and corporate uniforms. 20% commission plus a 3% service charge. | Proves we can build and operate a real consumer marketplace with payments and logistics |
-| **HR & Payroll platform** | Multitenant SaaS for Nigerian businesses: employees, departments, attendance, leave, documents, payroll records, audit logging, subscription billing. | Recurring revenue, and proves we can build enterprise grade software |
+| **HR & Payroll platform** | Multitenant SaaS for Nigerian businesses: employees, departments, attendance, leave, documents, payroll records, audit logging, subscription billing. Currently in review and debug, so do not sell it to a paying business until Samuel says it is ready. | Recurring revenue, and proves we can build enterprise grade software |
 | **FSLabs Exchange** | Crypto to naira and account services. USDT, gift cards and related requests, processed within about 30 minutes. | Proves we can operate something with money, speed and trust attached |
+| **UrbanPulse** | AI assisted citizen reporting and transport intelligence for African cities. In active development, not yet open to users. | Our public sector and smart city play. It is the product that opens conversations with government agencies, transport authorities and development funders, none of which the other three reach. |
 
 **Handle with care:** the HR platform holds employee personal data and salary records. It carries the
 highest data protection obligation of anything we run. Treat it accordingly, and see section 4 of the
@@ -228,6 +270,11 @@ Staff Policy.
 We train people into real engineering roles, taught by **practising FSLabs engineers**, not career
 instructors. The Academy is also our talent pipeline: strong graduates are people we can hire and
 place with clients.
+
+**Where the Academy actually stands.** We taught before the company was registered, so the teaching
+experience is real. A **free bootcamp runs this August**, and it is the first cohort under the FSLabs
+name. Treat it as such: it is our proof, our first set of graduate stories, and the start of the
+placement record we intend to publish. Until that record exists, do not quote a placement rate.
 
 | Track | Focus | Introductory price |
 | --- | --- | --- |
@@ -266,8 +313,8 @@ especially for the content strategist.
 *Twenty to two hundred staff, digitising for the first time, moving off spreadsheets and WhatsApp.*
 - **They care about:** cost, speed, someone who explains things without condescension.
 - **Their fear:** paying for something they do not understand and cannot maintain.
-- **Lead with:** plain language, fixed honest scope, the HR and Payroll platform as an existing
-  product they can start with, and our refusal to do status theatre.
+- **Lead with:** plain language, fixed honest scope, and our refusal to do status theatre. The HR and
+  Payroll platform becomes the natural opening offer once its review pass is done.
 - **Buys:** the HR platform subscription, small builds, cloud setup.
 
 ### C. The Academy student
@@ -313,16 +360,22 @@ is to build capacity we can put in front of a client, made of Academy alumni, co
 without dropping the standard in section 5. Founder accountability on every project stays exactly as
 promised, even once the founders are not the ones typing.
 
-### Services: recurring revenue over one off projects
+### Services: land the first real engagements, then build toward recurring revenue
 **Owner: Akinbayo.** **Priority lines: Cybersecurity and Tech Outsourcing.**
 
-Move the shape of our revenue from project by project toward retainers and monthly contracts. These
-two lines are where that is possible: security testing repeats on a cycle, and outsourced capacity
-bills monthly. They are also the two that reinforce each other, because a security relationship is how
-you earn the trust that gets you the engineering contract.
+The immediate job is the first full paid engagement. Not a small job, a real one, delivered to the
+standard in section 5 and finished well enough that the client agrees to be named. That single outcome
+unlocks more than any other thing on this list, because it converts our capability story into a
+reference.
 
-Cybersecurity carries a second advantage worth stating: it is Samuel's own discipline, so it is the one
-line where our credibility needs no borrowing.
+The direction after that is to move the shape of our revenue from project by project toward retainers
+and monthly contracts. These two lines are where that is possible: security testing repeats on a cycle,
+and outsourced capacity bills monthly. They also reinforce each other, because a security relationship
+is how you earn the trust that leads to the engineering contract.
+
+Cybersecurity is the priority because it is Samuel's own discipline, which means the skill is real even
+though the engagement history is not yet. Getting the first security engagement, even small and keenly
+priced, is worth more than the fee.
 
 ### Academy: cohorts that produce staffable engineers
 **Owner: to be assigned by the founders.**
@@ -395,7 +448,7 @@ Naming this prevents drift, and tells the content strategist what not to promise
 > documented, and is ready for production. That is the standard we hold ourselves to.
 >
 > And we do not only consult. We build and run our own products: a fashion marketplace with payments
-> and logistics, an HR and payroll platform, an exchange. So when we say we can build something, we
+> and logistics, an HR and payroll platform, an exchange, and UrbanPulse for city transport data. So when we say we can build something, we
 > can point at it. We also run an academy training engineers, which is how we grow without lowering
 > the bar.
 
@@ -410,10 +463,21 @@ You will get these objections. Have the answer ready. Never bluff, because every
 > what we can do well, we will tell you during Scope rather than take your money.
 
 **"You are new. What is your track record?"**
-> Look at what we run ourselves. TailorNow is a live marketplace handling payments, split settlement to
-> vendors, and delivery logistics. We built an HR and payroll platform holding real employee and salary
-> data. And an exchange processing requests in about thirty minutes. Most firms our size have a
-> portfolio of other people's brochure sites. We have production systems we operate ourselves.
+> We are new, and I would rather tell you that than dress it up. What we can show you is what we have
+> built ourselves. TailorNow is a working marketplace that handles payments, split settlement out to
+> vendors, and delivery logistics. We built an HR and payroll platform that holds employee and salary
+> records. We run an exchange that processes requests in about thirty minutes. And we are building
+> UrbanPulse, a citizen reporting and transport intelligence platform. Most firms at our stage show you
+> other people's brochure sites. We can show you systems we designed, built and operate. What we do not
+> have yet is a long client list, and if that is what you need, I will say so rather than waste your
+> time.
+
+**"Have you done this for a client before?"**
+> Not at this scale, and I am not going to pretend otherwise. We have done smaller paid pieces of work,
+> and we have built and run our own products, which is where the capability comes from. What you get
+> from working with us early is both founders on your project and a level of attention you will not get
+> from a firm where you are one account of forty. What you should ask for in return is a scope small
+> enough to test us on. Give us a first piece of work, hold us to the standard, and decide from there.
 
 **"Why you instead of a big firm?"**
 > With a big firm you get their process and their second team. With us you get both founders and no
@@ -433,10 +497,17 @@ You will get these objections. Have the answer ready. Never bluff, because every
 > not the cheapest and we do not try to be. We are the option where it still works next year.
 
 **"Is our data safe with you?"**
-> Security is our founder's own discipline, not a subcontracted extra. We do penetration testing and
-> security audits as a service line. We build secure from day one rather than bolting it on at the end.
-> We have a written rule that client code and data never goes into third party AI tools. And what we
-> find on your systems never leaves FSLabs.
+> Security is our founder's own discipline, not something we subcontract. Samuel is trained and
+> practised in it, and it is why penetration testing and security audits are part of what we offer. We
+> build secure from day one rather than bolting it on at the end. We have a written rule that client
+> code and data never goes into any third party AI tool. And what we find on your systems never leaves
+> FSLabs.
+
+**"Have you actually done a security engagement?"**
+> Not a paid one under FSLabs, no. The skill is real and it is Samuel's discipline, but I am not going
+> to claim an engagement history we do not have. If you want to test us on it, scope something contained
+> and price it accordingly. You will get our founder doing the work personally, and a report you can
+> hand to your board.
 
 **"What if something happens to one of you?"**
 > Fair question, and it is why the Academy and our vetted bench exist. We are deliberately building
@@ -463,6 +534,7 @@ swagger. We make claims we can back, and we name real things.
 
 | Do | Don't |
 | --- | --- |
+| Say what we have built | Imply a client history we do not have |
 | Short sentences. Concrete nouns. | Long paragraphs of adjectives. |
 | Name the actual thing: "split settlement to the tailor's bank account" | Vague benefit language: "seamless payment experiences" |
 | Say what we did and what happened | Say we are "passionate about excellence" |
@@ -519,9 +591,14 @@ the pillar that makes the other four believable, and the one nobody else can cop
 
 These are not negotiable. The Staff Policy sets them out in full.
 
+- **Never claim work we have not done.** No invented client engagements, no implying a capability list
+  is a delivery history, no "we have worked with" about anyone who has not paid us. Not to a client,
+  not on social media, not in a proposal, not to make an awkward conversation easier. This is the rule
+  that protects everything else in this document, and it is the one where a single breach costs us more
+  than any deal is worth.
 - **FSLabs is FSLabs.** Never present another company, a client's or anyone else's, as part of FSLabs,
   as a sister brand, or as one of our products. Our portfolio is TailorNow, the HR and Payroll
-  platform, and FSLabs Exchange. Nothing else.
+  platform, FSLabs Exchange, and UrbanPulse. Nothing else.
 - **A product is not the company.** TailorNow is a product of FSLabs. "The company" means FSLabs.
 - **Never name a client** in a deck, on social media, in a portfolio, or in conversation outside
   FSLabs, without confirmed written permission.
@@ -557,7 +634,7 @@ pitch out loud until it stops sounding rehearsed.
 
 - [ ] Say what FSLabs is in one sentence, without notes
 - [ ] Name all six service lines
-- [ ] Name our three products and what each one does
+- [ ] Name our four products and what each one does, and which are usable today
 - [ ] Explain the four stage process, and why "no status theatre" matters
 - [ ] State the delivery standard: works, documented, ready for the real world
 - [ ] Answer at least three of the objections in section 18 convincingly
