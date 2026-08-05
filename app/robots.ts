@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/exchange/dashboard', '/exchange/accounts'],
     },
-    sitemap: 'https://folubandsamuellabs.com/sitemap.xml',
+    sitemap: 'https://fslabs.tech/sitemap.xml',
   }
 }

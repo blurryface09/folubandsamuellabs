@@ -13,8 +13,8 @@ export async function POST(req: Request) {
 
   const [{ error }] = await Promise.all([
     resend.emails.send({
-      from: "FSLabs Contact <contact@folubandsamuellabs.com>",
-      to: "admin@folubandsamuellabs.com",
+      from: "FSLabs Contact <contact@fslabs.tech>",
+      to: "folubandsamuel@fslabs.tech",
       replyTo: email,
       subject: `New Enquiry: ${service} from ${name}`,
       html: `
@@ -36,9 +36,9 @@ export async function POST(req: Request) {
       `,
     }),
     resend.emails.send({
-      from: "FSLabs <contact@folubandsamuellabs.com>",
+      from: "FSLabs <contact@fslabs.tech>",
       to: email,
-      replyTo: "admin@folubandsamuellabs.com",
+      replyTo: "folubandsamuel@fslabs.tech",
       subject: "We received your message — FSLabs",
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background: #0A0804; color: #F0EDE4; border-radius: 12px; overflow: hidden;">
@@ -65,12 +65,12 @@ export async function POST(req: Request) {
               <p style="color: rgba(240,237,228,0.75); font-size: 14px; line-height: 1.6; margin: 0 0 16px;">
                 We offer 3-month hands-on courses in Full Stack, Frontend, Backend, Prompt Engineering, ML Foundations, and Ethical Hacking — with introductory pricing from <strong style="color: #F0EDE4;">₦150,000</strong>.
               </p>
-              <a href="https://folubandsamuellabs.com/training" style="display: inline-block; background: linear-gradient(135deg,#C9A84C,#8B6914); color: #050505; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 0.05em;">View Courses &amp; Enrol →</a>
+              <a href="https://fslabs.tech/training" style="display: inline-block; background: linear-gradient(135deg,#C9A84C,#8B6914); color: #050505; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 0.05em;">View Courses &amp; Enrol →</a>
             </div>
             ` : ""}
             <p style="color: rgba(240,237,228,0.5); font-size: 13px; line-height: 1.6; margin-bottom: 0;">
               In the meantime, feel free to browse our services at
-              <a href="https://folubandsamuellabs.com" style="color: #C9A84C;">folubandsamuellabs.com</a>
+              <a href="https://fslabs.tech" style="color: #C9A84C;">fslabs.tech</a>
               or reply to this email if you have any urgent questions.
             </p>
           </div>

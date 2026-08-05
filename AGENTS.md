@@ -34,13 +34,20 @@ company documents, portfolios, decks or "about us" material.
 More generally: never name any client publicly, or in any document intended to travel outside
 FSLabs, without explicit confirmation that permission exists.
 
-## Known stale content
+## Domain migration
 
-The site code still references the old domain and email (`folubandsamuellabs.com`,
-`admin@folubandsamuellabs.com`) in `app/layout.tsx`, `app/robots.ts`, `app/sitemap.ts`,
-`app/page.tsx`, `app/contact/contact-client.tsx`, `components/Footer.tsx`, `app/folub/layout.tsx`,
-and the `app/api/*` contact and notify routes. Contact pages also show placeholder phone numbers
-(`+234 800 000 0000`). The correct values are at the top of this section.
+The site moved from `folubandsamuellabs.com` to **fslabs.tech**, and the general inbox from
+`admin@folubandsamuellabs.com` to **folubandsamuel@fslabs.tech**. All code references were updated
+— canonical/OG URLs, JSON-LD, sitemap, robots, footer, contact page, and the Resend `from`/`to`
+addresses in the `app/api/*` routes (`contact@fslabs.tech`, `exchange@fslabs.tech`).
+
+**Still outstanding — needs DNS/provider work, not code:** `fslabs.tech` must be verified as a
+sending domain in Resend, or transactional email will fail to deliver. Also confirm whether the old
+domain should redirect to the new one so existing links and search results don't break.
+
+FSLabs has no public phone number yet. The `+234 000 000 0000` on the FOLUB Builders pages is the
+client's to supply; the `+234 800 000 0000` strings in the exchange forms are input placeholders and
+are correct as-is.
 
 ## Company documents
 

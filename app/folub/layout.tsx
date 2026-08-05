@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "FOLUB Builders | Build. Buy. Sell.",
     description:
       "Premium residential and commercial real estate, developed, sold, and managed by our own team.",
-    url: "https://folubandsamuellabs.com/folub",
+    url: "https://fslabs.tech/folub",
     siteName: "FOLUB Builders",
     locale: "en_NG",
     type: "website",
