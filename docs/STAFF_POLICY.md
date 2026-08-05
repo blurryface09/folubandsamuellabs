@@ -12,12 +12,15 @@ The Company Handbook explains who FSLabs is and how work is judged. This documen
 of working with us: hours, leave, pay, what you may and may not do with client material, who owns the
 work, and what to do when something goes wrong.
 
-Where this document says a founder approves something, that means Adeseko Samuel for technical and
-security matters, and Akinbayo for commercial matters such as pricing and timelines.
+**Where this document says a founder approves something, either founder can approve it.** Samuel and
+Akinbayo both attend to clients, both agree scope and pricing, and both sign off leave and expenses. Ask
+whichever of them you can reach.
 
-**Client contact is either founder.** Both Samuel and Akinbayo attend to clients, so either of them can
-take a client conversation. What does not happen is a client being contacted by anyone other than a
-founder.
+There are two exceptions, and they are about expertise rather than authority. Anything that is a
+**security or technical judgement** goes to Samuel, because it is his discipline: whether client
+material may go near an AI tool, and whether a system is ready to put in front of a paying business.
+
+What never happens is a client being contacted by anyone who is not a founder.
 
 If something here is unclear, ask before assuming. That instruction applies to this document as much
 as it does to client work.
@@ -45,7 +48,7 @@ Full time staff receive **15 working days of paid annual leave per year**, in ad
 public holidays.
 
 - Leave accrues monthly.
-- Requests need **two weeks notice** and are approved by Akinbayo.
+- Requests need **two weeks notice** and are approved by either founder.
 - Up to **5 unused days** may be carried into the following year.
 - Sick leave is separate from annual leave. Tell a founder as early as you can and do not work while
   unwell.
@@ -90,7 +93,7 @@ answer.
 
 ### 3.4 Expenses
 
-Work related expenses are reimbursed on production of a receipt. Anything substantial needs Akinbayo's
+Work related expenses are reimbursed on production of a receipt. Anything substantial needs a founder's
 approval **before** you spend it, not after.
 
 ---
@@ -152,7 +155,7 @@ in work they produce for us or for our clients.
 
 **Your own projects.** Anything you build in your own time, on your own equipment, unrelated to
 FSLabs work and to our clients, is yours. If the line is unclear on something you are excited about,
-ask Samuel before you start rather than after you ship.
+ask a founder before you start rather than after you ship.
 
 ---
 

@@ -132,8 +132,9 @@ Remote first, core hours 10:00 to 16:00 WAT. Fifteen days leave plus public holi
 yet: per engagement fees agreed in writing, plus 10% of total contract value for introducing a client,
 with salaries reviewed quarterly and no figure committed. Client owns deliverables on full payment
 while FSLabs keeps reusable components. No client code, data, credentials or security findings in any
-third party AI tool. Incidents go to both founders at once. Either founder attends to clients, but nobody
-other than a founder ever contacts one.
+third party AI tool. Incidents go to both founders at once. **Either founder can approve anything**:
+both attend to clients, both agree scope and pricing, both sign off leave and expenses. The only
+exceptions are security and technical judgements, which are Samuel's.
 
 **Preferred document format is PDF.** Build one from any markdown source with:
 
