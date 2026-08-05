@@ -26,7 +26,21 @@ const securityHeaders = [
   },
 ];
 
+// The site moved to fslabs.tech. The old domain stays attached to this
+// deployment only so existing links and search results keep working: every
+// request to it is redirected permanently to the same path on the new domain.
+const LEGACY_HOSTS = ["folubandsamuellabs.com", "www.folubandsamuellabs.com"];
+
 const nextConfig: NextConfig = {
+  async redirects() {
+    return LEGACY_HOSTS.map((host) => ({
+      source: "/:path*",
+      has: [{ type: "host" as const, value: host }],
+      destination: "https://fslabs.tech/:path*",
+      permanent: true,
+    }));
+  },
+
   async headers() {
     return [
       {
