@@ -38,8 +38,8 @@ talent, delivering world-class tech services, and building products that matter.
 | **RC number** | 9637480 |
 | **Incorporated in** | Nigeria |
 | **Base** | Lagos, Nigeria |
-| **Website** | https://folubandsamuellabs.com |
-| **General email** | admin@folubandsamuellabs.com |
+| **Website** | https://fslabs.tech |
+| **General email** | folubandsamuel@fslabs.tech |
 | **Phone** | _(to be added — the site currently shows a placeholder)_ |
 
 ---
@@ -227,13 +227,12 @@ Crypto-to-naira and account services — USDT, gift cards and related requests, 
 
 ## 8. Our clients
 
-Client work is the core of the business. **FOLUB Builders** — a property development company that
-builds, buys and sells residential and commercial property across Lagos and Abuja — is a separate
-company and an FSLabs client, whose web platform we built and maintain.
+Client work is the core of the business. Alongside our own products, we design, build, secure and
+maintain systems for clients across sectors.
 
-> **Note for the team:** never name a client publicly, in a pitch deck, on social media or in a
-> portfolio, without confirming we have their permission. Add other delivered projects to this
-> section as permission is confirmed.
+> **Note for the team:** never name a client publicly — in a pitch deck, on social media, in a
+> portfolio or in a conversation outside FSLabs — without confirming we have their permission.
+> Named projects will be listed here once that permission is in place.
 
 ---
 
@@ -253,7 +252,9 @@ Consistency matters more than cleverness here. Use this language.
 everywhere. "FS Labs" as two words is not our house style — use **FSLabs**.
 
 **Things to get right**
-- FOLUB Builders is a **client**, a separate company — not part of FSLabs, and not one of our products.
+- **FSLabs is FSLabs.** Never present another company — a client's or anyone else's — as part of
+  FSLabs, as a sister brand, or as one of our products. Our portfolio is TailorNow, the HR & Payroll
+  platform, and FSLabs Exchange. Nothing else.
 - Don't promise timelines to a client without checking with Akinbayo.
 - Don't share client names, client code, pricing or internal delivery economics outside the company.
 - Security work in particular: what we find on a client's systems never leaves FSLabs.
@@ -268,7 +269,7 @@ everywhere. "FS Labs" as two words is not our house style — use **FSLabs**.
 | Clients, scope, pricing, timelines, partnerships, anything commercial | **Akinbayo** |
 | Anything you're unsure about | Ask early. Both founders are on every project — use that. |
 
-General enquiries reach us at **admin@folubandsamuellabs.com**, and the commitment on our contact
+General enquiries reach us at **folubandsamuel@fslabs.tech**, and the commitment on our contact
 form is a response within 24 hours.
 
 ---

@@ -38,7 +38,7 @@ engagement.
 
 - **Legal name:** Folub and Samuel Labs · **RC No.** 9637480 · incorporated in Nigeria
 - **Base:** Lagos, Nigeria
-- **Web:** https://folubandsamuellabs.com · **Email:** admin@folubandsamuellabs.com
+- **Web:** https://fslabs.tech · **Email:** folubandsamuel@fslabs.tech
 - **Founders:**
   - **Adeseko Samuel** — Co-Founder & Technical Lead. Cybersecurity professional and full-stack
     engineer; owns architecture, backend, security implementation and product delivery.
@@ -92,14 +92,13 @@ certification — before we ask for anything.
 Separate from our own products, we build for clients — and in a partnership conversation this is the
 more persuasive evidence, because it shows someone else trusted us with their business.
 
-- **FOLUB Builders** — a property development company (builds, buys and sells residential and
-  commercial property across Lagos and Abuja; publicly states 18 years' experience, 240+ units
-  delivered, 12 estates). **A separate company and an FSLabs client** — we built and maintain their
-  web platform. Useful as a reference for any property-sector conversation, including Norsh if the
-  property hypothesis holds (§5.5).
+We design, build, secure and maintain systems for clients across sectors — including delivered
+web platform work in property development.
 
-Add other named client work here before the one-pager is finalised — a short, credible list of
-delivered projects is what turns "two founders" from a risk into a proof point.
+**Fill this section in before the one-pager is finalised:** a short, credible list of delivered
+projects is what turns "two founders" from a risk into a proof point. Two rules — only list a
+client we have explicit permission to name, and never present a client's company as part of FSLabs
+or as one of our products.
 
 ### 2e. What we actually need from partnerships
 
@@ -418,7 +417,7 @@ Candidates, none confirmed:
 
 | Candidate | Assessment |
 | --- | --- |
-| **Norsh Luxury Homes Ltd** (Lagos) | **Now the leading hypothesis.** A Lagos property company. We already deliver for a property developer (FOLUB Builders, §2d), so we'd walk in with directly relevant sector experience and a live reference — a strong Mode A conversation. |
+| **Norsh Luxury Homes Ltd** (Lagos) | **Now the leading hypothesis.** A Lagos property company. We have delivered web platform work in property development already (§2d), so we'd walk in with directly relevant sector experience — a strong Mode A conversation. |
 | https://norsh.org | Site exists; content not retrievable, purpose unconfirmed |
 | https://bynorsh.com | Site exists; content not retrievable, appears to be a separate brand |
 | **Norrsken / Norrsken22** | Possible misspelling. If so this is a **high-value investor contact** — Norrsken22 is an Africa-focused growth fund — and should be reframed as a capital conversation, not a commercial partnership. |
@@ -428,8 +427,8 @@ exhibitor list, and confirm the exact legal name. Then fill in: what they do →
 our offer → our ask → watch-outs.
 
 **If it is Norsh Luxury Homes**, the likely shape is: we sell them software (sales/CRM, project
-tracking, client portal), and we can point to FOLUB Builders as a delivered project in the same
-sector — assuming we have their permission to name them (§8).
+tracking, client portal), and we can point to delivered work in the same sector — subject to having
+permission to name the client (§8).
 
 ---
 
@@ -479,7 +478,7 @@ CoralPay and Snapnet first → Open Data Center → LSEG → Norsh once identifi
 - [ ] Traction numbers we're willing to share (clients delivered, products live, Academy cohorts)
 - [ ] Real phone number on the site — the contact pages currently show placeholder numbers
       (`+234 800 000 0000`); fix before we send anyone there
-- [ ] Permission confirmed to name FOLUB Builders (and any other client) as a reference
+- [ ] Permission confirmed for any client we intend to name as a reference
 - [ ] Norsh identified; Open Data Center identity confirmed
 - [ ] An owner assigned per company
 
@@ -524,7 +523,7 @@ CoralPay and Snapnet first → Open Data Center → LSEG → Norsh once identifi
 | 2 | Confirm **Open Data Center** = OADC, or correct it | | §5.3 outreach |
 | 3 | Confirm **which LSEG division** we met and the contact's remit | | §5.4 outreach |
 | 4 | Add summit name, date, and per-company contact names | | All outreach |
-| 5 | Get **client permission to name references** (FOLUB Builders and others), and compile the delivered-project list for §2d | | One-pager, and any Mode A pitch |
+| 5 | Get **client permission to name references**, and compile the delivered-project list for §2d | | One-pager, and any Mode A pitch |
 | 6 | Agree the traction numbers we'll share externally | | One-pager and all emails |
 | 7 | Replace placeholder phone numbers on the site | | Any outreach that points at our site |
 | 8 | Assess real capacity for a bulk enterprise uniform order (TailorNow) | | Snapnet channel ask |
@@ -571,5 +570,4 @@ estimates — do not quote them back to the company.
 
 **FSLabs internal** — service lines, Academy tracks, founder bios and product details taken from
 this repository (`app/about`, `app/services`, `app/training`, `app/exchange`,
-`prisma/schema.prisma`) and the TailorNow repository. FOLUB Builders details come from the client
-site we built for them (`app/folub`) — a separate company, not an FSLabs product.
+`prisma/schema.prisma`) and the TailorNow repository.
