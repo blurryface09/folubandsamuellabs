@@ -30,8 +30,8 @@ const leadership: Member[] = [
   },
   {
     name: "Adeseko Samuel",
-    role: "Chief Technology Officer",
-    bio: "Leads technology and systems across FOLUB, building the platforms and processes that keep every project transparent, efficient, and accountable.",
+    role: "Co-Founder & Chief Technology Officer",
+    bio: "Leads technology and systems across FOLUB, building the platforms and processes that keep every project transparent, efficient, and accountable. He is also involved in the operations and administration that keep projects moving.",
   },
 ];
 

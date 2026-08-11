@@ -477,7 +477,7 @@ export default function Home() {
               </h2>
               <div style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.45)", lineHeight: 1.95 }}>
                 <p className="reveal" style={{ marginBottom: 20 }}>Folub and Samuel Labs is a technology and cybersecurity company incorporated in Nigeria. We are a two-founder company where both founders work directly on every client project. That is the model and that is the standard.</p>
-                <p className="reveal">We do not hand off your work to junior contractors or offshore teams. When you engage FSLabs, you get Adeseko Samuel on the technical side and Akinbayo on strategy and delivery. Every single time.</p>
+                <p className="reveal">We do not hand off your work to junior contractors or offshore teams. When you engage FSLabs, you work directly with both founders. Every single time.</p>
               </div>
             </div>
 
@@ -526,14 +526,14 @@ export default function Home() {
           <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(360px,1fr))", gap: 20 }}>
             {[
               {
-                initial: "S", name: "Adeseko Samuel", role: "Co-Founder · Technical Lead",
-                bio: "Samuel is the builder. A cybersecurity professional and full stack developer who carries the full technical weight of FSLabs. From system architecture and backend engineering to security implementation and product delivery. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
-                tags: ["Cybersecurity", "Full Stack", "System Architecture", "Security Ops", "ALX Graduate"],
+                initial: "S", name: "Adeseko Samuel", role: "Co-Founder & CTO",
+                bio: "Samuel is a cybersecurity professional and full stack developer, and he leads the technical side of FSLabs. System architecture, backend engineering, security implementation and product delivery. He is closely involved in the company's operations, administration and partnerships alongside that. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
+                tags: ["Cybersecurity", "Full Stack", "System Architecture", "Operations", "Partnerships", "ALX Graduate"],
               },
               {
-                initial: "A", name: "Akinbayo", role: "Co-Founder · Business Lead",
-                bio: "Akinbayo is the business engine behind FSLabs. He drives strategy, client relationships, partnerships, and the commercial growth of everything we build. If FSLabs is moving, Akinbayo is making sure it moves in the right direction.",
-                tags: ["Strategy", "Operations", "Business Development", "Client Relations", "Cybersecurity"],
+                initial: "A", name: "Adefolu Akinbayo", role: "Co-Founder & CEO",
+                bio: "Akinbayo leads the commercial side of FSLabs, driving strategy, client relationships, partnerships and growth, and he backs the company's development. He works across the business alongside Samuel and shares every decision that shapes where FSLabs goes.",
+                tags: ["Strategy", "Operations", "Business Development", "Client Relations", "Partnerships"],
               },
             ].map(f => (
               <TiltCard key={f.name} style={{ background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 22, padding: 40 }}>
