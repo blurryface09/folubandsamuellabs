@@ -295,10 +295,31 @@ document.querySelectorAll('.tilt-card').forEach(card=>{
   }, 2400);
 })();
 
+// ══ Mobile menu ══════════════════════════════════════
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobile-menu');
+function setMenu(open){
+  if(!hamburger||!mobileMenu) return;
+  mobileMenu.classList.toggle('open',open);
+  hamburger.classList.toggle('open',open);
+  hamburger.setAttribute('aria-expanded',String(open));
+}
+if(hamburger&&mobileMenu){
+  hamburger.addEventListener('click',()=>setMenu(!mobileMenu.classList.contains('open')));
+  // Same-page links scroll behind the panel, so it has to close itself.
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') setMenu(false); });
+  window.addEventListener('resize',()=>{ if(window.innerWidth>768) setMenu(false); });
+}
+
 // ══ Smooth nav links ════════════════════════════════
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
+    const href=a.getAttribute('href');
+    // A bare "#" is not a valid selector — querySelector('#') throws — and the
+    // logo plus the footer placeholder links all use it.
+    if(!href||href==='#'){e.preventDefault();lenis.scrollTo(0,{duration:1.2});return}
+    const t=document.querySelector(href);
     if(t){e.preventDefault();lenis.scrollTo(t,{offset:-80,duration:1.5})}
   });
 });

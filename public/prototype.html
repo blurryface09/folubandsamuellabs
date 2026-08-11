@@ -151,12 +151,44 @@ body.cursor-click #c-ring{width:26px;height:26px}
   box-shadow:0 0 40px rgba(201,168,76,.45),0 4px 16px rgba(0,0,0,.5);
   transform:translateY(-1px);
 }
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:6px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:6px;background:none;border:none}
 .hamburger span{width:22px;height:1.5px;background:var(--gold);transition:.3s}
+/* Hamburger morphs into a close (X) while the menu is open. */
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ─── Mobile menu ────────────────────────────────────── */
+.mobile-menu{
+  display:none;
+  background:rgba(5,5,5,.98);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--gold-border);
+  padding:16px 24px 28px;
+}
+.mobile-menu.open{display:block}
+.mobile-link{
+  display:block;padding:15px 0;
+  font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);
+  border-bottom:1px solid rgba(201,168,76,.08);
+}
+.mobile-link:active{color:var(--gold)}
+.mobile-cta{
+  display:block;margin-top:20px;padding:15px;text-align:center;
+  font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:#000;border-radius:10px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+}
 @media(max-width:768px){
   .nav-links{display:none}
   .hamburger{display:flex}
   #navbar{padding:16px 24px}
+}
+/* Desktop never shows the mobile panel, even if a stale .open class lingers
+   after a resize. */
+@media(min-width:769px){
+  .mobile-menu,.mobile-menu.open{display:none}
 }
 
 /* ─── Hero ───────────────────────────────────────────── */
@@ -677,9 +709,18 @@ section{position:relative;z-index:3}
       <a href="#contact" class="nav-link">Contact</a>
       <button class="nav-cta" onclick="window.location.href='/training'">Academy ↗</button>
     </div>
-    <div class="hamburger" id="hamburger">
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
-    </div>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#team" class="mobile-link">Team</a>
+    <a href="/training" class="mobile-link">Academy</a>
+    <a href="/dashboard" class="mobile-link">Workforce</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="/training" class="mobile-cta">Academy ↗</a>
   </div>
 </nav>
 

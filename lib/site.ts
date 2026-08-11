@@ -23,6 +23,13 @@ export const SITE_URL = `https://${SITE_DOMAIN}`;
 export const CONTACT_INBOX = `folubandsamuel@${SITE_DOMAIN}`;
 
 /**
+ * Academy enrolment inbox. Course "Enrol" buttons open a prefilled mailto to
+ * this address, so it must exist as a real mailbox or alias — nothing on the
+ * server sends here, and a bounce is invisible to us.
+ */
+export const ACCESS_INBOX = `access@${SITE_DOMAIN}`;
+
+/**
  * Envelope sender for transactional mail. Must belong to a domain verified in
  * Resend, or sends fail — see docs/DEPLOYMENT.md.
  */

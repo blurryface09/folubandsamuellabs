@@ -37,13 +37,18 @@ export default function Navbar() {
     return null;
   }
 
+  // Real routes, not same-page anchors. `/` is rewritten to the static
+  // prototype.html by proxy.ts, so app/page.tsx — the only page carrying
+  // #services/#about/#contact sections — is never actually served. Bare hashes
+  // here resolved to nothing on every reachable page. /#team is the exception:
+  // there is no /team route, but prototype.html does have that section.
   const links = [
-    { href: "#services", label: "Services" },
-    { href: "#about", label: "About" },
-    { href: "#team", label: "Team" },
+    { href: "/services", label: "Services" },
+    { href: "/about", label: "About" },
+    { href: "/#team", label: "Team" },
     { href: "/training", label: "Academy" },
     { href: "/dashboard", label: "Workforce" },
-    { href: "#contact", label: "Contact" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
@@ -77,7 +82,7 @@ export default function Navbar() {
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.5)"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
             >{l.label}</Link>
           ))}
-          <Link href="#contact" style={{
+          <Link href="/contact" style={{
             marginLeft: 12, padding: "10px 24px",
             background: "linear-gradient(135deg,#C9A84C,#8B6914)",
             color: "#050505", borderRadius: 10,
@@ -121,7 +126,7 @@ export default function Navbar() {
               borderBottom: "1px solid rgba(201,168,76,0.08)",
             }}>{l.label}</Link>
           ))}
-          <Link href="#contact" onClick={() => setOpen(false)} style={{
+          <Link href="/contact" onClick={() => setOpen(false)} style={{
             display: "block", marginTop: 20, padding: "14px",
             background: "linear-gradient(135deg,#C9A84C,#8B6914)",
             color: "#050505", borderRadius: 10, textAlign: "center",

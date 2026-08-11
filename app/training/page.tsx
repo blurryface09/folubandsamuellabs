@@ -1,5 +1,6 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+
+import { ACCESS_INBOX } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Academy",
@@ -82,6 +83,43 @@ function fmt(n: number) {
 
 function pct(orig: number, now: number) {
   return Math.round(((orig - now) / orig) * 100);
+}
+
+/**
+ * Enrolment runs over email rather than a form: the button opens the visitor's
+ * mail client with the course already filled in, so we receive a complete
+ * enquiry and they only add their own details.
+ *
+ * Both fields must be encodeURIComponent'd — course tags contain "·" and the
+ * body contains newlines and "&", any of which would otherwise truncate the
+ * mailto at the first delimiter.
+ */
+function mailtoLink(subject: string, bodyLines: string[]) {
+  const q = new URLSearchParams({ subject, body: bodyLines.join("\n") });
+  return `mailto:${ACCESS_INBOX}?${q.toString().replace(/\+/g, "%20")}`;
+}
+
+function courseEnrolLink(c: (typeof courses)[number]) {
+  return mailtoLink(`Course enrolment — ${c.title}`, [
+    "Hello FSLabs Academy,",
+    "",
+    `I would like to enrol in the ${c.title} course.`,
+    "",
+    `Course:    ${c.title}`,
+    `Track:     ${c.tag}`,
+    "Duration:  3 months",
+    `Fee:       ${fmt(c.price)} (introductory rate)`,
+    "",
+    "Please send me the start date, payment details, and next steps.",
+    "",
+    "My details:",
+    "Full name:",
+    "Phone / WhatsApp:",
+    "Location:",
+    "Preferred start:",
+    "",
+    "Thank you.",
+  ]);
 }
 
 export default function Training() {
@@ -170,10 +208,13 @@ export default function Training() {
                   </span>
                 </div>
                 <p className="text-white/25 text-xs font-mono mb-5">3-month programme · instalment plans available</p>
-                <Link href="/contact"
+                <a href={courseEnrolLink(c)}
                   className="block w-full text-center py-3 border border-[#c9a84c]/30 text-[#c9a84c] text-xs font-bold tracking-widest uppercase rounded hover:bg-[#c9a84c] hover:text-[#0A0804] transition-all duration-200 font-mono">
                   Enrol Now
-                </Link>
+                </a>
+                <p className="text-white/20 text-[10px] font-mono mt-3 text-center">
+                  Opens an email to {ACCESS_INBOX}
+                </p>
               </div>
             </div>
           ))}
@@ -193,10 +234,26 @@ export default function Training() {
                 These are tailored, one-on-one or small-group programmes. Pricing and duration vary by certification — reach out to discuss your goals.
               </p>
             </div>
-            <Link href="/contact"
+            <a href={mailtoLink("Certification prep enquiry", [
+              "Hello FSLabs Academy,",
+              "",
+              "I would like to enquire about professional certification prep.",
+              "",
+              "Certification(s) of interest:   (e.g. CompTIA Security+, CySA+, CEH)",
+              "Format preferred:              one-on-one / small group",
+              "",
+              "Please send me pricing, duration, and available start dates.",
+              "",
+              "My details:",
+              "Full name:",
+              "Phone / WhatsApp:",
+              "Location:",
+              "",
+              "Thank you.",
+            ])}
               className="flex-shrink-0 px-8 py-4 border border-[#c9a84c]/30 text-[#c9a84c] text-xs font-bold tracking-widest uppercase rounded hover:bg-[#c9a84c]/10 transition-colors font-mono whitespace-nowrap">
               Enquire Now
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -269,10 +326,26 @@ export default function Training() {
                 Cohort sizes are limited. Secure your spot at the introductory price before it expires.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact"
+                <a href={mailtoLink("Course enrolment enquiry", [
+                  "Hello FSLabs Academy,",
+                  "",
+                  "I would like to enrol in a course.",
+                  "",
+                  "Course of interest:   (Full Stack / Ethical Hacking / Machine Learning / Backend / Frontend / Prompt Engineering)",
+                  "Payment plan:         pay once / 50% x 2 / 3-month instalment",
+                  "",
+                  "Please send me the start date, payment details, and next steps.",
+                  "",
+                  "My details:",
+                  "Full name:",
+                  "Phone / WhatsApp:",
+                  "Location:",
+                  "",
+                  "Thank you.",
+                ])}
                   className="inline-block px-12 py-5 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
                   Enrol Now
-                </Link>
+                </a>
                 <a href="/FSLabs-Training-Brochure.pdf" download
                   className="inline-flex items-center gap-2 px-10 py-5 border border-[#c9a84c]/30 text-[#c9a84c] font-bold text-sm tracking-widest uppercase hover:bg-[#c9a84c]/08 transition-colors font-mono">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
