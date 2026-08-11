@@ -119,6 +119,17 @@ Staff facing, all circulated:
 | `docs/STAFF_POLICY.md` | Hours, leave, pay and commission, client data and AI rules, device security, ownership of work, incident escalation, joining and leaving. PDF: `docs/FSLabs-Staff-Policy.pdf` |
 | `docs/ABOUT_FSLABS.md` | Shorter overview, the version to hand to someone outside the team. PDF: `docs/About-FSLabs.pdf`, web: `docs/about-fslabs.html` |
 
+External, safe to send outside the company:
+
+| Document | What it is |
+| --- | --- |
+| `docs/EXTERNAL_PRODUCT_BRIEF.md` | Company and product brief for vendors, agencies and prospective partners. Honest about stage, no internal priorities, no objection scripts, no capacity risks. PDF: `docs/FSLabs-Company-and-Product-Brief.pdf` |
+
+**The handbook and the staff policy are internal and must never be sent outside the company.** The
+handbook carries objection handling scripts, internal priorities, the two founder capacity risk and a
+plain list of what FSLabs has not done. When someone outside asks about the company or the products,
+send the external brief instead.
+
 Founders only, never circulated:
 
 | Document | What it is |
