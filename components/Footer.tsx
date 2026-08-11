@@ -42,13 +42,8 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
-              <Image src="/fslabs-logo-mark.png" alt="FSLabs" width={44} height={44} style={{ flexShrink: 0 }} />
-              <div style={{ width: 1, height: 36, background: "linear-gradient(180deg,transparent,#C9A84C,transparent)", flexShrink: 0 }} />
-              <div style={{ lineHeight: 1.2 }}>
-                <div style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 13, letterSpacing: "0.06em", color: "#FFFFFF" }}>FOLUB &amp; SAMUEL LABS</div>
-                <div style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 8, letterSpacing: "0.22em", color: "rgba(201,168,76,0.5)", textTransform: "uppercase", marginTop: 2 }}>Technology &amp; Cybersecurity</div>
-              </div>
+            <div style={{ display: "flex", alignItems: "center", marginBottom: 20 }}>
+              <Image src="/fslabs-logo-horizontal-on-dark.png" alt="FSLabs" width={202} height={44} style={{ flexShrink: 0, width: "auto", height: 44 }} />
             </div>
             <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.35)", lineHeight: 1.9, maxWidth: 260 }}>
               Technology built to move fast. Cybersecurity built to hold tight. Registered in Nigeria.
@@ -61,7 +56,7 @@ export default function Footer() {
 
           {[
             { title: "Company", links: [{ label: "About", href: "#about" }, { label: "Team", href: "#team" }, { label: "Services", href: "#services" }, { label: "Contact", href: "#contact" }] },
-            { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "FS Exchange", href: "/exchange" }] },
+            { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "Academy", href: "/training" }] },
             { title: "Contact", links: [{ label: "Lagos, Nigeria", href: "#" }, { label: CONTACT_INBOX, href: `mailto:${CONTACT_INBOX}` }] },
           ].map(col => (
             <div key={col.title}>

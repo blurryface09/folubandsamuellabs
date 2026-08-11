@@ -242,7 +242,7 @@ function ContactForm() {
           onFocus={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")}
           onBlur={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.15)")}>
           <option value="" disabled style={{ background: "#0A0A0A" }}>Select a service</option>
-          {["Software Development","Cybersecurity","Digital Solutions","FS Exchange","Other"].map(s => (
+          {["Software Development","Cybersecurity","Digital Solutions","Academy","Other"].map(s => (
             <option key={s} value={s} style={{ background: "#0A0A0A" }}>{s}</option>
           ))}
         </select>
@@ -574,22 +574,22 @@ export default function Home() {
 
         <div style={{ ...MW, textAlign: "center", position: "relative", zIndex: 1 }}>
           <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", padding: "6px 18px", borderRadius: 100, marginBottom: 28 }}>
-            <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)" }}>New Platform</span>
+            <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)" }}>Now Enrolling</span>
           </div>
           <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 900, fontSize: "clamp(2.2rem,6vw,72px)", lineHeight: 1.06, letterSpacing: "-0.03em", color: "#F5F0E8", marginBottom: 20 }}>
-            Introducing{" "}
+            Introducing the{" "}
             <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C,#8B6914)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              FS Exchange
+              FSLabs Academy
             </span>
           </h2>
           <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 14, color: "rgba(245,240,232,0.42)", lineHeight: 1.9, maxWidth: 500, margin: "0 auto 40px" }}>
-            Nigeria&apos;s fastest and most transparent currency exchange platform. Built by FSLabs. Powered by real rates. Designed for trust.
+            Three-month intensive bootcamps in Full Stack, Cybersecurity, Machine Learning, Backend, Frontend, and Prompt Engineering. Taught by the engineers who build our production systems.
           </p>
-          <a href="/exchange" className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "16px 40px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 48px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
+          <a href="/training" className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "16px 40px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 48px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 72px rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 48px rgba(201,168,76,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
           >
-            Visit FS Exchange
+            Explore the Academy
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </a>
         </div>

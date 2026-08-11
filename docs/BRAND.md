@@ -12,9 +12,11 @@ than edit derivatives by hand.
 
 | File | Use | Notes |
 | --- | --- | --- |
-| `public/fslabs-logo.png` | Light backgrounds | Full lockup, 1200px wide. Wordmark "LABS" is charcoal. |
-| `public/fslabs-logo-on-dark.png` | Dark backgrounds | Same lockup with "LABS" recoloured to cream `#F0EDE4`. |
-| `public/fslabs-logo-mark.png` | Nav, footer, favicons | Monogram only, 512×512 square, transparent. |
+| `public/fslabs-logo-horizontal-on-dark.png` | **Nav and footer** | Mark left, wordmark right. 4.59:1. |
+| `public/fslabs-logo-horizontal.png` | Horizontal, light backgrounds | Same arrangement, charcoal "LABS". |
+| `public/fslabs-logo.png` | Light backgrounds | Stacked lockup, 1200px wide. Wordmark "LABS" is charcoal. |
+| `public/fslabs-logo-on-dark.png` | Dark backgrounds, social card | Stacked, "LABS" recoloured to cream `#F0EDE4`. |
+| `public/fslabs-logo-mark.png` | Favicon source | Monogram only, 512×512 square, transparent. |
 | `public/favicon-32.png` | Browser tab | Transparent, so it reads on light and dark chrome. |
 | `public/apple-touch-icon.png` | iOS home screen | Brand background baked in — iOS composites onto white. |
 | `app/favicon.ico` | Legacy `/favicon.ico` | Multi-size ICO (16/32/48). Next serves it at the root. |
@@ -30,14 +32,26 @@ needs no variant.
 Structured data (`app/layout.tsx`) points at the light lockup deliberately:
 search results render it on white.
 
-## Where the mark is referenced
+## Why a horizontal arrangement exists
 
-- `components/Navbar.tsx`, `components/Footer.tsx` — Next `<Image>`, square slots
-- `public/prototype.html` — nav and footer. Remember `proxy.ts` rewrites `/` to
-  this file, so this is the homepage logo.
+The supplied artwork is a **stacked** lockup — mark above wordmark, 1.55:1. In a
+72px navbar that leaves the wordmark about 7px tall, which is illegible. The
+horizontal variant re-arranges the same two pieces side by side at 4.59:1, so at
+a 38–44px height the wordmark still reads.
 
-The mark is a true square specifically so those 38–44px square slots don't
-distort it; the previous asset was 1602×1104 and was being squashed.
+Composition is generated, not hand-placed: the wordmark is all-caps, so its 88px
+artwork height is its cap height, set to 40% of the mark height — the
+conventional ratio for this pairing.
+
+## Where the logo is referenced
+
+- `components/Navbar.tsx` (h=40), `components/Footer.tsx` (h=44) — Next `<Image>`
+- `public/prototype.html` — nav (h=38) and footer (h=36). Remember `proxy.ts`
+  rewrites `/` to this file, so this is the homepage logo.
+
+All four use the horizontal on-dark variant with `width:auto` so the aspect ratio
+is driven by height alone. The lockup already carries the wordmark, so none of
+them sets adjacent "FOLUB & SAMUEL LABS" text any more.
 
 ## Not yet updated
 

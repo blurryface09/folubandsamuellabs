@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Training",
-  description: "FSLabs Training — 3-month intensive tech bootcamps in Full Stack Development, Cybersecurity, Machine Learning, and more. Based in Lagos, Nigeria.",
+  title: "Academy",
+  description: "FSLabs Academy — 3-month intensive tech bootcamps in Full Stack Development, Cybersecurity, Machine Learning, and more. Based in Lagos, Nigeria.",
   alternates: { canonical: "/training" },
 };
 
@@ -91,7 +91,7 @@ export default function Training() {
       <section className="pt-40 pb-24 max-w-7xl mx-auto px-6">
         <div className="flex items-center gap-3 mb-8">
           <div className="h-px w-8 bg-[#c9a84c]" />
-          <span className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase font-mono">Training</span>
+          <span className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase font-mono">FSLabs Academy</span>
         </div>
         <div className="flex items-end justify-between flex-wrap gap-8 mb-10">
           <h1 className="text-6xl md:text-8xl font-bold text-white leading-[0.95] tracking-tight">
