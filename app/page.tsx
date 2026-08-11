@@ -527,13 +527,13 @@ export default function Home() {
             {[
               {
                 initial: "S", name: "Adeseko Samuel", role: "Co-Founder & CTO",
-                bio: "Samuel is a cybersecurity professional and full stack developer, and he leads the technical side of FSLabs. System architecture, backend engineering, security implementation and product delivery. He is closely involved in the company's operations, administration and partnerships alongside that. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
-                tags: ["Cybersecurity", "Full Stack", "System Architecture", "Operations", "Partnerships", "ALX Graduate"],
+                bio: "Samuel is a cybersecurity professional and full stack developer. He handles the technical side of FSLabs, from system architecture and backend engineering to security implementation and product delivery, and oversees partnerships, growth and the day-to-day running of the company. He thinks in systems, ships in weeks, and holds the standard that everything we release has to actually work, scale, and be secure from day one.",
+                tags: ["Cybersecurity", "Full Stack", "System Architecture", "Partnerships", "Growth", "ALX Graduate"],
               },
               {
                 initial: "A", name: "Adefolu Akinbayo", role: "Co-Founder & CEO",
-                bio: "Akinbayo leads the commercial side of FSLabs, driving strategy, client relationships, partnerships and growth, and he backs the company's development. He works across the business alongside Samuel and shares every decision that shapes where FSLabs goes.",
-                tags: ["Strategy", "Operations", "Business Development", "Client Relations", "Partnerships"],
+                bio: "Akinbayo drives strategy, client relationships and partnerships at FSLabs, and backs the commercial growth of everything we build. He keeps FSLabs pointed in the right direction.",
+                tags: ["Strategy", "Business Development", "Client Relations", "Partnerships"],
               },
             ].map(f => (
               <TiltCard key={f.name} style={{ background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 22, padding: 40 }}>
