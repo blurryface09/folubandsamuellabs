@@ -583,7 +583,7 @@ export default function Home() {
             </span>
           </h2>
           <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 14, color: "rgba(245,240,232,0.42)", lineHeight: 1.9, maxWidth: 500, margin: "0 auto 40px" }}>
-            Three-month intensive bootcamps in Full Stack, Cybersecurity, Machine Learning, Backend, Frontend, and Prompt Engineering. Taught by the engineers who build our production systems.
+            Practical technology training for beginners. Three-month tracks in Cyber Security, Front-End, Back-End, Full-Stack, and Cloud Engineering, plus Machine Learning and Prompt Engineering. Cohort 01 starts 17 August 2026.
           </p>
           <a href="/training" className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "16px 40px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 48px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 72px rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}

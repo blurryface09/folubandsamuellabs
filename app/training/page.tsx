@@ -1,81 +1,22 @@
 import type { Metadata } from "next";
 
+import academy from "@/lib/academy.json";
 import { ACCESS_INBOX } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Academy",
-  description: "FSLabs Academy — 3-month intensive tech bootcamps in Full Stack Development, Cybersecurity, Machine Learning, and more. Based in Lagos, Nigeria.",
+  description: "FSLabs Academy — practical technology training for beginners. 3-month tracks in Cyber Security, Front-End, Back-End, Full-Stack, Cloud Engineering, Machine Learning, and Prompt Engineering. Cohort 01 starts 17 August 2026. Lagos, Nigeria.",
   alternates: { canonical: "/training" },
 };
 
-const courses = [
-  {
-    id: "fullstack",
-    n: "01",
-    title: "Full Stack Development",
-    tag: "Frontend · Backend · DevOps",
-    desc: "The complete package — build end-to-end web applications from UI to database to deployment. The most comprehensive track we offer.",
-    price: 180000,
-    originalPrice: 300000,
-    topics: ["HTML, CSS, JavaScript, React", "Node.js, Express, PostgreSQL", "Git, CI/CD, Cloud Deployment", "3 Real-World Portfolio Projects"],
-    featured: true,
-  },
-  {
-    id: "ethical-hacking",
-    n: "02",
-    title: "Ethical Hacking Fundamentals",
-    tag: "Cybersecurity · Penetration Testing",
-    desc: "Learn to think like an attacker. Master the tools and techniques used by professional penetration testers and security engineers.",
-    price: 175000,
-    originalPrice: 295000,
-    topics: ["Networking & Security Basics", "Kali Linux, Nmap, Metasploit", "Web App & Network Pentesting", "CTF Challenges + Report Writing"],
-    featured: true,
-  },
-  {
-    id: "machine-learning",
-    n: "03",
-    title: "Machine Learning Foundations",
-    tag: "AI · Data Science · Python",
-    desc: "From Python basics to building and training your own ML models. A practical introduction to artificial intelligence for builders.",
-    price: 170000,
-    originalPrice: 290000,
-    topics: ["Python, NumPy, Pandas", "Supervised & Unsupervised Learning", "Neural Networks Introduction", "Hands-On ML Projects"],
-    featured: false,
-  },
-  {
-    id: "backend",
-    n: "04",
-    title: "Backend Development",
-    tag: "Server · APIs · Databases",
-    desc: "Build the invisible engine behind great products. Design robust APIs, manage databases, and deploy scalable server-side applications.",
-    price: 160000,
-    originalPrice: 280000,
-    topics: ["Node.js, Express, NestJS", "REST APIs & Authentication (JWT)", "PostgreSQL & MongoDB", "Cloud Deployment (AWS / GCP)"],
-    featured: false,
-  },
-  {
-    id: "frontend",
-    n: "05",
-    title: "Frontend Development",
-    tag: "UI · React · Responsive Design",
-    desc: "Craft beautiful, fast, and accessible user interfaces. Master the modern web stack used by top product teams globally.",
-    price: 155000,
-    originalPrice: 270000,
-    topics: ["HTML5, CSS3, JavaScript", "React.js & Next.js", "Responsive & Accessible UI", "Component-Based Architecture"],
-    featured: false,
-  },
-  {
-    id: "prompt-engineering",
-    n: "06",
-    title: "Prompt Engineering",
-    tag: "AI Tools · LLMs · Automation",
-    desc: "The skill no one taught in school. Learn to design, chain, and deploy prompts that turn LLMs into powerful business tools and products.",
-    price: 150000,
-    originalPrice: 260000,
-    topics: ["LLM Fundamentals & APIs", "Prompt Design & Chaining", "RAG, Agents & Tool Use", "Build AI-Powered Products"],
-    featured: false,
-  },
-];
+/**
+ * Cohort and course data live in lib/academy.json because the brochure
+ * generator (scripts/build-brochures.mjs) reads the same file. Duplicating them
+ * is how the old og-image.png ended up advertising a dead domain — one source
+ * means the site and the downloadable PDFs cannot disagree on a price or a date.
+ */
+export const COHORT = academy.cohort;
+const courses = academy.courses;
 
 function fmt(n: number) {
   return "₦" + n.toLocaleString("en-NG");
@@ -133,12 +74,25 @@ export default function Training() {
         </div>
         <div className="flex items-end justify-between flex-wrap gap-8 mb-10">
           <h1 className="text-6xl md:text-8xl font-bold text-white leading-[0.95] tracking-tight">
-            Build Skills.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5d060] via-[#c9a84c] to-[#9a7228]">Launch Careers.</span>
+            Learn. Build.<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5d060] via-[#c9a84c] to-[#9a7228]">Become.</span>
           </h1>
           <p className="text-white/40 text-base max-w-sm leading-relaxed">
-            3-month intensive, project-based programmes taught by practicing FSLabs engineers. Online-first — live sessions available on request.
+            Practical technology training for beginners who want real skills, real projects and real opportunities. 3-month, project-based programmes taught by practicing FSLabs engineers.
           </p>
+        </div>
+
+        {/* Cohort banner — the poster's start date, which the site never showed. */}
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mb-10 border border-[#c9a84c]/25 bg-[#c9a84c]/[0.04] rounded p-6">
+          <div>
+            <p className="text-[#c9a84c] text-[10px] tracking-[0.25em] uppercase font-mono mb-2">{COHORT.name}</p>
+            <p className="text-white text-2xl font-bold leading-none">Starts {COHORT.startsLabel}</p>
+          </div>
+          <div className="hidden sm:block w-px self-stretch bg-[#c9a84c]/20" />
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-2 bg-[#c9a84c] rounded-full animate-pulse" />
+            <p className="text-[#c9a84c] text-xs tracking-[0.2em] uppercase font-mono">{COHORT.status}</p>
+          </div>
         </div>
 
         {/* Key badges */}
@@ -160,17 +114,17 @@ export default function Training() {
               <span className="text-white font-semibold">Introductory Pricing Active</span> — Enrol now at launch rates before prices return to normal.
             </p>
           </div>
-          <a href="/FSLabs-Training-Brochure.pdf" download className="flex items-center gap-2 px-5 py-2.5 border border-[#c9a84c]/30 text-[#c9a84c] text-xs font-semibold tracking-widest uppercase rounded hover:bg-[#c9a84c]/08 transition-colors font-mono">
+          <a href="#tracks" className="flex items-center gap-2 px-5 py-2.5 border border-[#c9a84c]/30 text-[#c9a84c] text-xs font-semibold tracking-widest uppercase rounded hover:bg-[#c9a84c]/08 transition-colors font-mono">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            Download Brochure
+            Track Brochures
           </a>
         </div>
       </section>
 
       {/* Course grid */}
-      <section className="border-b border-[#c9a84c]/10">
+      <section id="tracks" className="border-b border-[#c9a84c]/10 scroll-mt-24">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#c9a84c]/10">
           {courses.map((c) => (
             <div key={c.id} className={`group relative bg-[#080808] px-8 py-10 hover:bg-[#0e0c07] transition-colors overflow-hidden flex flex-col ${c.featured ? "lg:col-span-1" : ""}`}>
@@ -212,8 +166,15 @@ export default function Training() {
                   className="block w-full text-center py-3 border border-[#c9a84c]/30 text-[#c9a84c] text-xs font-bold tracking-widest uppercase rounded hover:bg-[#c9a84c] hover:text-[#0A0804] transition-all duration-200 font-mono">
                   Enrol Now
                 </a>
-                <p className="text-white/20 text-[10px] font-mono mt-3 text-center">
-                  Opens an email to {ACCESS_INBOX}
+                <a href={`/brochures/FSLabs-Academy-${c.id}.pdf`} download
+                  className="flex items-center justify-center gap-2 w-full mt-3 py-2.5 text-[#c9a84c]/60 text-[10px] font-bold tracking-widest uppercase hover:text-[#c9a84c] transition-colors font-mono">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 2v8M5 7l3 3 3-3M2 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Brochure (PDF)
+                </a>
+                <p className="text-white/20 text-[10px] font-mono mt-2 text-center">
+                  Enrol opens an email to {ACCESS_INBOX}
                 </p>
               </div>
             </div>
@@ -269,7 +230,9 @@ export default function Training() {
             {[
               { icon: "🎥", title: "Live Sessions", desc: "Real-time instruction from practicing FSLabs engineers" },
               { icon: "🗂️", title: "Portfolio Projects", desc: "3+ real projects you own and can show employers" },
-              { icon: "📜", title: "Certificate", desc: "FSLabs-verified certificate of completion" },
+              { icon: "📜", title: "Certificate of Completion", desc: "Earn an FSLabs Academy certificate upon successful completion" },
+              { icon: "🚀", title: "Top Student Opportunities", desc: "Top performers may be considered for internships, contracts and projects" },
+              { icon: "🎁", title: "Refer & Earn", desc: "Refer a friend and earn a percentage on their registration" },
               { icon: "🤝", title: "Mentorship", desc: "1-on-1 sessions throughout the programme" },
               { icon: "🔁", title: "Session Recordings", desc: "Rewatch every class at your own pace" },
               { icon: "👥", title: "Alumni Community", desc: "Lifetime access to the FSLabs builder network" },
@@ -346,12 +309,12 @@ export default function Training() {
                   className="inline-block px-12 py-5 bg-gradient-to-r from-[#c9a84c] to-[#e8d080] text-black font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
                   Enrol Now
                 </a>
-                <a href="/FSLabs-Training-Brochure.pdf" download
+                <a href="#tracks"
                   className="inline-flex items-center gap-2 px-10 py-5 border border-[#c9a84c]/30 text-[#c9a84c] font-bold text-sm tracking-widest uppercase hover:bg-[#c9a84c]/08 transition-colors font-mono">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M8 2v8M5 7l3 3 3-3M2 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  Download Brochure
+                  Track Brochures
                 </a>
               </div>
             </div>

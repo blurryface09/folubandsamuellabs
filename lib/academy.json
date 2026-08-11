@@ -1,0 +1,114 @@
+{
+  "_comment": "Single source of truth for FSLabs Academy cohort and course data. Read by app/training/page.tsx AND scripts/build-brochures.mjs, so the site and the downloadable brochures can never disagree on a price, topic, or date. Change a price here and re-run `node scripts/build-brochures.mjs`. Track names, order, start date and benefits follow the Academy poster.",
+  "cohort": {
+    "name": "Cohort 01",
+    "startsISO": "2026-08-17",
+    "startsLabel": "17 August 2026",
+    "status": "Applications open"
+  },
+  "tagline": "Learn. Build. Become.",
+  "positioning": "Practical technology training for beginners who want real skills, real projects and real opportunities.",
+  "footerLine": "Build skills. Build systems. Build the future.",
+  "duration": "3 months",
+  "benefits": [
+    { "title": "Certificate of Completion", "desc": "Earn an FSLabs Academy certificate upon successful completion." },
+    { "title": "Top Student Opportunities", "desc": "Top performers may be considered for internships, contracts and projects." },
+    { "title": "Refer & Earn", "desc": "Refer a friend and earn a percentage on their registration." },
+    { "title": "Live Sessions", "desc": "Real-time instruction from practicing FSLabs engineers." },
+    { "title": "Portfolio Projects", "desc": "Real projects you own and can show employers." },
+    { "title": "Mentorship", "desc": "One-on-one sessions throughout the programme." },
+    { "title": "Session Recordings", "desc": "Rewatch every class at your own pace." },
+    { "title": "Job Support", "desc": "Placement referrals and career guidance." }
+  ],
+  "paymentPlans": [
+    { "name": "Pay Once", "detail": "Full course fee upfront. Best value." },
+    { "name": "2-Part Payment", "detail": "50% x 2, split across two months." },
+    { "name": "Monthly Instalment", "detail": "One third each month across the programme." }
+  ],
+  "courses": [
+    {
+      "id": "cyber-security",
+      "n": "01",
+      "title": "Cyber Security Fundamentals",
+      "tag": "Security · Penetration Testing",
+      "desc": "Start from networking basics and learn to think like an attacker. The tools and techniques professional penetration testers and security engineers actually use.",
+      "price": 175000,
+      "originalPrice": 295000,
+      "topics": ["Networking & Security Basics", "Kali Linux, Nmap, Metasploit", "Web App & Network Pentesting", "CTF Challenges + Report Writing"],
+      "featured": true,
+      "onPoster": true
+    },
+    {
+      "id": "frontend",
+      "n": "02",
+      "title": "Front-End Development",
+      "tag": "UI · React · Responsive Design",
+      "desc": "Craft beautiful, fast, and accessible user interfaces. Master the modern web stack used by top product teams globally.",
+      "price": 155000,
+      "originalPrice": 270000,
+      "topics": ["HTML5, CSS3, JavaScript", "React.js & Next.js", "Responsive & Accessible UI", "Component-Based Architecture"],
+      "featured": false,
+      "onPoster": true
+    },
+    {
+      "id": "backend",
+      "n": "03",
+      "title": "Back-End Development",
+      "tag": "Server · APIs · Databases",
+      "desc": "Build the invisible engine behind great products. Design robust APIs, manage databases, and deploy scalable server-side applications.",
+      "price": 160000,
+      "originalPrice": 280000,
+      "topics": ["Node.js, Express, NestJS", "REST APIs & Authentication (JWT)", "PostgreSQL & MongoDB", "Cloud Deployment (AWS / GCP)"],
+      "featured": false,
+      "onPoster": true
+    },
+    {
+      "id": "fullstack",
+      "n": "04",
+      "title": "Full-Stack Development",
+      "tag": "Front-End · Back-End · DevOps",
+      "desc": "The complete package — build end-to-end web applications from UI to database to deployment. The most comprehensive track we offer.",
+      "price": 180000,
+      "originalPrice": 300000,
+      "topics": ["HTML, CSS, JavaScript, React", "Node.js, Express, PostgreSQL", "Git, CI/CD, Cloud Deployment", "3 Real-World Portfolio Projects"],
+      "featured": true,
+      "onPoster": true
+    },
+    {
+      "id": "cloud-engineering",
+      "n": "05",
+      "title": "Cloud Engineering Fundamentals",
+      "tag": "AWS · GCP · Docker · CI/CD",
+      "desc": "Put applications in front of real users and keep them running. Learn the platforms, containers, and pipelines that carry production systems.",
+      "price": 165000,
+      "originalPrice": 285000,
+      "topics": ["Linux, Networking & the CLI", "AWS & GCP Core Services", "Docker, Containers & CI/CD", "Infrastructure as Code + Monitoring"],
+      "featured": false,
+      "onPoster": true
+    },
+    {
+      "id": "machine-learning",
+      "n": "06",
+      "title": "Machine Learning Foundations",
+      "tag": "AI · Data Science · Python",
+      "desc": "From Python basics to building and training your own ML models. A practical introduction to artificial intelligence for builders.",
+      "price": 170000,
+      "originalPrice": 290000,
+      "topics": ["Python, NumPy, Pandas", "Supervised & Unsupervised Learning", "Neural Networks Introduction", "Hands-On ML Projects"],
+      "featured": false,
+      "onPoster": false
+    },
+    {
+      "id": "prompt-engineering",
+      "n": "07",
+      "title": "Prompt Engineering",
+      "tag": "AI Tools · LLMs · Automation",
+      "desc": "The skill no one taught in school. Learn to design, chain, and deploy prompts that turn LLMs into powerful business tools and products.",
+      "price": 150000,
+      "originalPrice": 260000,
+      "topics": ["LLM Fundamentals & APIs", "Prompt Design & Chaining", "RAG, Agents & Tool Use", "Build AI-Powered Products"],
+      "featured": false,
+      "onPoster": false
+    }
+  ]
+}
