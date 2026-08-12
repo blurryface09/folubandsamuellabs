@@ -118,7 +118,7 @@ export default function Training() {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            Track Brochures
+            View All Tracks
           </a>
         </div>
       </section>
@@ -165,13 +165,6 @@ export default function Training() {
                 <a href={courseEnrolLink(c)}
                   className="block w-full text-center py-3 border border-[#c9a84c]/30 text-[#c9a84c] text-xs font-bold tracking-widest uppercase rounded hover:bg-[#c9a84c] hover:text-[#0A0804] transition-all duration-200 font-mono">
                   Enrol Now
-                </a>
-                <a href={`/brochures/FSLabs-Academy-${c.id}.pdf`} download
-                  className="flex items-center justify-center gap-2 w-full mt-3 py-2.5 text-[#c9a84c]/60 text-[10px] font-bold tracking-widest uppercase hover:text-[#c9a84c] transition-colors font-mono">
-                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M8 2v8M5 7l3 3 3-3M2 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Brochure (PDF)
                 </a>
                 <p className="text-white/20 text-[10px] font-mono mt-2 text-center">
                   Enrol opens an email to {ACCESS_INBOX}
@@ -314,7 +307,7 @@ export default function Training() {
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M8 2v8M5 7l3 3 3-3M2 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  Track Brochures
+                  View All Tracks
                 </a>
               </div>
             </div>
