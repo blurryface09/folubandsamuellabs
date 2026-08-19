@@ -58,11 +58,17 @@ export async function loginAction(
     };
   }
 
+  const targetUser = await db.user.findUnique({
+    where: { email: email! },
+    select: { isPlatformAdmin: true },
+  });
+  const redirectTo = targetUser?.isPlatformAdmin ? "/academy/admin" : "/academy/dashboard";
+
   try {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/dashboard",
+      redirectTo,
     });
   } catch (error) {
     if (error instanceof AuthError) {

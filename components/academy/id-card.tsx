@@ -10,9 +10,10 @@ interface IdCardProps {
   studentId: string;
   image?: string | null;
   courses?: string[];
+  isAdmin?: boolean;
 }
 
-export function IdCard({ name, nickname, studentId, image, courses = [] }: IdCardProps) {
+export function IdCard({ name, nickname, studentId, image, courses = [], isAdmin = false }: IdCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
 
@@ -64,7 +65,7 @@ export function IdCard({ name, nickname, studentId, image, courses = [] }: IdCar
               FSLABS ACADEMY
             </div>
             <div style={{ fontSize: 8, letterSpacing: "0.15em", color: "rgba(5,5,5,0.7)", textTransform: "uppercase" }}>
-              Student Identification
+              {isAdmin ? "Administrator Identification" : "Student Identification"}
             </div>
           </div>
           <div style={{ fontSize: 8, letterSpacing: "0.1em", color: "rgba(5,5,5,0.6)" }}>fslabs.tech</div>
@@ -95,14 +96,39 @@ export function IdCard({ name, nickname, studentId, image, courses = [] }: IdCar
             }}
           >
             <div style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(245,240,232,0.4)", textTransform: "uppercase" }}>
-              Student ID
+              {isAdmin ? "Admin ID" : "Student ID"}
             </div>
             <div style={{ fontSize: 22, fontWeight: 800, color: "#C9A84C", letterSpacing: "0.05em" }}>
               {studentId}
             </div>
           </div>
 
-          {courses.length > 0 && (
+          {isAdmin ? (
+            <div
+              style={{
+                width: "100%",
+                borderTop: "1px dashed rgba(201,168,76,0.2)",
+                paddingTop: 14,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <span
+                style={{
+                  padding: "5px 16px",
+                  background: "linear-gradient(135deg,#C9A84C,#8B6914)",
+                  borderRadius: 100,
+                  fontSize: 10,
+                  fontWeight: 800,
+                  color: "#050505",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                ADMINISTRATOR
+              </span>
+            </div>
+          ) : courses.length > 0 && (
             <div
               style={{
                 width: "100%",

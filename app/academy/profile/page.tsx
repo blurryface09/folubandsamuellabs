@@ -13,6 +13,7 @@ interface ProfileData {
   nickname: string | null;
   bio: string | null;
   image: string | null;
+  isPlatformAdmin: boolean;
 }
 
 interface EnrolledCourseTag {
@@ -261,10 +262,10 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Student ID */}
+          {/* Student/Admin ID */}
           <div style={{ marginBottom: 32 }}>
             <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-              Student ID
+              {profile?.isPlatformAdmin ? "Admin ID" : "Student ID"}
             </div>
             <div
               style={{
@@ -279,8 +280,26 @@ export default function ProfilePage() {
             </div>
           </div>
 
+          {profile?.isPlatformAdmin && (
+            <div style={{ marginBottom: 32 }}>
+              <span
+                style={{
+                  padding: "6px 14px",
+                  background: "linear-gradient(135deg,#C9A84C,#8B6914)",
+                  borderRadius: 100,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "#050505",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                ADMINISTRATOR
+              </span>
+            </div>
+          )}
+
           {/* Enrolled Courses */}
-          {enrolledCourses.length > 0 && (
+          {!profile?.isPlatformAdmin && enrolledCourses.length > 0 && (
             <div style={{ marginBottom: 32 }}>
               <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
                 Enrolled Courses
@@ -477,6 +496,7 @@ export default function ProfilePage() {
               studentId={profile.studentId}
               image={profile.image}
               courses={enrolledCourses.map((c) => c.title)}
+              isAdmin={profile.isPlatformAdmin}
             />
           </motion.div>
         ) : null}

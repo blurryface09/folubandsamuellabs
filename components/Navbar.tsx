@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const pathname = usePathname();
   const { data: session } = useSession();
 
@@ -16,6 +17,17 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!session?.user) {
+      setIsAdmin(false);
+      return;
+    }
+    fetch("/api/profile")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setIsAdmin(Boolean(data?.isPlatformAdmin)))
+      .catch(() => {});
+  }, [session]);
 
   const appPathPrefixes = [
     "/student",
@@ -82,6 +94,20 @@ export default function Navbar() {
           ))}
           {isAcademyPage && session?.user ? (
             <div style={{ display: "flex", gap: 12, marginLeft: 12 }}>
+              {isAdmin && (
+                <Link href="/academy/admin" style={{
+                  padding: "10px 24px",
+                  background: "linear-gradient(135deg,#C9A84C,#8B6914)",
+                  color: "#050505", borderRadius: 10,
+                  fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 11,
+                  letterSpacing: "0.12em", textTransform: "uppercase",
+                  textDecoration: "none",
+                  transition: "all 0.25s",
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 20px rgba(201,168,76,0.4)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+                >Admin</Link>
+              )}
               <Link href="/academy/profile" style={{
                 padding: "10px 24px",
                 background: "rgba(201,168,76,0.1)",

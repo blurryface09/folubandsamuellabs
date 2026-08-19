@@ -19,6 +19,7 @@ export async function GET(req: NextRequest) {
         bio: true,
         studentId: true,
         image: true,
+        isPlatformAdmin: true,
       },
     });
 
