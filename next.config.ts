@@ -44,6 +44,7 @@ const nextConfig: NextConfig = {
       { source: "/courses/:path*", destination: "/academy/courses/:path*", permanent: false },
       { source: "/dashboard", destination: "/academy/dashboard", permanent: false },
       { source: "/profile", destination: "/academy/profile", permanent: false },
+      { source: "/training", destination: "/academy/courses", permanent: false },
     ];
   },
 };

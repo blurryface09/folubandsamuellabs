@@ -240,7 +240,7 @@ function ContactForm() {
           onFocus={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")}
           onBlur={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.15)")}>
           <option value="" disabled style={{ background: "#0A0A0A" }}>Select a service</option>
-          {["Software Development","Cybersecurity","Digital Solutions","FS Exchange","Other"].map(s => (
+          {["Software Development","Cybersecurity","Digital Solutions","Academy","Other"].map(s => (
             <option key={s} value={s} style={{ background: "#0A0A0A" }}>{s}</option>
           ))}
         </select>

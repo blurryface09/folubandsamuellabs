@@ -50,8 +50,8 @@ export default function Footer() {
           </div>
 
           {[
-            { title: "Company", links: [{ label: "About", href: "#about" }, { label: "Team", href: "#team" }, { label: "Services", href: "#services" }, { label: "Courses", href: "/courses" }, { label: "Contact", href: "#contact" }] },
-            { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "Training", href: "/courses" }] },
+            { title: "Company", links: [{ label: "About", href: "#about" }, { label: "Team", href: "#team" }, { label: "Services", href: "#services" }, { label: "Academy", href: "/academy" }, { label: "Contact", href: "#contact" }] },
+            { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "Academy", href: "/academy" }] },
             { title: "Contact", links: [{ label: "Lagos, Nigeria", href: "#" }, { label: "admin@folubandsamuellabs.com", href: "mailto:admin@folubandsamuellabs.com" }] },
           ].map(col => (
             <div key={col.title}>

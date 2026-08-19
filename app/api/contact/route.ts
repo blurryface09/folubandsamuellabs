@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
-  const isTrainingEnquiry = /training|course|learn|enrol|enroll|full.?stack|frontend|backend|hacking|machine.?learn|prompt/i.test(service + " " + message);
+  const isTrainingEnquiry = /academy|training|course|learn|enrol|enroll|full.?stack|frontend|backend|hacking|machine.?learn|prompt/i.test(service + " " + message);
 
   const [{ error }] = await Promise.all([
     resend.emails.send({
@@ -61,11 +61,11 @@ export async function POST(req: Request) {
             </p>
             ${isTrainingEnquiry ? `
             <div style="background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); border-radius: 10px; padding: 20px; margin-bottom: 24px;">
-              <p style="color: #C9A84C; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 10px;">FSLabs Training — Now Open</p>
+              <p style="color: #C9A84C; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 10px;">FSLabs Academy — Now Open</p>
               <p style="color: rgba(240,237,228,0.75); font-size: 14px; line-height: 1.6; margin: 0 0 16px;">
-                We offer 3-month hands-on courses in Full Stack, Frontend, Backend, Prompt Engineering, ML Foundations, and Ethical Hacking — with introductory pricing from <strong style="color: #F0EDE4;">₦150,000</strong>.
+                Self-paced courses in Full Stack, Frontend, Backend, Prompt Engineering, ML Foundations, and Ethical Hacking — starting from <strong style="color: #F0EDE4;">₦40,000</strong>.
               </p>
-              <a href="https://folubandsamuellabs.com/training" style="display: inline-block; background: linear-gradient(135deg,#C9A84C,#8B6914); color: #050505; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 0.05em;">View Courses &amp; Enrol →</a>
+              <a href="https://fslabs.tech/academy" style="display: inline-block; background: linear-gradient(135deg,#C9A84C,#8B6914); color: #050505; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 0.05em;">View Courses &amp; Enrol →</a>
             </div>
             ` : ""}
             <p style="color: rgba(240,237,228,0.5); font-size: 13px; line-height: 1.6; margin-bottom: 0;">
