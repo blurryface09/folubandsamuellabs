@@ -8,6 +8,7 @@ import { signIn, signOut } from "@/lib/auth";
 import { createAndSendVerificationEmail } from "@/lib/account-email";
 import { db } from "@/lib/db";
 import { hashPassword, validatePasswordStrength } from "@/lib/password";
+import { generateStudentId } from "@/lib/academy/student-id";
 
 type AuthFormState = {
   ok: boolean;
@@ -143,6 +144,8 @@ export async function registerCompanyAction(
     | undefined;
 
   try {
+    const studentId = await generateStudentId();
+
     await db.$transaction(async (tx) => {
       // Academy students share a single workspace instead of each spinning up
       // their own organization — find-or-create keeps repeat signups from
@@ -161,6 +164,7 @@ export async function registerCompanyAction(
           email: email!,
           name: fullName!,
           passwordHash: hashPassword(password!),
+          studentId,
         },
       });
 

@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
         nickname: true,
         bio: true,
         studentId: true,
+        image: true,
       },
     });
 

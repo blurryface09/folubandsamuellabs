@@ -47,7 +47,7 @@ model User {
   nickname                String?
   bio                     String?
   image                   String?
-  studentId               String?                  @unique @default(cuid())
+  studentId               String?                  @unique
   emailVerified           DateTime?
   isPlatformAdmin         Boolean                  @default(false)
   createdAt               DateTime                 @default(now())
