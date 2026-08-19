@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { mockCourses } from "@/lib/academy/mock-data";
@@ -16,6 +16,54 @@ export default function LessonPage({
   const course = mockCourses.find((c) => c.slug === slug);
   const module = course?.modules.find((m) => m.id === moduleId);
   const lesson = module?.lessons.find((l) => l.id === lessonId);
+
+  const [completedLessonIds, setCompletedLessonIds] = useState<Set<string>>(new Set());
+  const [marking, setMarking] = useState(false);
+
+  useEffect(() => {
+    if (!course) return;
+    fetch(`/api/progress?courseId=${course.id}`)
+      .then((res) => (res.ok ? res.json() : { completedLessonIds: [] }))
+      .then((data: { completedLessonIds: string[] }) => {
+        setCompletedLessonIds(new Set(data.completedLessonIds));
+      })
+      .catch(() => {});
+  }, [course]);
+
+  const dbLessonId = course && lesson ? `${course.id}-${lesson.id}` : null;
+  const isComplete = dbLessonId ? completedLessonIds.has(dbLessonId) : false;
+
+  const handleToggleComplete = async () => {
+    if (!course || !dbLessonId) return;
+    setMarking(true);
+    try {
+      const res = await fetch("/api/progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          courseId: course.id,
+          lessonId: dbLessonId,
+          completed: !isComplete,
+        }),
+      });
+
+      if (res.ok) {
+        setCompletedLessonIds((prev) => {
+          const next = new Set(prev);
+          if (isComplete) {
+            next.delete(dbLessonId);
+          } else {
+            next.add(dbLessonId);
+          }
+          return next;
+        });
+      }
+    } catch (error) {
+      console.error("Failed to update progress:", error);
+    } finally {
+      setMarking(false);
+    }
+  };
 
   if (!course || !module || !lesson) {
     return (
@@ -130,6 +178,28 @@ export default function LessonPage({
             />
           </div>
 
+          {/* Mark Complete */}
+          <button
+            onClick={handleToggleComplete}
+            disabled={marking}
+            style={{
+              width: "100%",
+              padding: "16px 24px",
+              marginBottom: 24,
+              background: isComplete ? "rgba(16,185,129,0.1)" : "rgba(201,168,76,0.1)",
+              border: `1px solid ${isComplete ? "rgba(16,185,129,0.4)" : "rgba(201,168,76,0.3)"}`,
+              borderRadius: 8,
+              color: isComplete ? "#10B981" : "#C9A84C",
+              fontWeight: 700,
+              fontSize: 14,
+              cursor: marking ? "not-allowed" : "pointer",
+              opacity: marking ? 0.6 : 1,
+              transition: "all 0.2s",
+            }}
+          >
+            {marking ? "Saving..." : isComplete ? "✓ Completed" : "Mark as Complete"}
+          </button>
+
           {/* Navigation */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             {prevLesson ? (
@@ -203,34 +273,43 @@ export default function LessonPage({
             <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 20, color: "#C9A84C" }}>{module.title}</h3>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {module.lessons.map((l, idx) => (
-                <Link
-                  key={l.id}
-                  href={`/academy/courses/${slug}/modules/${moduleId}/lessons/${l.id}`}
-                  style={{
-                    padding: "10px 12px",
-                    background: l.id === lesson.id ? "rgba(201,168,76,0.1)" : "transparent",
-                    borderLeft: `2px solid ${l.id === lesson.id ? "#C9A84C" : "transparent"}`,
-                    borderRadius: 4,
-                    color: l.id === lesson.id ? "#F5F0E8" : "rgba(245,240,232,0.6)",
-                    textDecoration: "none",
-                    fontSize: 12,
-                    transition: "all 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (l.id !== lesson.id) {
-                      (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.8)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (l.id !== lesson.id) {
-                      (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.6)";
-                    }
-                  }}
-                >
-                  {idx + 1}. {l.title}
-                </Link>
-              ))}
+              {module.lessons.map((l, idx) => {
+                const lDone = course ? completedLessonIds.has(`${course.id}-${l.id}`) : false;
+                return (
+                  <Link
+                    key={l.id}
+                    href={`/academy/courses/${slug}/modules/${moduleId}/lessons/${l.id}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "10px 12px",
+                      background: l.id === lesson.id ? "rgba(201,168,76,0.1)" : "transparent",
+                      borderLeft: `2px solid ${l.id === lesson.id ? "#C9A84C" : "transparent"}`,
+                      borderRadius: 4,
+                      color: l.id === lesson.id ? "#F5F0E8" : "rgba(245,240,232,0.6)",
+                      textDecoration: "none",
+                      fontSize: 12,
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (l.id !== lesson.id) {
+                        (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.8)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (l.id !== lesson.id) {
+                        (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.6)";
+                      }
+                    }}
+                  >
+                    <span style={{ color: lDone ? "#10B981" : "inherit", flexShrink: 0 }}>
+                      {lDone ? "✓" : `${idx + 1}.`}
+                    </span>
+                    {l.title}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </aside>

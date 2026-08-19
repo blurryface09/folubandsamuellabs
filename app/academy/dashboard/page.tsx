@@ -15,7 +15,16 @@ interface EnrolledCourse {
     title: string;
     slug: string;
     description: string;
+    modules: { lessons: { id: string }[] }[];
   };
+  progress: { lessonId: string }[];
+}
+
+function computeProgress(enrollment: EnrolledCourse) {
+  const totalLessons = enrollment.course.modules.reduce((acc, m) => acc + m.lessons.length, 0);
+  const completed = enrollment.progress.length;
+  if (totalLessons === 0) return 0;
+  return Math.round((completed / totalLessons) * 100);
 }
 
 export default function DashboardPage() {
@@ -144,7 +153,9 @@ export default function DashboardPage() {
               gap: 24,
             }}
           >
-            {enrollments.map((enrollment, index) => (
+            {enrollments.map((enrollment, index) => {
+              const percent = computeProgress(enrollment);
+              return (
               <motion.div
                 key={enrollment.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -202,7 +213,7 @@ export default function DashboardPage() {
                     }}
                   >
                     <span>Progress</span>
-                    <span>0%</span>
+                    <span>{percent}%</span>
                   </div>
                   <div
                     style={{
@@ -215,7 +226,7 @@ export default function DashboardPage() {
                   >
                     <div
                       style={{
-                        width: "0%",
+                        width: `${percent}%`,
                         height: "100%",
                         background: "linear-gradient(90deg, #C9A84C, #F0C040)",
                         transition: "width 0.3s ease",
@@ -244,7 +255,8 @@ export default function DashboardPage() {
                   Continue Learning
                 </Link>
               </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
         )}
 

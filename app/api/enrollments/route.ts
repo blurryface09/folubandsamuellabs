@@ -89,11 +89,16 @@ export async function GET(req: NextRequest) {
         course: {
           include: {
             modules: {
+              where: { isPublished: true },
               include: {
                 lessons: true,
               },
             },
           },
+        },
+        progress: {
+          where: { completedAt: { not: null } },
+          select: { lessonId: true },
         },
       },
       orderBy: { enrolledAt: "desc" },
