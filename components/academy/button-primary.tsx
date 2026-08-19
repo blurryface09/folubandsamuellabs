@@ -2,7 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { buttonTap } from "@/lib/motion/animations";
 
-interface ButtonPrimaryProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type NativeButtonProps = Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd" | "onAnimationIteration"
+>;
+
+interface ButtonPrimaryProps extends NativeButtonProps {
   children: React.ReactNode;
   loading?: boolean;
 }

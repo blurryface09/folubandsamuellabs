@@ -6,35 +6,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { pageTransition, fadeInUp, staggerContainer } from "@/lib/motion/animations";
-
-interface Lesson {
-  id: string;
-  title: string;
-  description: string;
-  videoUrl?: string;
-  content: string;
-  resources?: { title: string; url: string }[];
-}
-
-interface Module {
-  id: string;
-  title: string;
-  lessons: Lesson[];
-}
-
-interface Course {
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  rating: number;
-  studentCount: number;
-  instructor: string;
-  image?: string;
-  modules: Module[];
-}
+import type { Course } from "@/lib/academy/types";
 
 interface CourseDetailProps {
   course: Course;

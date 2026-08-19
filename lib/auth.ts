@@ -182,8 +182,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.organizationSlug = token.organizationSlug ?? "";
         session.user.organizationName = token.organizationName ?? "";
         session.user.memberId = token.memberId ?? "";
-        session.user.role = token.role ?? UserRole.EMPLOYEE;
-        session.user.appRole = token.appRole ?? "employee";
+        session.user.role = token.role ?? UserRole.STUDENT;
+        session.user.appRole = token.appRole ?? "student";
         session.user.isPlatformAdmin = Boolean(token.isPlatformAdmin);
       }
 

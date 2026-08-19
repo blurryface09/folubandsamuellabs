@@ -146,19 +146,3 @@ body {
   color: transparent;
 }
 
-/* ---------------------------------------------------------------------------
-   HR workspace — the (app) route group renders a light SaaS UI and must not
-   inherit the dark/gold monospace marketing theme above.
---------------------------------------------------------------------------- */
-.hr-app {
-  font-family: var(--font-exo2);
-  color-scheme: light;
-}
-.hr-app ::selection {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-.hr-app :focus-visible {
-  outline: 2px solid #334155;
-  outline-offset: 2px;
-}

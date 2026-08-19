@@ -2,7 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { hoverScale } from "@/lib/motion/animations";
 
-interface AcademyCardProps extends React.HTMLAttributes<HTMLDivElement> {
+type NativeDivProps = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd" | "onAnimationIteration"
+>;
+
+interface AcademyCardProps extends NativeDivProps {
   children: React.ReactNode;
   index?: number;
   interactive?: boolean;

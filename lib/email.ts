@@ -3,14 +3,6 @@ import "server-only";
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { Resend } from "resend";
 
-type InviteEmailInput = {
-  to: string;
-  companyName: string;
-  employeeName: string;
-  inviteLink: string;
-  expiresAt: Date;
-};
-
 type PasswordResetEmailInput = {
   to: string;
   name: string;
@@ -35,31 +27,6 @@ function emailFrom() {
 
 function sesRegion() {
   return process.env.AWS_SES_REGION?.trim() || process.env.SES_REGION?.trim();
-}
-
-function textInvite(input: InviteEmailInput) {
-  return [
-    `${input.companyName} invited ${input.employeeName} to Folub & Samuel Labs HR.`,
-    "",
-    `Accept your invitation: ${input.inviteLink}`,
-    "",
-    `This invite expires ${input.expiresAt.toUTCString()}.`,
-  ].join("\n");
-}
-
-function htmlInvite(input: InviteEmailInput) {
-  return `
-    <div style="font-family:Arial,sans-serif;color:#0f172a;line-height:1.6">
-      <h1 style="font-size:20px;margin:0 0 12px">You're invited to ${input.companyName}</h1>
-      <p>${input.companyName} invited ${input.employeeName} to activate their staff account.</p>
-      <p>
-        <a href="${input.inviteLink}" style="display:inline-block;background:#020617;color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none">
-          Accept invitation
-        </a>
-      </p>
-      <p style="color:#475569;font-size:14px">This invite expires ${input.expiresAt.toUTCString()}.</p>
-    </div>
-  `;
 }
 
 async function sendEmail({
@@ -152,21 +119,12 @@ async function sendEmail({
   }
 }
 
-export async function sendInviteEmail(input: InviteEmailInput): Promise<EmailResult> {
-  return sendEmail({
-    to: input.to,
-    subject: `You're invited to ${input.companyName}`,
-    text: textInvite(input),
-    html: htmlInvite(input),
-  });
-}
-
 export async function sendPasswordResetEmail(
   input: PasswordResetEmailInput,
 ): Promise<EmailResult> {
   return sendEmail({
     to: input.to,
-    subject: "Reset your Folub & Samuel Labs HR password",
+    subject: "Reset your FSLabs Academy password",
     text: [
       `Hi ${input.name},`,
       "",
@@ -190,7 +148,7 @@ export async function sendVerificationEmail(
 ): Promise<EmailResult> {
   return sendEmail({
     to: input.to,
-    subject: "Verify your Folub & Samuel Labs HR email",
+    subject: "Verify your FSLabs Academy email",
     text: [
       `Hi ${input.name},`,
       "",
@@ -201,7 +159,7 @@ export async function sendVerificationEmail(
     html: `
       <div style="font-family:Arial,sans-serif;color:#0f172a;line-height:1.6">
         <h1 style="font-size:20px;margin:0 0 12px">Verify your email</h1>
-        <p>Hi ${input.name}, verify your email to unlock sensitive HR actions.</p>
+        <p>Hi ${input.name}, verify your email to unlock your FSLabs Academy account.</p>
         <p><a href="${input.verificationLink}" style="display:inline-block;background:#020617;color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none">Verify email</a></p>
         <p style="color:#475569;font-size:14px">This link expires ${input.expiresAt.toUTCString()}.</p>
       </div>

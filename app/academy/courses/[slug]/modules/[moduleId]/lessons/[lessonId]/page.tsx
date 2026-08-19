@@ -82,21 +82,12 @@ export default function LessonPage({
               fontSize: 48,
               fontWeight: 800,
               fontFamily: "var(--font-exo2)",
-              marginBottom: 12,
+              marginBottom: 40,
               lineHeight: 1.2,
             }}
           >
             {lesson.title}
           </h1>
-          <p
-            style={{
-              fontSize: 16,
-              color: "rgba(245,240,232,0.6)",
-              marginBottom: 40,
-            }}
-          >
-            {lesson.description}
-          </p>
 
           {/* Video */}
           {lesson.videoUrl && (
@@ -135,44 +126,9 @@ export default function LessonPage({
                 lineHeight: 1.8,
                 color: "rgba(245,240,232,0.8)",
               }}
-              dangerouslySetInnerHTML={{ __html: lesson.content }}
+              dangerouslySetInnerHTML={{ __html: lesson.content || "" }}
             />
           </div>
-
-          {/* Resources */}
-          {lesson.resources && lesson.resources.length > 0 && (
-            <div style={{ marginBottom: 60 }}>
-              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20 }}>Resources</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {lesson.resources.map((resource, idx) => (
-                  <a
-                    key={idx}
-                    href={resource.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      padding: "12px 16px",
-                      background: "rgba(201,168,76,0.05)",
-                      border: "1px solid rgba(201,168,76,0.2)",
-                      borderRadius: 8,
-                      color: "#C9A84C",
-                      textDecoration: "none",
-                      fontSize: 14,
-                      transition: "all 0.2s",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.1)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.05)";
-                    }}
-                  >
-                    {resource.title} →
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Navigation */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
