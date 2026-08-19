@@ -74,7 +74,7 @@ export function AuthForm({
       {fields.map((field) => (
         <div key={field.name}>
           <label
-            className="text-sm font-medium text-slate-700"
+            className="text-sm font-medium text-gray-200"
             htmlFor={field.name}
           >
             {field.label}
@@ -95,7 +95,7 @@ export function AuthForm({
             />
             {field.type === "password" ? (
               <button
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-950"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-300 hover:text-white"
                 disabled={pending}
                 onClick={() =>
                   setVisiblePasswords((current) => ({
@@ -120,9 +120,9 @@ export function AuthForm({
       >
         {pending ? "Please wait..." : submitLabel}
       </button>
-      <p className="text-center text-sm text-slate-500">
+      <p className="text-center text-sm text-gray-300">
         {footerText}{" "}
-        <Link className="font-medium text-slate-950 hover:underline" href={footerHref}>
+        <Link className="font-medium text-blue-400 hover:underline" href={footerHref}>
           {footerLabel}
         </Link>
       </p>

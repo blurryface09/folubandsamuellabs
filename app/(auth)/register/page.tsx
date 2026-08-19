@@ -5,27 +5,22 @@ import { AuthShell } from "@/app/(auth)/auth-shell";
 export default function RegisterPage() {
   return (
     <AuthShell
-      description="Create an organization workspace and the first company admin account."
-      eyebrow="Company setup"
-      title="Register company"
+      description="Create your account and start learning"
+      eyebrow="Join FSLabs Academy"
+      title="Sign up"
     >
           <AuthForm
             action={registerCompanyAction}
             fields={[
               {
-                label: "Company name",
-                name: "companyName",
-                placeholder: "Acme Limited",
-              },
-              {
-                label: "Your name",
+                label: "Full name",
                 name: "fullName",
                 placeholder: "Ada Okafor",
               },
               {
-                label: "Work email",
+                label: "Email",
                 name: "email",
-                placeholder: "admin@company.com",
+                placeholder: "your@email.com",
                 type: "email",
               },
               {
@@ -45,8 +40,8 @@ export default function RegisterPage() {
             ]}
             footerHref="/login"
             footerLabel="Log in"
-            footerText="Already registered?"
-            submitLabel="Create workspace"
+            footerText="Already have an account?"
+            submitLabel="Create account"
           />
     </AuthShell>
   );

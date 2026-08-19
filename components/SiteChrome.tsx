@@ -12,6 +12,11 @@ const chromeLessRoutes = [
   "/reset-password",
   "/verify-email",
   "/invite",
+  "/academy/login",
+  "/academy/register",
+  "/academy/forgot-password",
+  "/academy/reset-password",
+  "/academy/verify-email",
 ];
 
 function shouldHideChrome(pathname: string) {

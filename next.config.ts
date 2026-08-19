@@ -35,6 +35,17 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // The Academy is a standalone product living under /academy. These are the
+  // pre-split routes; keep them resolving so old links don't 404, but always
+  // land the user on the Academy version.
+  async redirects() {
+    return [
+      { source: "/courses", destination: "/academy/courses", permanent: false },
+      { source: "/courses/:path*", destination: "/academy/courses/:path*", permanent: false },
+      { source: "/dashboard", destination: "/academy/dashboard", permanent: false },
+      { source: "/profile", destination: "/academy/profile", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

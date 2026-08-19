@@ -28,7 +28,7 @@ export default async function VerifyEmailPage({ params }: VerifyEmailPageProps) 
           </div>
           <Link
             className="mt-6 inline-flex h-12 w-full items-center justify-center rounded-lg bg-slate-950 px-4 text-sm font-semibold text-white"
-            href="/dashboard"
+            href="/student/dashboard"
           >
             Continue
           </Link>

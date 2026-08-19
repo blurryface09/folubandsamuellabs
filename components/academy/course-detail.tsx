@@ -1,0 +1,410 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { pageTransition, fadeInUp, staggerContainer } from "@/lib/motion/animations";
+
+interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  videoUrl?: string;
+  content: string;
+  resources?: { title: string; url: string }[];
+}
+
+interface Module {
+  id: string;
+  title: string;
+  lessons: Lesson[];
+}
+
+interface Course {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  rating: number;
+  studentCount: number;
+  instructor: string;
+  image?: string;
+  modules: Module[];
+}
+
+interface CourseDetailProps {
+  course: Course;
+}
+
+export default function CourseDetail({ course }: CourseDetailProps) {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isEnrolling, setIsEnrolling] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Check enrollment status
+  useEffect(() => {
+    const checkEnrollment = async () => {
+      try {
+        const res = await fetch("/api/enrollments");
+        if (res.ok) {
+          const data = await res.json();
+          const enrolled = data.enrollments.some(
+            (e: any) => e.courseId === course.id
+          );
+          setIsEnrolled(enrolled);
+        }
+      } catch (error) {
+        console.error("Failed to check enrollment:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session?.user) {
+      checkEnrollment();
+    } else {
+      setLoading(false);
+    }
+  }, [session, course.id]);
+
+  const handleEnroll = async () => {
+    if (!session?.user) {
+      router.push("/academy/login");
+      return;
+    }
+
+    setIsEnrolling(true);
+    try {
+      const res = await fetch("/api/enrollments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseId: course.id }),
+      });
+
+      if (res.status === 401) {
+        router.push("/academy/login");
+        return;
+      }
+
+      if (res.ok) {
+        setIsEnrolled(true);
+      } else {
+        const error = await res.json();
+        console.error("Enrollment failed:", error);
+      }
+    } catch (error) {
+      console.error("Enrollment error:", error);
+    } finally {
+      setIsEnrolling(false);
+    }
+  };
+
+  const totalLessons = course.modules.reduce(
+    (acc, mod) => acc + mod.lessons.length,
+    0
+  );
+
+  return (
+    <motion.main
+      initial="initial"
+      animate="animate"
+      style={{ background: "#050505", color: "#F5F0E8", minHeight: "100vh" }}
+    >
+      {/* Hero Section */}
+      <motion.section
+        variants={pageTransition}
+        style={{
+          padding: "132px 28px 60px",
+          background: "linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(139,105,20,0.04) 100%)",
+          borderBottom: "1px solid rgba(201,168,76,0.1)",
+        }}
+      >
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          {/* Breadcrumb */}
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              fontSize: 12,
+              color: "rgba(245,240,232,0.5)",
+              marginBottom: 32,
+              fontFamily: "var(--font-roboto-mono)",
+            }}
+          >
+            <Link href="/academy/courses" style={{ color: "rgba(245,240,232,0.5)" }}>
+              Courses
+            </Link>
+            <span>/</span>
+            <span style={{ color: "#C9A84C" }}>{course.title}</span>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 60, alignItems: "start" }}>
+            <div>
+              <h1
+                style={{
+                  fontSize: "clamp(2rem, 5vw, 56px)",
+                  fontWeight: 800,
+                  fontFamily: "var(--font-exo2)",
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.02em",
+                  marginBottom: 20,
+                }}
+              >
+                {course.title}
+              </h1>
+
+              <p
+                style={{
+                  fontSize: 18,
+                  color: "rgba(245,240,232,0.7)",
+                  lineHeight: 1.6,
+                  marginBottom: 32,
+                }}
+              >
+                {course.description}
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: 32,
+                  flexWrap: "wrap",
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", marginBottom: 4 }}>
+                    Track
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>{course.category}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", marginBottom: 4 }}>
+                    Modules
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>{course.modules.length}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", marginBottom: 4 }}>
+                    Lessons
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>{totalLessons}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", marginBottom: 4 }}>
+                    Pace
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>Self-paced</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enrollment Card */}
+            <motion.div
+              variants={fadeInUp}
+              style={{
+                background: "#0A0A0A",
+                border: "1px solid rgba(201,168,76,0.1)",
+                borderRadius: 12,
+                padding: 32,
+                display: "flex",
+                flexDirection: "column",
+                gap: 20,
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>₦{course.price.toLocaleString()}</div>
+                <div style={{ fontSize: 12, color: "rgba(245,240,232,0.5)" }}>One-time payment</div>
+              </div>
+
+              {!isEnrolled ? (
+                <button
+                  onClick={handleEnroll}
+                  disabled={isEnrolling}
+                  style={{
+                    padding: "14px 24px",
+                    background: "linear-gradient(135deg, #C9A84C, #F0C040)",
+                    color: "#050505",
+                    border: "none",
+                    borderRadius: 8,
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: isEnrolling ? "not-allowed" : "pointer",
+                    opacity: isEnrolling ? 0.6 : 1,
+                  }}
+                >
+                  {isEnrolling ? "Enrolling..." : "Enroll Now"}
+                </button>
+              ) : (
+                <Link
+                  href={`/academy/courses/${course.slug}`}
+                  style={{
+                    padding: "14px 24px",
+                    background: "rgba(201,168,76,0.1)",
+                    color: "#C9A84C",
+                    border: "1px solid rgba(201,168,76,0.3)",
+                    borderRadius: 8,
+                    textDecoration: "none",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    textAlign: "center",
+                  }}
+                >
+                  Enrolled
+                </Link>
+              )}
+
+              <div style={{ paddingTop: 20, borderTop: "1px solid rgba(201,168,76,0.1)" }}>
+                <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", marginBottom: 16 }}>
+                  What's included
+                </div>
+                <ul
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                    listStyle: "none",
+                    padding: 0,
+                    margin: 0,
+                  }}
+                >
+                  <li style={{ fontSize: 13, color: "rgba(245,240,232,0.8)" }}>✓ {totalLessons} lessons</li>
+                  <li style={{ fontSize: 13, color: "rgba(245,240,232,0.8)" }}>✓ {course.modules.length} modules</li>
+                  <li style={{ fontSize: 13, color: "rgba(245,240,232,0.8)" }}>✓ Lifetime access</li>
+                  <li style={{ fontSize: 13, color: "rgba(245,240,232,0.8)" }}>✓ Certificate</li>
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Curriculum Section */}
+      <motion.section
+        variants={pageTransition}
+        style={{
+          padding: "80px 28px 60px",
+          maxWidth: 1200,
+          margin: "0 auto",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: 36,
+            fontWeight: 800,
+            fontFamily: "var(--font-exo2)",
+            marginBottom: 40,
+          }}
+        >
+          Curriculum
+        </h2>
+
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+          }}
+        >
+          {course.modules.map((module, idx) => (
+            <motion.div
+              key={module.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              style={{
+                background: "#0A0A0A",
+                border: "1px solid rgba(201,168,76,0.1)",
+                borderRadius: 12,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  padding: 24,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 700,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {module.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      color: "rgba(245,240,232,0.6)",
+                    }}
+                  >
+                    {module.lessons.length} lessons
+                  </p>
+                </div>
+              </div>
+
+              <div style={{ borderTop: "1px solid rgba(201,168,76,0.1)" }}>
+                {module.lessons.map((lesson, lessonIdx) => (
+                  <Link
+                    key={lesson.id}
+                    href={
+                      isEnrolled
+                        ? `/academy/courses/${course.slug}/modules/${module.id}/lessons/${lesson.id}`
+                        : "#"
+                    }
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "16px 24px",
+                      borderBottom:
+                        lessonIdx < module.lessons.length - 1
+                          ? "1px solid rgba(201,168,76,0.05)"
+                          : "none",
+                      color: isEnrolled ? "#F5F0E8" : "rgba(245,240,232,0.5)",
+                      textDecoration: "none",
+                      cursor: isEnrolled ? "pointer" : "default",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (isEnrolled) {
+                        (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.05)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "transparent";
+                    }}
+                  >
+                    <span
+                      style={{
+                        marginRight: 16,
+                        fontSize: 12,
+                        color: "rgba(201,168,76,0.6)",
+                      }}
+                    >
+                      {isEnrolled ? "▶" : "🔒"}
+                    </span>
+                    <span style={{ fontSize: 14 }}>{lesson.title}</span>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.section>
+    </motion.main>
+  );
+}

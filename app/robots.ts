@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/exchange/dashboard', '/exchange/accounts'],
+      disallow: ['/api/', '/student/', '/instructor/', '/admin/'],
     },
     sitemap: 'https://folubandsamuellabs.com/sitemap.xml',
   }

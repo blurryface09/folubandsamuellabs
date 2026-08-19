@@ -81,16 +81,12 @@ export async function registerCompanyAction(
   _previousState: AuthFormState,
   formData: FormData,
 ): Promise<AuthFormState> {
-  const companyName = cleanString(formData.get("companyName"));
+  const companyName = cleanString(formData.get("companyName")) || "FSLabs Academy";
   const fullName = cleanString(formData.get("fullName"));
   const email = cleanString(formData.get("email"))?.toLowerCase();
   const password = cleanString(formData.get("password"));
   const confirmPassword = cleanString(formData.get("confirmPassword"));
   const fieldErrors: Record<string, string> = {};
-
-  if (!companyName) {
-    fieldErrors.companyName = "Company name is required.";
-  }
 
   if (!fullName) {
     fieldErrors.fullName = "Your name is required.";
@@ -122,33 +118,17 @@ export async function registerCompanyAction(
 
   const baseSlug = slugify(companyName!);
   const slug = baseSlug || `company-${Date.now()}`;
-  const existing = await db.$transaction([
-    db.user.findUnique({
-      where: { email: email! },
-      select: { id: true },
-    }),
-    db.organization.findUnique({
-      where: { slug },
-      select: { id: true },
-    }),
-  ]);
 
-  if (existing[0]) {
+  const existingUser = await db.user.findUnique({
+    where: { email: email! },
+    select: { id: true },
+  });
+
+  if (existingUser) {
     return {
       ok: false,
       fieldErrors: { email: "An account with this email already exists." },
       message: "Use a different email or log in.",
-    };
-  }
-
-  if (existing[1]) {
-    return {
-      ok: false,
-      fieldErrors: {
-        companyName:
-          "A company workspace with this name already exists. Add a branch, location, or legal suffix.",
-      },
-      message: "Choose a more specific company name.",
     };
   }
 
@@ -164,11 +144,15 @@ export async function registerCompanyAction(
 
   try {
     await db.$transaction(async (tx) => {
-      const organization = await tx.organization.create({
-        data: {
+      // Academy students share a single workspace instead of each spinning up
+      // their own organization — find-or-create keeps repeat signups from
+      // colliding on the default "FSLabs Academy" slug.
+      const organization = await tx.organization.upsert({
+        where: { slug },
+        update: {},
+        create: {
           name: companyName!,
           slug,
-          status: "ACTIVE",
         },
       });
 
@@ -184,9 +168,7 @@ export async function registerCompanyAction(
         data: {
           organizationId: organization.id,
           userId: user.id,
-          role: UserRole.ADMIN,
-          title: "Company Administrator",
-          joinedAt: new Date(),
+          role: UserRole.STUDENT,
         },
       });
       createdUser = {

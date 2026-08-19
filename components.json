@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "rsc": true,
+  "tsx": true,
+  "style": "new-york",
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "app/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "utils": "@/lib/utils",
+    "components": "@/components"
+  },
+  "registries": [
+    {
+      "name": "shadcn",
+      "baseUrl": "https://ui.shadcn.com"
+    },
+    {
+      "name": "magic-ui",
+      "baseUrl": "https://magicui.design"
+    },
+    {
+      "name": "aceternity",
+      "baseUrl": "https://aceternity.com/components"
+    }
+  ]
+}

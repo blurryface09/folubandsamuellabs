@@ -2,37 +2,16 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const appRoutes = [
-  "/dashboard",
-  "/employees",
-  "/departments",
-  "/attendance",
-  "/leave",
-  "/documents",
-  "/payroll",
-  "/settings",
-  "/my-profile",
+const protectedRoutes = [
+  "/student",
+  "/instructor",
+  "/admin/academy",
 ];
 
 const authRoutes = ["/login", "/register"];
 
-// Hosts that serve the HR workspace directly (no marketing landing page).
-const workforceHosts = ["fs-workforce.vercel.app"];
-
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const host = request.headers.get("host") ?? "";
-  const isWorkforceHost = workforceHosts.some(
-    (workforceHost) => host === workforceHost || host.startsWith("workforce."),
-  );
-
-  if (pathname === "/") {
-    if (isWorkforceHost) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
-
-    return NextResponse.rewrite(new URL("/prototype.html", request.url));
-  }
 
   const authSecret = process.env.AUTH_SECRET;
   if (!authSecret) {
@@ -40,35 +19,23 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  const isAppRoute = appRoutes.some((route) => pathname.startsWith(route));
+  const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
-  // On HTTPS the session cookie is "__Secure-authjs.session-token"; getToken
-  // only finds it when told to use the secure cookie name.
+
   const token = await getToken({
     req: request,
     secret: authSecret,
     secureCookie: request.nextUrl.protocol === "https:",
   });
 
-  if (isAppRoute && !token) {
+  if (isProtectedRoute && !token) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-
-  if (isAppRoute && token?.organizationId) {
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("x-organization-id", String(token.organizationId));
-
-    return NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
-    });
+    return NextResponse.redirect(new URL("/student/dashboard", request.url));
   }
 
   return NextResponse.next();
@@ -76,17 +43,10 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/",
     "/login",
     "/register",
-    "/dashboard/:path*",
-    "/employees/:path*",
-    "/departments/:path*",
-    "/attendance/:path*",
-    "/leave/:path*",
-    "/documents/:path*",
-    "/payroll/:path*",
-    "/settings/:path*",
-    "/my-profile/:path*",
+    "/student/:path*",
+    "/instructor/:path*",
+    "/admin/academy/:path*",
   ],
 };

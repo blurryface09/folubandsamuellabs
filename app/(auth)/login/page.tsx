@@ -23,8 +23,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <AuthShell
-      description="Access your organization workspace and continue onboarding staff."
-      eyebrow="Secure access"
+      description="Access your courses and continue learning"
+      eyebrow="Welcome back"
       title="Log in"
     >
           {error ? (
@@ -34,7 +34,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           ) : null}
           {registered ? (
             <div className="mb-5 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-              Company created. Check your email to verify your account.
+              Account created. Check your email to verify your account.
             </div>
           ) : null}
           {reset ? (
@@ -48,7 +48,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               {
                 label: "Email",
                 name: "email",
-                placeholder: "admin@company.com",
+                placeholder: "your@email.com",
                 type: "email",
                 autoComplete: "email",
               },
@@ -61,8 +61,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               },
             ]}
             footerHref="/register"
-            footerLabel="Register company"
-            footerText="New workspace?"
+            footerLabel="Sign up"
+            footerText="Don't have an account?"
             submitLabel="Log in"
           />
           <p className="mt-4 text-center text-sm">

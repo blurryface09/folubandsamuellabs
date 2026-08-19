@@ -45,7 +45,7 @@ declare module "next-auth/jwt" {
 
 export const authRoutes = {
   signIn: "/login",
-  afterSignIn: "/dashboard",
+  afterSignIn: "/student/dashboard",
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -118,7 +118,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const membership = user.memberships[0];
 
-        if (!membership || membership.organization.status !== "ACTIVE") {
+        if (!membership) {
           await recordLoginFailure(email);
           return null;
         }

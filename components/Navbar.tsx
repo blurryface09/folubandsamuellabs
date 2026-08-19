@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -16,34 +18,27 @@ export default function Navbar() {
   }, []);
 
   const appPathPrefixes = [
-    "/dashboard",
-    "/employees",
-    "/departments",
-    "/attendance",
-    "/leave",
-    "/documents",
-    "/payroll",
-    "/settings",
-    "/my-profile",
+    "/student",
+    "/instructor",
+    "/admin",
     "/login",
     "/register",
     "/forgot-password",
     "/reset-password",
     "/verify-email",
-    "/invite",
   ];
 
   if (appPathPrefixes.some((prefix) => pathname.startsWith(prefix))) {
     return null;
   }
 
+  const isAcademyPage = pathname.startsWith("/academy");
+
   const links = [
     { href: "#services", label: "Services" },
     { href: "#about", label: "About" },
     { href: "#team", label: "Team" },
-    { href: "/training", label: "Training" },
-    { href: "/dashboard", label: "Workforce" },
-    { href: "/exchange", label: "FS Exchange" },
+    { href: "/academy", label: "Academy" },
     { href: "#contact", label: "Contact" },
   ];
 
@@ -60,14 +55,12 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none" }}>
-          <Image src="/fslabs-logo-mark.png" alt="FSLabs mark" width={40} height={40} priority style={{ flexShrink: 0 }} />
-          {/* Gold vertical divider */}
-          <div style={{ width: 1, height: 34, background: "linear-gradient(180deg, transparent, #C9A84C, transparent)", flexShrink: 0 }} />
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
-            <span style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 15, letterSpacing: "0.06em", color: "#FFFFFF" }}>
-              FOLUB &amp; SAMUEL LABS
+          <Image src="/logo.png" alt="Folub & Samuel Labs" width={80} height={80} priority style={{ flexShrink: 0 }} />
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
+            <span style={{ fontFamily: "'Poppins', 'Avenir', sans-serif", fontWeight: 700, fontSize: 17, letterSpacing: "-0.01em", color: "#FFFFFF" }}>
+              Folub &amp; Samuel Labs
             </span>
-            <span style={{ fontFamily: "var(--font-roboto-mono)", fontWeight: 400, fontSize: 8, letterSpacing: "0.22em", color: "rgba(201,168,76,0.55)", textTransform: "uppercase", marginTop: 2 }}>
+            <span style={{ fontFamily: "'Poppins', 'Avenir', sans-serif", fontWeight: 400, fontSize: 10, letterSpacing: "0.08em", color: "rgba(240,192,64,0.6)", textTransform: "uppercase", marginTop: 2 }}>
               Technology &amp; Cybersecurity
             </span>
           </div>
@@ -87,19 +80,37 @@ export default function Navbar() {
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.5)"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
             >{l.label}</Link>
           ))}
-          <Link href="#contact" style={{
-            marginLeft: 12, padding: "10px 24px",
-            background: "linear-gradient(135deg,#C9A84C,#8B6914)",
-            color: "#050505", borderRadius: 10,
-            fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 11,
-            letterSpacing: "0.12em", textTransform: "uppercase",
-            textDecoration: "none",
-            boxShadow: "0 0 24px rgba(201,168,76,0.3)",
-            transition: "box-shadow 0.25s, transform 0.2s",
-          }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 40px rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(201,168,76,0.3)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
-          >Get Started</Link>
+          {isAcademyPage && session?.user ? (
+            <div style={{ display: "flex", gap: 12, marginLeft: 12 }}>
+              <Link href="/academy/profile" style={{
+                padding: "10px 24px",
+                background: "rgba(201,168,76,0.1)",
+                color: "#C9A84C", borderRadius: 10,
+                fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 11,
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                textDecoration: "none",
+                border: "1px solid rgba(201,168,76,0.3)",
+                transition: "all 0.25s",
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.15)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.1)"; }}
+              >Profile</Link>
+            </div>
+          ) : (
+            <Link href="#contact" style={{
+              marginLeft: 12, padding: "10px 24px",
+              background: "linear-gradient(135deg,#C9A84C,#8B6914)",
+              color: "#050505", borderRadius: 10,
+              fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 11,
+              letterSpacing: "0.12em", textTransform: "uppercase",
+              textDecoration: "none",
+              boxShadow: "0 0 24px rgba(201,168,76,0.3)",
+              transition: "box-shadow 0.25s, transform 0.2s",
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 40px rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(201,168,76,0.3)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+            >Get Started</Link>
+          )}
         </div>
 
         {/* Hamburger */}

@@ -1,36 +1,41 @@
 export type UserRoleName =
   | "OWNER"
   | "ADMIN"
-  | "HR_MANAGER"
-  | "MANAGER"
-  | "EMPLOYEE";
+  | "INSTRUCTOR"
+  | "STUDENT";
 
 export const appRoleLabels: Record<UserRoleName, string> = {
-  OWNER: "company_admin",
-  ADMIN: "company_admin",
-  HR_MANAGER: "hr_officer",
-  MANAGER: "team_lead",
-  EMPLOYEE: "employee",
+  OWNER: "platform_owner",
+  ADMIN: "academy_admin",
+  INSTRUCTOR: "instructor",
+  STUDENT: "student",
 };
 
 export type AppRole =
-  | "company_admin"
-  | "hr_officer"
-  | "team_lead"
-  | "employee";
+  | "platform_owner"
+  | "academy_admin"
+  | "instructor"
+  | "student";
 
 const roleRank: Record<UserRoleName, number> = {
   OWNER: 4,
-  ADMIN: 4,
-  HR_MANAGER: 3,
-  MANAGER: 2,
-  EMPLOYEE: 1,
+  ADMIN: 3,
+  INSTRUCTOR: 2,
+  STUDENT: 1,
 };
 
 export function hasMinimumRole(role: UserRoleName, minimumRole: UserRoleName) {
   return roleRank[role] >= roleRank[minimumRole];
 }
 
-export function canManageWorkspace(role: UserRoleName) {
-  return hasMinimumRole(role, "HR_MANAGER");
+export function canManageCourses(role: UserRoleName) {
+  return hasMinimumRole(role, "INSTRUCTOR");
+}
+
+export function canAdminAcademy(role: UserRoleName) {
+  return hasMinimumRole(role, "ADMIN");
+}
+
+export function canManagePlatform(role: UserRoleName) {
+  return hasMinimumRole(role, "OWNER");
 }

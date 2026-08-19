@@ -7,21 +7,14 @@ export default function Footer() {
   const pathname = usePathname();
 
   const appPathPrefixes = [
-    "/dashboard",
-    "/employees",
-    "/departments",
-    "/attendance",
-    "/leave",
-    "/documents",
-    "/payroll",
-    "/settings",
-    "/my-profile",
+    "/student",
+    "/instructor",
+    "/admin",
     "/login",
     "/register",
     "/forgot-password",
     "/reset-password",
     "/verify-email",
-    "/invite",
   ];
 
   if (appPathPrefixes.some((prefix) => pathname.startsWith(prefix))) {
@@ -41,11 +34,10 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
-              <Image src="/fslabs-logo-mark.png" alt="FSLabs" width={44} height={44} style={{ flexShrink: 0 }} />
-              <div style={{ width: 1, height: 36, background: "linear-gradient(180deg,transparent,#C9A84C,transparent)", flexShrink: 0 }} />
-              <div style={{ lineHeight: 1.2 }}>
-                <div style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: 13, letterSpacing: "0.06em", color: "#FFFFFF" }}>FOLUB &amp; SAMUEL LABS</div>
-                <div style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 8, letterSpacing: "0.22em", color: "rgba(201,168,76,0.5)", textTransform: "uppercase", marginTop: 2 }}>Technology &amp; Cybersecurity</div>
+              <Image src="/logo.png" alt="Folub & Samuel Labs" width={68} height={68} style={{ flexShrink: 0 }} />
+              <div style={{ lineHeight: 1.15 }}>
+                <div style={{ fontFamily: "'Poppins', 'Avenir', sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: "-0.01em", color: "#FFFFFF" }}>Folub &amp; Samuel Labs</div>
+                <div style={{ fontFamily: "'Poppins', 'Avenir', sans-serif", fontSize: 9, letterSpacing: "0.08em", color: "rgba(240,192,64,0.5)", textTransform: "uppercase", marginTop: 2 }}>Technology &amp; Cybersecurity</div>
               </div>
             </div>
             <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.35)", lineHeight: 1.9, maxWidth: 260 }}>
@@ -58,8 +50,8 @@ export default function Footer() {
           </div>
 
           {[
-            { title: "Company", links: [{ label: "About", href: "#about" }, { label: "Team", href: "#team" }, { label: "Services", href: "#services" }, { label: "Contact", href: "#contact" }] },
-            { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "FS Exchange", href: "/exchange" }] },
+            { title: "Company", links: [{ label: "About", href: "#about" }, { label: "Team", href: "#team" }, { label: "Services", href: "#services" }, { label: "Courses", href: "/courses" }, { label: "Contact", href: "#contact" }] },
+            { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "Training", href: "/courses" }] },
             { title: "Contact", links: [{ label: "Lagos, Nigeria", href: "#" }, { label: "admin@folubandsamuellabs.com", href: "mailto:admin@folubandsamuellabs.com" }] },
           ].map(col => (
             <div key={col.title}>

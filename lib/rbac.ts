@@ -1,46 +1,39 @@
-export const roles = ["OWNER", "ADMIN", "HR_MANAGER", "MANAGER", "EMPLOYEE"] as const;
+export const roles = ["OWNER", "ADMIN", "INSTRUCTOR", "STUDENT"] as const;
 
 export type Role = (typeof roles)[number];
 
 export type Permission =
-  | "organization:manage"
-  | "employees:read"
-  | "employees:write"
-  | "attendance:manage"
-  | "leave:approve"
-  | "documents:manage"
-  | "payroll:manage"
-  | "settings:manage";
+  | "academy:manage"
+  | "courses:manage"
+  | "courses:teach"
+  | "enrollments:manage"
+  | "certificates:issue"
+  | "analytics:view"
+  | "students:manage";
 
 const rolePermissions: Record<Role, Permission[]> = {
   OWNER: [
-    "organization:manage",
-    "employees:read",
-    "employees:write",
-    "attendance:manage",
-    "leave:approve",
-    "documents:manage",
-    "payroll:manage",
-    "settings:manage",
+    "academy:manage",
+    "courses:manage",
+    "courses:teach",
+    "enrollments:manage",
+    "certificates:issue",
+    "analytics:view",
+    "students:manage",
   ],
   ADMIN: [
-    "employees:read",
-    "employees:write",
-    "attendance:manage",
-    "leave:approve",
-    "documents:manage",
-    "payroll:manage",
-    "settings:manage",
+    "courses:manage",
+    "enrollments:manage",
+    "certificates:issue",
+    "analytics:view",
+    "students:manage",
   ],
-  HR_MANAGER: [
-    "employees:read",
-    "employees:write",
-    "attendance:manage",
-    "leave:approve",
-    "documents:manage",
+  INSTRUCTOR: [
+    "courses:teach",
+    "certificates:issue",
+    "analytics:view",
   ],
-  MANAGER: ["employees:read", "attendance:manage", "leave:approve"],
-  EMPLOYEE: ["employees:read"],
+  STUDENT: [],
 };
 
 export function can(role: Role, permission: Permission) {

@@ -426,6 +426,65 @@ export default function Home() {
 
       <GoldDivider />
 
+      {/* ══ ACADEMY ══ */}
+      <section id="academy" style={{ ...S, background: "#050505", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "-5%", left: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ ...MW }}>
+          <SectionLabel>Learn & Grow</SectionLabel>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }} className="academy-grid">
+            <div>
+              <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: "clamp(2rem,4.5vw,52px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F5F0E8", marginBottom: 28 }}>
+                FSLabs Academy.<br />
+                <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  Learn to Code. Build Real Skills.
+                </span>
+              </h2>
+              <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.45)", lineHeight: 1.95, marginBottom: 28 }}>
+                Learn full-stack development, cybersecurity, and system architecture from engineers who build production systems. Self-paced. Project-driven. Proven path to employment.
+              </p>
+              <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 32 }}>
+                {[
+                  "Built by FSLabs, not generic platforms",
+                  "Real projects, real skills, real careers",
+                  "Self-paced learning without artificial deadlines",
+                  "Lifetime access to evolving materials",
+                ].map((benefit, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{ width: 20, height: 20, borderRadius: 4, background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2 2 6-6" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.7)" }}>{benefit}</span>
+                  </div>
+                ))}
+              </div>
+              <a href="/academy" style={{ display: "inline-block", padding: "15px 36px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 32px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 56px rgba(201,168,76,0.65)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 32px rgba(201,168,76,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+              >Explore Academy →</a>
+            </div>
+
+            <div className="reveal">
+              <TiltCard style={{ background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 24, padding: 48, display: "flex", flexDirection: "column", gap: 40 }}>
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 20, color: "#F5F0E8", marginBottom: 12 }}>Production-Grade Curriculum</h3>
+                  <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.5)", lineHeight: 1.8 }}>Learn the exact skills used in production systems. Not simplified. Not watered down. Real engineering.</p>
+                </div>
+
+                <div style={{ height: 1, background: "rgba(201,168,76,0.1)" }} />
+
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 20, color: "#F5F0E8", marginBottom: 12 }}>Employment Outcomes</h3>
+                  <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.5)", lineHeight: 1.8 }}>Graduates working at top tech companies. From course completion to first role. Real outcomes, not promises.</p>
+                </div>
+              </TiltCard>
+            </div>
+          </div>
+        </div>
+        <style>{`@media(max-width:768px){.academy-grid{grid-template-columns:1fr!important;gap:56px!important}}`}</style>
+      </section>
+
+      <GoldDivider />
+
       {/* ══ PROCESS ══ */}
       <section id="process" style={{ ...S, background: "#030303", position: "relative", overflow: "hidden" }}>
         <div style={{ ...MW }}>
@@ -558,38 +617,6 @@ export default function Home() {
               </TiltCard>
             ))}
           </div>
-        </div>
-      </section>
-
-      <GoldDivider />
-
-      {/* ══ FS EXCHANGE BANNER ══ */}
-      <section style={{ position: "relative", padding: "100px 28px", overflow: "hidden", background: "#050505" }}>
-        {/* Dramatic background */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 50%,rgba(201,168,76,0.04) 100%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent)" }} />
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent)" }} />
-
-        <div style={{ ...MW, textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", padding: "6px 18px", borderRadius: 100, marginBottom: 28 }}>
-            <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.8)" }}>New Platform</span>
-          </div>
-          <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 900, fontSize: "clamp(2.2rem,6vw,72px)", lineHeight: 1.06, letterSpacing: "-0.03em", color: "#F5F0E8", marginBottom: 20 }}>
-            Introducing{" "}
-            <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C,#8B6914)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              FS Exchange
-            </span>
-          </h2>
-          <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 14, color: "rgba(245,240,232,0.42)", lineHeight: 1.9, maxWidth: 500, margin: "0 auto 40px" }}>
-            Nigeria&apos;s fastest and most transparent currency exchange platform. Built by FSLabs. Powered by real rates. Designed for trust.
-          </p>
-          <a href="/exchange" className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "16px 40px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 48px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 72px rgba(201,168,76,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 48px rgba(201,168,76,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
-          >
-            Visit FS Exchange
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </a>
         </div>
       </section>
 

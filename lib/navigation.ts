@@ -1,14 +1,9 @@
 import type { LucideIcon } from "lucide-react";
 import {
-  Building2,
-  CalendarClock,
-  CalendarDays,
-  FolderOpen,
+  BookOpen,
   LayoutDashboard,
   Settings,
-  UserRound,
   Users,
-  Wallet,
 } from "lucide-react";
 
 export type AppRoute = {
@@ -26,83 +21,57 @@ export type NavGroup = {
 
 export const navGroups: NavGroup[] = [
   {
-    label: "Overview",
+    label: "Learning",
     routes: [
       {
-        href: "/dashboard",
-        label: "Dashboard",
-        description: "Workforce overview and operational signals.",
-        icon: LayoutDashboard,
-        status: "live",
-      },
-      {
-        href: "/my-profile",
-        label: "My Profile",
-        description: "Personal employee portal for the signed-in staff member.",
-        icon: UserRound,
+        href: "/student/dashboard",
+        label: "My Courses",
+        description: "Your enrolled courses and progress.",
+        icon: BookOpen,
         status: "live",
       },
     ],
   },
   {
-    label: "Workforce",
+    label: "Instructor",
     routes: [
       {
-        href: "/employees",
-        label: "Employees",
-        description: "Employee records, lifecycle status, and assignments.",
+        href: "/instructor/courses",
+        label: "My Courses",
+        description: "Create and manage your courses.",
+        icon: BookOpen,
+        status: "soon",
+      },
+      {
+        href: "/instructor/students",
+        label: "Students",
+        description: "View student progress and analytics.",
         icon: Users,
-        status: "live",
-      },
-      {
-        href: "/departments",
-        label: "Departments",
-        description: "Teams, reporting lines, and department ownership.",
-        icon: Building2,
-        status: "live",
-      },
-      {
-        href: "/documents",
-        label: "Documents",
-        description: "Tenant-scoped HR files and employee document records.",
-        icon: FolderOpen,
-        status: "live",
-      },
-    ],
-  },
-  {
-    label: "Operations",
-    routes: [
-      {
-        href: "/attendance",
-        label: "Attendance",
-        description: "Clock-ins, exceptions, shifts, and timesheet summaries.",
-        icon: CalendarClock,
-        status: "soon",
-      },
-      {
-        href: "/leave",
-        label: "Leave",
-        description: "Leave balances, requests, and approvals.",
-        icon: CalendarDays,
-        status: "live",
-      },
-      {
-        href: "/payroll",
-        label: "Payroll",
-        description: "Compensation, payroll runs, payslips, and deductions.",
-        icon: Wallet,
         status: "soon",
       },
     ],
   },
   {
-    label: "Organization",
+    label: "Admin",
     routes: [
       {
-        href: "/settings",
+        href: "/admin/academy/courses",
+        label: "Courses",
+        description: "Manage all courses and content.",
+        icon: BookOpen,
+        status: "soon",
+      },
+      {
+        href: "/admin/academy/students",
+        label: "Students",
+        description: "Manage enrollments and access.",
+        icon: Users,
+        status: "soon",
+      },
+      {
+        href: "/admin/academy/settings",
         label: "Settings",
-        description: "Organization settings, roles, billing, and integrations.",
+        description: "Academy configuration and billing.",
         icon: Settings,
         status: "soon",
       },

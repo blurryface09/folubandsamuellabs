@@ -86,5 +86,5 @@ export async function resendVerificationAction() {
     });
   }
 
-  redirect("/dashboard?toast=Verification%20email%20sent");
+  redirect("/student/dashboard?toast=Verification%20email%20sent");
 }
