@@ -14,8 +14,8 @@ const courses = [
     title: "Full Stack Development",
     tag: "Frontend · Backend · DevOps",
     desc: "The complete package — build end-to-end web applications from UI to database to deployment. The most comprehensive track we offer.",
-    price: 180000,
-    originalPrice: 300000,
+    price: 79000,
+    originalPrice: 79000,
     topics: ["HTML, CSS, JavaScript, React", "Node.js, Express, PostgreSQL", "Git, CI/CD, Cloud Deployment", "3 Real-World Portfolio Projects"],
     featured: true,
   },
@@ -25,8 +25,8 @@ const courses = [
     title: "Ethical Hacking Fundamentals",
     tag: "Cybersecurity · Penetration Testing",
     desc: "Learn to think like an attacker. Master the tools and techniques used by professional penetration testers and security engineers.",
-    price: 175000,
-    originalPrice: 295000,
+    price: 75000,
+    originalPrice: 75000,
     topics: ["Networking & Security Basics", "Kali Linux, Nmap, Metasploit", "Web App & Network Pentesting", "CTF Challenges + Report Writing"],
     featured: true,
   },
@@ -36,8 +36,8 @@ const courses = [
     title: "Machine Learning Foundations",
     tag: "AI · Data Science · Python",
     desc: "From Python basics to building and training your own ML models. A practical introduction to artificial intelligence for builders.",
-    price: 170000,
-    originalPrice: 290000,
+    price: 75000,
+    originalPrice: 75000,
     topics: ["Python, NumPy, Pandas", "Supervised & Unsupervised Learning", "Neural Networks Introduction", "Hands-On ML Projects"],
     featured: false,
   },
@@ -47,8 +47,8 @@ const courses = [
     title: "Backend Development",
     tag: "Server · APIs · Databases",
     desc: "Build the invisible engine behind great products. Design robust APIs, manage databases, and deploy scalable server-side applications.",
-    price: 160000,
-    originalPrice: 280000,
+    price: 69000,
+    originalPrice: 69000,
     topics: ["Node.js, Express, NestJS", "REST APIs & Authentication (JWT)", "PostgreSQL & MongoDB", "Cloud Deployment (AWS / GCP)"],
     featured: false,
   },
@@ -58,8 +58,8 @@ const courses = [
     title: "Frontend Development",
     tag: "UI · React · Responsive Design",
     desc: "Craft beautiful, fast, and accessible user interfaces. Master the modern web stack used by top product teams globally.",
-    price: 155000,
-    originalPrice: 270000,
+    price: 65000,
+    originalPrice: 65000,
     topics: ["HTML5, CSS3, JavaScript", "React.js & Next.js", "Responsive & Accessible UI", "Component-Based Architecture"],
     featured: false,
   },
@@ -69,8 +69,8 @@ const courses = [
     title: "Prompt Engineering",
     tag: "AI Tools · LLMs · Automation",
     desc: "The skill no one taught in school. Learn to design, chain, and deploy prompts that turn LLMs into powerful business tools and products.",
-    price: 150000,
-    originalPrice: 260000,
+    price: 40000,
+    originalPrice: 40000,
     topics: ["LLM Fundamentals & APIs", "Prompt Design & Chaining", "RAG, Agents & Tool Use", "Build AI-Powered Products"],
     featured: false,
   },
@@ -78,10 +78,6 @@ const courses = [
 
 function fmt(n: number) {
   return "₦" + n.toLocaleString("en-NG");
-}
-
-function pct(orig: number, now: number) {
-  return Math.round(((orig - now) / orig) * 100);
 }
 
 export default function Training() {
@@ -164,12 +160,8 @@ export default function Training() {
               <div className="border-t border-[#c9a84c]/10 pt-6">
                 <div className="flex items-baseline gap-3 mb-1">
                   <span className="text-2xl font-black text-[#c9a84c]">{fmt(c.price)}</span>
-                  <span className="text-sm text-white/20 line-through">{fmt(c.originalPrice)}</span>
-                  <span className="text-xs font-bold text-[#0A0804] bg-[#c9a84c] px-2 py-0.5 rounded">
-                    {pct(c.originalPrice, c.price)}% OFF
-                  </span>
                 </div>
-                <p className="text-white/25 text-xs font-mono mb-5">3-month programme · instalment plans available</p>
+                <p className="text-white/25 text-xs font-mono mb-5">Self-paced · one-time payment</p>
                 <Link href="/contact"
                   className="block w-full text-center py-3 border border-[#c9a84c]/30 text-[#c9a84c] text-xs font-bold tracking-widest uppercase rounded hover:bg-[#c9a84c] hover:text-[#0A0804] transition-all duration-200 font-mono">
                   Enrol Now

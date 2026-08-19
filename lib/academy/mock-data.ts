@@ -9,8 +9,8 @@ export const mockCourses: Course[] = [
     longDescription:
       "Master the complete web development stack. Learn frontend frameworks, backend servers, databases, and cloud deployment. Build 3 production-ready projects and deploy them live.",
     imageUrl: "/courses/fullstack.jpg",
-    price: 180000,
-    originalPrice: 300000,
+    price: 79000,
+    originalPrice: 79000,
     currency: "NGN",
     instructor: {
       name: "Folubandele Oladele",
@@ -93,8 +93,8 @@ export const mockCourses: Course[] = [
     longDescription:
       "Think like an attacker to defend like a pro. Master the tools, techniques, and mindset of penetration testers. Includes hands-on labs with real hacking scenarios.",
     imageUrl: "/courses/ethical-hacking.jpg",
-    price: 175000,
-    originalPrice: 295000,
+    price: 75000,
+    originalPrice: 75000,
     currency: "NGN",
     instructor: {
       name: "Samuel Adewale",
@@ -167,8 +167,8 @@ export const mockCourses: Course[] = [
     longDescription:
       "An practical introduction to artificial intelligence. Learn Python, data science libraries, supervised and unsupervised learning, and build real ML models.",
     imageUrl: "/courses/machine-learning.jpg",
-    price: 170000,
-    originalPrice: 290000,
+    price: 75000,
+    originalPrice: 75000,
     currency: "NGN",
     instructor: {
       name: "Dr. Chioma Okonkwo",
@@ -241,8 +241,8 @@ export const mockCourses: Course[] = [
     longDescription:
       "Design and build the invisible engine behind great products. Master API design, database management, authentication, and cloud deployment.",
     imageUrl: "/courses/backend.jpg",
-    price: 160000,
-    originalPrice: 280000,
+    price: 69000,
+    originalPrice: 69000,
     currency: "NGN",
     instructor: {
       name: "Tunde Akinyemi",
@@ -314,8 +314,8 @@ export const mockCourses: Course[] = [
     longDescription:
       "Master modern web development. Build fast, responsive, and accessible UIs with React and Next.js. Learn design principles and user experience best practices.",
     imageUrl: "/courses/frontend.jpg",
-    price: 155000,
-    originalPrice: 270000,
+    price: 65000,
+    originalPrice: 65000,
     currency: "NGN",
     instructor: {
       name: "Ife Okafor",
@@ -387,8 +387,8 @@ export const mockCourses: Course[] = [
     longDescription:
       "Learn to design, chain, and deploy prompts that turn large language models into powerful business tools and products.",
     imageUrl: "/courses/prompt-engineering.jpg",
-    price: 150000,
-    originalPrice: 260000,
+    price: 40000,
+    originalPrice: 40000,
     currency: "NGN",
     instructor: {
       name: "Chidi Obi",
