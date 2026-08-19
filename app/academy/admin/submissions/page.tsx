@@ -125,7 +125,7 @@ function SubmissionRow({ submission, onGraded }: { submission: Submission; onGra
         <div>
           <div style={{ fontSize: 15, fontWeight: 700 }}>{submission.assignment.title}</div>
           <div style={{ fontSize: 12, color: "rgba(245,240,232,0.4)" }}>
-            {submission.assignment.module.course.title} &middot; {submission.assignment.module.title} &middot; {submission.assignment.type}
+            {submission.assignment.module.course.title} &middot; {submission.assignment.module.title} &middot; {submission.assignment.type === "ASSIGNMENT" ? "ASSESSMENT" : submission.assignment.type}
           </div>
         </div>
         <div style={{ textAlign: "right" }}>

@@ -256,7 +256,7 @@ function ModuleDetail({
       <div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <h4 style={{ fontSize: 13, fontWeight: 700, color: "#C9A84C", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Assignments & Classwork ({module.assignments.length})
+            Assessments & Classwork ({module.assignments.length})
           </h4>
           <button onClick={() => setActiveForm(isFormActive("assignment") ? null : { moduleId: module.id, type: "assignment" })} style={sectionBtn}>
             {isFormActive("assignment") ? "Cancel" : "+ Add Assignment"}
@@ -344,7 +344,7 @@ function AssignmentRow({ assignment, onRefresh }: { assignment: Assignment; onRe
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", background: "#050505", borderRadius: 6, marginBottom: 6 }}>
       <span style={{ fontSize: 13 }}>
-        <span style={{ color: "rgba(201,168,76,0.6)", fontSize: 10, marginRight: 8 }}>{assignment.type}</span>
+        <span style={{ color: "rgba(201,168,76,0.6)", fontSize: 10, marginRight: 8 }}>{assignment.type === "ASSIGNMENT" ? "ASSESSMENT" : assignment.type}</span>
         {assignment.title}
       </span>
       <button onClick={handleDelete} style={{ background: "none", border: "none", color: "#F87171", fontSize: 11, cursor: "pointer" }}>Delete</button>
@@ -379,7 +379,7 @@ function AssignmentForm({ moduleId, onDone }: { moduleId: string; onDone: () => 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, background: "#050505", padding: 16, borderRadius: 8, border: "1px solid rgba(201,168,76,0.15)" }}>
       <select value={type} onChange={(e) => setType(e.target.value as "ASSIGNMENT" | "CLASSWORK")} style={{ ...inputStyle, maxWidth: 160 }}>
-        <option value="ASSIGNMENT">Assignment</option>
+        <option value="ASSIGNMENT">Assessment</option>
         <option value="CLASSWORK">Classwork</option>
       </select>
       <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} style={inputStyle} />

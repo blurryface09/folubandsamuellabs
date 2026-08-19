@@ -141,7 +141,7 @@ export default function WeekPage({ params }: { params: Promise<{ slug: string; m
         )}
 
         {module.assignments.length > 0 && (
-          <Section title="Assignments & Classwork">
+          <Section title="Assessments & Classwork">
             {module.assignments.map((a) => (
               <AssignmentCard key={a.id} assignment={a} />
             ))}
@@ -213,7 +213,7 @@ function AssignmentCard({ assignment }: { assignment: Assignment }) {
     <div style={{ background: "#0A0A0A", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 12, padding: 24, marginBottom: 16 }}>
       <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 8 }}>
         <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 10px", borderRadius: 100, background: "rgba(201,168,76,0.1)", color: "#C9A84C" }}>
-          {assignment.type}
+          {assignment.type === "ASSIGNMENT" ? "ASSESSMENT" : assignment.type}
         </span>
         {assignment.dueDate && (
           <span style={{ fontSize: 11, color: "rgba(245,240,232,0.4)" }}>
