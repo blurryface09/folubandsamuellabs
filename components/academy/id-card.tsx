@@ -9,9 +9,10 @@ interface IdCardProps {
   nickname?: string | null;
   studentId: string;
   image?: string | null;
+  courses?: string[];
 }
 
-export function IdCard({ name, nickname, studentId, image }: IdCardProps) {
+export function IdCard({ name, nickname, studentId, image, courses = [] }: IdCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
 
@@ -100,6 +101,42 @@ export function IdCard({ name, nickname, studentId, image }: IdCardProps) {
               {studentId}
             </div>
           </div>
+
+          {courses.length > 0 && (
+            <div
+              style={{
+                width: "100%",
+                borderTop: "1px dashed rgba(201,168,76,0.2)",
+                paddingTop: 14,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <div style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(245,240,232,0.4)", textTransform: "uppercase" }}>
+                Enrolled In
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center" }}>
+                {courses.map((c) => (
+                  <span
+                    key={c}
+                    style={{
+                      padding: "4px 10px",
+                      background: "rgba(201,168,76,0.1)",
+                      border: "1px solid rgba(201,168,76,0.25)",
+                      borderRadius: 100,
+                      fontSize: 9,
+                      fontWeight: 700,
+                      color: "#C9A84C",
+                    }}
+                  >
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer strip */}

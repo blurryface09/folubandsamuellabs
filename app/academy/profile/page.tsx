@@ -15,6 +15,11 @@ interface ProfileData {
   image: string | null;
 }
 
+interface EnrolledCourseTag {
+  courseId: string;
+  title: string;
+}
+
 const MAX_AVATAR_DIMENSION = 320;
 
 function resizeImageToDataUrl(file: File): Promise<string> {
@@ -48,6 +53,7 @@ function resizeImageToDataUrl(file: File): Promise<string> {
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [enrolledCourses, setEnrolledCourses] = useState<EnrolledCourseTag[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saveError, setSaveError] = useState("");
@@ -61,6 +67,16 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
+
+    fetch("/api/enrollments")
+      .then((res) => (res.ok ? res.json() : { enrollments: [] }))
+      .then((data: { enrollments: { courseId: string; paymentStatus: string; course: { title: string } }[] }) => {
+        const paid = (data.enrollments || [])
+          .filter((e) => e.paymentStatus === "COMPLETED")
+          .map((e) => ({ courseId: e.courseId, title: e.course.title }));
+        setEnrolledCourses(paid);
+      })
+      .catch(() => {});
 
     fetch("/api/profile")
       .then((res) => (res.ok ? res.json() : Promise.reject(res)))
@@ -263,6 +279,33 @@ export default function ProfilePage() {
             </div>
           </div>
 
+          {/* Enrolled Courses */}
+          {enrolledCourses.length > 0 && (
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
+                Enrolled Courses
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {enrolledCourses.map((c) => (
+                  <span
+                    key={c.courseId}
+                    style={{
+                      padding: "6px 14px",
+                      background: "rgba(201,168,76,0.1)",
+                      border: "1px solid rgba(201,168,76,0.3)",
+                      borderRadius: 100,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: "#C9A84C",
+                    }}
+                  >
+                    {c.title}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Email */}
           <div style={{ marginBottom: 32, paddingBottom: 32, borderBottom: "1px solid rgba(201,168,76,0.1)" }}>
             <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
@@ -433,6 +476,7 @@ export default function ProfilePage() {
               nickname={profile.nickname}
               studentId={profile.studentId}
               image={profile.image}
+              courses={enrolledCourses.map((c) => c.title)}
             />
           </motion.div>
         ) : null}
