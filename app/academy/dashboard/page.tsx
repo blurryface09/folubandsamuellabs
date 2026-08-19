@@ -27,10 +27,25 @@ function computeProgress(enrollment: EnrolledCourse) {
   return Math.round((completed / totalLessons) * 100);
 }
 
+interface Announcement {
+  id: string;
+  title: string;
+  body: string;
+  createdAt: string;
+}
+
 export default function DashboardPage() {
   const [enrollments, setEnrollments] = useState<EnrolledCourse[]>([]);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/api/announcements")
+      .then((res) => (res.ok ? res.json() : { announcements: [] }))
+      .then((data) => setAnnouncements(data.announcements || []))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const fetchEnrollments = async () => {
@@ -96,6 +111,31 @@ export default function DashboardPage() {
               : `You're enrolled in ${enrollments.length} course${enrollments.length !== 1 ? "s" : ""}.`}
           </p>
         </div>
+
+        {announcements.length > 0 && (
+          <motion.div variants={fadeInUp} style={{ marginBottom: 48, display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ fontSize: 12, fontFamily: "var(--font-roboto-mono)", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(201,168,76,0.6)" }}>
+              Announcements
+            </div>
+            {announcements.map((a) => (
+              <div
+                key={a.id}
+                style={{
+                  background: "rgba(201,168,76,0.05)",
+                  border: "1px solid rgba(201,168,76,0.15)",
+                  borderRadius: 10,
+                  padding: 18,
+                }}
+              >
+                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 6, color: "#F5F0E8" }}>{a.title}</div>
+                <p style={{ fontSize: 13, color: "rgba(245,240,232,0.6)", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{a.body}</p>
+                <div style={{ fontSize: 11, color: "rgba(245,240,232,0.3)", marginTop: 8 }}>
+                  {new Date(a.createdAt).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
 
         {error && (
           <div

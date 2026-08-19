@@ -62,6 +62,7 @@ model User {
   submittedAssignments    AssignmentSubmission[]   @relation("SubmittedBy")
   gradedAssignments       AssignmentSubmission[]   @relation("GradedBy")
   examAttempts            ExamAttempt[]
+  announcements           Announcement[]
 
   @@index([email])
   @@index([studentId])
@@ -397,6 +398,18 @@ model Certificate {
   @@index([userId])
   @@index([courseId])
   @@index([credentialId])
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  body      String
+  authorId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
 }
 
 model Document {
