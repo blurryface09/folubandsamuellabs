@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { pageTransition, fadeInUp, staggerContainer } from "@/lib/motion/animations";
+import { pageTransition, fadeInUp } from "@/lib/motion/animations";
 import type { Course } from "@/lib/academy/types";
 
 interface CourseDetailProps {
@@ -288,12 +288,12 @@ export default function CourseDetail({ course }: CourseDetailProps) {
         </div>
       </motion.section>
 
-      {/* Weekly Updates Section */}
-      {isEnrolled && weeklyModules.length > 0 && (
+      {/* Course Content Section */}
+      {isEnrolled && (
         <motion.section
           variants={pageTransition}
           style={{
-            padding: "80px 28px 0",
+            padding: "80px 28px 100px",
             maxWidth: 1200,
             margin: "0 auto",
           }}
@@ -306,153 +306,37 @@ export default function CourseDetail({ course }: CourseDetailProps) {
               marginBottom: 24,
             }}
           >
-            Weekly Updates
+            Course Content
           </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {weeklyModules.map((m) => (
-              <Link
-                key={m.id}
-                href={`/academy/courses/${course.slug}/weeks/${m.id}`}
-                style={{
-                  display: "block",
-                  padding: "18px 24px",
-                  background: "#0A0A0A",
-                  border: "1px solid rgba(201,168,76,0.15)",
-                  borderRadius: 10,
-                  color: "#F5F0E8",
-                  textDecoration: "none",
-                  fontSize: 15,
-                  fontWeight: 600,
-                }}
-              >
-                {m.title} →
-              </Link>
-            ))}
-          </div>
+          {weeklyModules.length > 0 ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {weeklyModules.map((m) => (
+                <Link
+                  key={m.id}
+                  href={`/academy/courses/${course.slug}/weeks/${m.id}`}
+                  style={{
+                    display: "block",
+                    padding: "18px 24px",
+                    background: "#0A0A0A",
+                    border: "1px solid rgba(201,168,76,0.15)",
+                    borderRadius: 10,
+                    color: "#F5F0E8",
+                    textDecoration: "none",
+                    fontSize: 15,
+                    fontWeight: 600,
+                  }}
+                >
+                  {m.title} →
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p style={{ color: "rgba(245,240,232,0.5)", fontSize: 14 }}>
+              The first week of content hasn&apos;t been published yet. Check back soon.
+            </p>
+          )}
         </motion.section>
       )}
-
-      {/* Curriculum Section */}
-      <motion.section
-        variants={pageTransition}
-        style={{
-          padding: "80px 28px 60px",
-          maxWidth: 1200,
-          margin: "0 auto",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: 36,
-            fontWeight: 800,
-            fontFamily: "var(--font-exo2)",
-            marginBottom: 40,
-          }}
-        >
-          Curriculum
-        </h2>
-
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-          }}
-        >
-          {course.modules.map((module, idx) => (
-            <motion.div
-              key={module.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              style={{
-                background: "#0A0A0A",
-                border: "1px solid rgba(201,168,76,0.1)",
-                borderRadius: 12,
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  padding: 24,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  cursor: "pointer",
-                }}
-              >
-                <div>
-                  <h3
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 700,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {module.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: "rgba(245,240,232,0.6)",
-                    }}
-                  >
-                    {module.lessons.length} lessons
-                  </p>
-                </div>
-              </div>
-
-              <div style={{ borderTop: "1px solid rgba(201,168,76,0.1)" }}>
-                {module.lessons.map((lesson, lessonIdx) => (
-                  <Link
-                    key={lesson.id}
-                    href={
-                      isEnrolled
-                        ? `/academy/courses/${course.slug}/modules/${module.id}/lessons/${lesson.id}`
-                        : "#"
-                    }
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "16px 24px",
-                      borderBottom:
-                        lessonIdx < module.lessons.length - 1
-                          ? "1px solid rgba(201,168,76,0.05)"
-                          : "none",
-                      color: isEnrolled ? "#F5F0E8" : "rgba(245,240,232,0.5)",
-                      textDecoration: "none",
-                      cursor: isEnrolled ? "pointer" : "default",
-                      transition: "all 0.2s",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (isEnrolled) {
-                        (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.05)";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "transparent";
-                    }}
-                  >
-                    <span
-                      style={{
-                        marginRight: 16,
-                        fontSize: 12,
-                        color: "rgba(201,168,76,0.6)",
-                      }}
-                    >
-                      {isEnrolled ? "▶" : "🔒"}
-                    </span>
-                    <span style={{ fontSize: 14 }}>{lesson.title}</span>
-                  </Link>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
     </motion.main>
   );
 }
