@@ -20,8 +20,17 @@ export default function CourseDetail({ course }: CourseDetailProps) {
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [loading, setLoading] = useState(true);
   const [enrollError, setEnrollError] = useState("");
+  const [weeklyModules, setWeeklyModules] = useState<{ id: string; title: string }[]>([]);
 
   const paymentStatus = searchParams.get("payment");
+
+  useEffect(() => {
+    if (!isEnrolled) return;
+    fetch(`/api/courses/${course.id}/content`)
+      .then((res) => (res.ok ? res.json() : { modules: [] }))
+      .then((data: { modules: { id: string; title: string }[] }) => setWeeklyModules(data.modules || []))
+      .catch(() => {});
+  }, [isEnrolled, course.id]);
 
   // Check enrollment status
   useEffect(() => {
@@ -278,6 +287,50 @@ export default function CourseDetail({ course }: CourseDetailProps) {
           </div>
         </div>
       </motion.section>
+
+      {/* Weekly Updates Section */}
+      {isEnrolled && weeklyModules.length > 0 && (
+        <motion.section
+          variants={pageTransition}
+          style={{
+            padding: "80px 28px 0",
+            maxWidth: 1200,
+            margin: "0 auto",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 36,
+              fontWeight: 800,
+              fontFamily: "var(--font-exo2)",
+              marginBottom: 24,
+            }}
+          >
+            Weekly Updates
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {weeklyModules.map((m) => (
+              <Link
+                key={m.id}
+                href={`/academy/courses/${course.slug}/weeks/${m.id}`}
+                style={{
+                  display: "block",
+                  padding: "18px 24px",
+                  background: "#0A0A0A",
+                  border: "1px solid rgba(201,168,76,0.15)",
+                  borderRadius: 10,
+                  color: "#F5F0E8",
+                  textDecoration: "none",
+                  fontSize: 15,
+                  fontWeight: 600,
+                }}
+              >
+                {m.title} →
+              </Link>
+            ))}
+          </div>
+        </motion.section>
+      )}
 
       {/* Curriculum Section */}
       <motion.section
