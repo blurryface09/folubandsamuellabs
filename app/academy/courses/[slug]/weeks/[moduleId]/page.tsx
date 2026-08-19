@@ -222,7 +222,10 @@ function AssignmentCard({ assignment }: { assignment: Assignment }) {
         )}
       </div>
       <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>{assignment.title}</h3>
-      <p style={{ fontSize: 13, color: "rgba(245,240,232,0.6)", lineHeight: 1.6, marginBottom: 16, whiteSpace: "pre-wrap" }}>{assignment.instructions}</p>
+      <div
+        style={{ fontSize: 13, color: "rgba(245,240,232,0.6)", lineHeight: 1.6, marginBottom: 16 }}
+        dangerouslySetInnerHTML={{ __html: assignment.instructions }}
+      />
 
       {!loaded ? null : submission?.score !== null && submission?.score !== undefined ? (
         <div style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)", borderRadius: 8, padding: 16 }}>
@@ -288,7 +291,12 @@ function ExamCard({ exam }: { exam: Exam }) {
   return (
     <div style={{ background: "#0A0A0A", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 12, padding: 24, marginBottom: 16 }}>
       <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{exam.title}</h3>
-      {exam.instructions && <p style={{ fontSize: 13, color: "rgba(245,240,232,0.6)", marginBottom: 16 }}>{exam.instructions}</p>}
+      {exam.instructions && (
+        <div
+          style={{ fontSize: 13, color: "rgba(245,240,232,0.6)", marginBottom: 16 }}
+          dangerouslySetInnerHTML={{ __html: exam.instructions }}
+        />
+      )}
       <p style={{ fontSize: 12, color: "rgba(245,240,232,0.4)", marginBottom: 16 }}>
         {exam.questions.length} questions &middot; {exam.passingScore}% to pass
       </p>
