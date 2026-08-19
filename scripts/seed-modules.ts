@@ -5,20 +5,20 @@ async function main() {
   console.log("🌱 Seeding modules and lessons...");
 
   for (const course of mockCourses) {
-    for (const module of course.modules) {
-      const moduleId = `${course.id}-${module.id}`;
+    for (const mod of course.modules) {
+      const moduleId = `${course.id}-${mod.id}`;
 
       await db.module.upsert({
         where: { id: moduleId },
         update: {
-          title: module.title,
-          order: module.order,
+          title: mod.title,
+          order: mod.order,
         },
         create: {
           id: moduleId,
           courseId: course.id,
-          title: module.title,
-          order: module.order,
+          title: mod.title,
+          order: mod.order,
           // Existing content was already publicly visible before this
           // migration — publish it so nothing regresses for students.
           isPublished: true,
@@ -26,7 +26,7 @@ async function main() {
         },
       });
 
-      for (const lesson of module.lessons) {
+      for (const lesson of mod.lessons) {
         const lessonId = `${course.id}-${lesson.id}`;
 
         await db.lesson.upsert({
@@ -46,7 +46,7 @@ async function main() {
         });
       }
 
-      console.log(`✓ ${course.title} — ${module.title} (${module.lessons.length} lessons)`);
+      console.log(`✓ ${course.title} — ${mod.title} (${mod.lessons.length} lessons)`);
     }
   }
 

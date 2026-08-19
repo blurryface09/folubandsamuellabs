@@ -20,8 +20,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ mo
     data.publishedAt = isPublished ? new Date() : null;
   }
 
-  const module = await db.module.update({ where: { id: moduleId }, data });
-  return NextResponse.json({ module });
+  const updatedModule = await db.module.update({ where: { id: moduleId }, data });
+  return NextResponse.json({ module: updatedModule });
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ moduleId: string }> }) {

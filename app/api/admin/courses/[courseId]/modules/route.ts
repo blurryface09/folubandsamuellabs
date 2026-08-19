@@ -45,7 +45,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cou
     select: { order: true },
   });
 
-  const module = await db.module.create({
+  const createdModule = await db.module.create({
     data: {
       courseId,
       title: title.trim(),
@@ -53,5 +53,5 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cou
     },
   });
 
-  return NextResponse.json({ module }, { status: 201 });
+  return NextResponse.json({ module: createdModule }, { status: 201 });
 }

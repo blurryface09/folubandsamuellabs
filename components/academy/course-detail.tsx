@@ -35,12 +35,17 @@ export default function CourseDetail({ course }: CourseDetailProps) {
   // Check enrollment status
   useEffect(() => {
     const checkEnrollment = async () => {
+      if (!session?.user) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch("/api/enrollments");
         if (res.ok) {
           const data = await res.json();
           const enrolled = data.enrollments.some(
-            (e: any) => e.courseId === course.id && e.paymentStatus === "COMPLETED"
+            (e: { courseId: string; paymentStatus: string }) =>
+              e.courseId === course.id && e.paymentStatus === "COMPLETED"
           );
           setIsEnrolled(enrolled);
         }
@@ -51,11 +56,7 @@ export default function CourseDetail({ course }: CourseDetailProps) {
       }
     };
 
-    if (session?.user) {
-      checkEnrollment();
-    } else {
-      setLoading(false);
-    }
+    checkEnrollment();
   }, [session, course.id]);
 
   const handleEnroll = async () => {
@@ -265,7 +266,7 @@ export default function CourseDetail({ course }: CourseDetailProps) {
 
               <div style={{ paddingTop: 20, borderTop: "1px solid rgba(201,168,76,0.1)" }}>
                 <div style={{ fontSize: 12, color: "rgba(201,168,76,0.6)", textTransform: "uppercase", marginBottom: 16 }}>
-                  What's included
+                  What&apos;s included
                 </div>
                 <ul
                   style={{

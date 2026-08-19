@@ -102,8 +102,11 @@ export default function AdminContentPage() {
   };
 
   useEffect(() => {
-    if (selectedCourseId) loadModules(selectedCourseId);
-    else setModules([]);
+    const syncModules = () => {
+      if (selectedCourseId) loadModules(selectedCourseId);
+      else setModules([]);
+    };
+    syncModules();
   }, [selectedCourseId]);
 
   const handleAddWeek = async () => {

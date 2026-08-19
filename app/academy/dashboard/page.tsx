@@ -170,7 +170,7 @@ export default function DashboardPage() {
                 marginBottom: 32,
               }}
             >
-              You haven't enrolled in any courses yet.
+              You haven&apos;t enrolled in any courses yet.
             </div>
             <Link
               href="/academy/courses"

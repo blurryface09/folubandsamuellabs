@@ -19,14 +19,17 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!session?.user) {
-      setIsAdmin(false);
-      return;
-    }
-    fetch("/api/profile")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setIsAdmin(Boolean(data?.isPlatformAdmin)))
-      .catch(() => {});
+    const loadAdminStatus = () => {
+      if (!session?.user) {
+        setIsAdmin(false);
+        return;
+      }
+      fetch("/api/profile")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => setIsAdmin(Boolean(data?.isPlatformAdmin)))
+        .catch(() => {});
+    };
+    loadAdminStatus();
   }, [session]);
 
   const appPathPrefixes = [

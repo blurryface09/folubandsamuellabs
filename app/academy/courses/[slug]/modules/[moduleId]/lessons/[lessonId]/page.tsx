@@ -18,8 +18,8 @@ export default function LessonPage({
   const { data: session, status } = useSession();
 
   const course = mockCourses.find((c) => c.slug === slug);
-  const module = course?.modules.find((m) => m.id === moduleId);
-  const lesson = module?.lessons.find((l) => l.id === lessonId);
+  const mod = course?.modules.find((m) => m.id === moduleId);
+  const lesson = mod?.lessons.find((l) => l.id === lessonId);
 
   const [completedLessonIds, setCompletedLessonIds] = useState<Set<string>>(new Set());
   const [marking, setMarking] = useState(false);
@@ -112,7 +112,7 @@ export default function LessonPage({
     );
   }
 
-  if (!course || !module || !lesson) {
+  if (!course || !mod || !lesson) {
     return (
       <div
         style={{
@@ -135,7 +135,7 @@ export default function LessonPage({
     );
   }
 
-  const allLessons = module.lessons;
+  const allLessons = mod.lessons;
   const currentIndex = allLessons.findIndex((l) => l.id === lessonId);
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
@@ -165,7 +165,7 @@ export default function LessonPage({
             </Link>
             <span>/</span>
             <Link href={`/academy/courses/${slug}`} style={{ color: "rgba(245,240,232,0.5)" }}>
-              {module.title}
+              {mod.title}
             </Link>
             <span>/</span>
             <span style={{ color: "#C9A84C" }}>{lesson.title}</span>
@@ -317,10 +317,10 @@ export default function LessonPage({
               top: "80px",
             }}
           >
-            <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 20, color: "#C9A84C" }}>{module.title}</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 20, color: "#C9A84C" }}>{mod.title}</h3>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {module.lessons.map((l, idx) => {
+              {mod.lessons.map((l, idx) => {
                 const lDone = course ? completedLessonIds.has(`${course.id}-${l.id}`) : false;
                 return (
                   <Link
