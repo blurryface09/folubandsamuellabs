@@ -29,7 +29,7 @@ export function CourseCard({ course, index = 0, isEnrolled = false }: CourseCard
     setEnrollError("");
 
     try {
-      const res = await fetch("/api/enrollments", {
+      const res = await fetch("/api/payments/initialize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ courseId: course.id }),
@@ -41,12 +41,12 @@ export function CourseCard({ course, index = 0, isEnrolled = false }: CourseCard
           return;
         }
         const data = await res.json();
-        setEnrollError(data.error || "Failed to enroll");
+        setEnrollError(data.error || "Failed to start payment");
         return;
       }
 
-      // Success - redirect to dashboard
-      window.location.href = "/academy/dashboard";
+      const { authorizationUrl } = await res.json();
+      window.location.href = authorizationUrl;
     } catch (error) {
       setEnrollError("Network error. Please try again.");
     } finally {

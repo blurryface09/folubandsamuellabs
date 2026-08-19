@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import CourseDetail from "@/components/academy/course-detail";
 import { mockCourses } from "@/lib/academy/mock-data";
@@ -16,5 +17,9 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
     notFound();
   }
 
-  return <CourseDetail course={course} />;
+  return (
+    <Suspense fallback={null}>
+      <CourseDetail course={course} />
+    </Suspense>
+  );
 }

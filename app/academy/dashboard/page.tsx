@@ -38,7 +38,10 @@ export default function DashboardPage() {
         const res = await fetch("/api/enrollments");
         if (!res.ok) throw new Error("Failed to fetch enrollments");
         const data = await res.json();
-        setEnrollments(data.enrollments || []);
+        const paidEnrollments = (data.enrollments || []).filter(
+          (e: EnrolledCourse & { paymentStatus: string }) => e.paymentStatus === "COMPLETED"
+        );
+        setEnrollments(paidEnrollments);
       } catch (err) {
         setError("Failed to load your courses");
       } finally {

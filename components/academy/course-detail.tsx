@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -14,10 +14,14 @@ interface CourseDetailProps {
 
 export default function CourseDetail({ course }: CourseDetailProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session } = useSession();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [enrollError, setEnrollError] = useState("");
+
+  const paymentStatus = searchParams.get("payment");
 
   // Check enrollment status
   useEffect(() => {
@@ -27,7 +31,7 @@ export default function CourseDetail({ course }: CourseDetailProps) {
         if (res.ok) {
           const data = await res.json();
           const enrolled = data.enrollments.some(
-            (e: any) => e.courseId === course.id
+            (e: any) => e.courseId === course.id && e.paymentStatus === "COMPLETED"
           );
           setIsEnrolled(enrolled);
         }
@@ -52,8 +56,9 @@ export default function CourseDetail({ course }: CourseDetailProps) {
     }
 
     setIsEnrolling(true);
+    setEnrollError("");
     try {
-      const res = await fetch("/api/enrollments", {
+      const res = await fetch("/api/payments/initialize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ courseId: course.id }),
@@ -65,13 +70,15 @@ export default function CourseDetail({ course }: CourseDetailProps) {
       }
 
       if (res.ok) {
-        setIsEnrolled(true);
-      } else {
-        const error = await res.json();
-        console.error("Enrollment failed:", error);
+        const { authorizationUrl } = await res.json();
+        window.location.href = authorizationUrl;
+        return;
       }
+
+      const error = await res.json();
+      setEnrollError(error.error || "Failed to start payment. Please try again.");
     } catch (error) {
-      console.error("Enrollment error:", error);
+      setEnrollError("Failed to start payment. Please try again.");
     } finally {
       setIsEnrolling(false);
     }
@@ -194,6 +201,22 @@ export default function CourseDetail({ course }: CourseDetailProps) {
                 <div style={{ fontSize: 12, color: "rgba(245,240,232,0.5)" }}>One-time payment</div>
               </div>
 
+              {paymentStatus === "failed" && (
+                <div style={{ fontSize: 13, color: "#F87171", background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: 8, padding: "10px 14px" }}>
+                  Payment didn&apos;t go through. Please try again.
+                </div>
+              )}
+              {paymentStatus === "error" && (
+                <div style={{ fontSize: 13, color: "#F87171", background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: 8, padding: "10px 14px" }}>
+                  Something went wrong verifying your payment. If you were charged, contact us.
+                </div>
+              )}
+              {enrollError && (
+                <div style={{ fontSize: 13, color: "#F87171", background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: 8, padding: "10px 14px" }}>
+                  {enrollError}
+                </div>
+              )}
+
               {!isEnrolled ? (
                 <button
                   onClick={handleEnroll}
@@ -210,7 +233,7 @@ export default function CourseDetail({ course }: CourseDetailProps) {
                     opacity: isEnrolling ? 0.6 : 1,
                   }}
                 >
-                  {isEnrolling ? "Enrolling..." : "Enroll Now"}
+                  {isEnrolling ? "Redirecting to payment..." : "Enroll Now"}
                 </button>
               ) : (
                 <Link

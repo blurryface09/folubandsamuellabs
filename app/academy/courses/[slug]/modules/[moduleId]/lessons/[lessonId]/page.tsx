@@ -2,6 +2,8 @@
 
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { mockCourses } from "@/lib/academy/mock-data";
 import { pageTransition } from "@/lib/motion/animations";
@@ -12,6 +14,8 @@ export default function LessonPage({
   params: Promise<{ slug: string; moduleId: string; lessonId: string }>;
 }) {
   const { slug, moduleId, lessonId } = use(params);
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   const course = mockCourses.find((c) => c.slug === slug);
   const module = course?.modules.find((m) => m.id === moduleId);
@@ -19,16 +23,42 @@ export default function LessonPage({
 
   const [completedLessonIds, setCompletedLessonIds] = useState<Set<string>>(new Set());
   const [marking, setMarking] = useState(false);
+  const [accessChecked, setAccessChecked] = useState(false);
 
   useEffect(() => {
+    if (status === "loading") return;
+
+    if (status === "unauthenticated") {
+      router.push("/academy/login");
+      return;
+    }
+
     if (!course) return;
+
+    fetch("/api/enrollments")
+      .then((res) => (res.ok ? res.json() : { enrollments: [] }))
+      .then((data: { enrollments: { courseId: string; paymentStatus: string }[] }) => {
+        const enrolled = data.enrollments.some(
+          (e) => e.courseId === course.id && e.paymentStatus === "COMPLETED"
+        );
+        if (!enrolled) {
+          router.push(`/academy/courses/${slug}`);
+          return;
+        }
+        setAccessChecked(true);
+      })
+      .catch(() => router.push(`/academy/courses/${slug}`));
+  }, [status, course, router, slug]);
+
+  useEffect(() => {
+    if (!course || !accessChecked) return;
     fetch(`/api/progress?courseId=${course.id}`)
       .then((res) => (res.ok ? res.json() : { completedLessonIds: [] }))
       .then((data: { completedLessonIds: string[] }) => {
         setCompletedLessonIds(new Set(data.completedLessonIds));
       })
       .catch(() => {});
-  }, [course]);
+  }, [course, accessChecked]);
 
   const dbLessonId = course && lesson ? `${course.id}-${lesson.id}` : null;
   const isComplete = dbLessonId ? completedLessonIds.has(dbLessonId) : false;
@@ -64,6 +94,23 @@ export default function LessonPage({
       setMarking(false);
     }
   };
+
+  if (!accessChecked) {
+    return (
+      <div
+        style={{
+          background: "#050505",
+          color: "#F5F0E8",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <p style={{ color: "rgba(245,240,232,0.5)" }}>Loading...</p>
+      </div>
+    );
+  }
 
   if (!course || !module || !lesson) {
     return (
