@@ -21,6 +21,7 @@ export default function CourseDetail({ course }: CourseDetailProps) {
   const [loading, setLoading] = useState(true);
   const [enrollError, setEnrollError] = useState("");
   const [weeklyModules, setWeeklyModules] = useState<{ id: string; title: string }[]>([]);
+  const [hasProgress, setHasProgress] = useState(false);
 
   const paymentStatus = searchParams.get("payment");
 
@@ -29,6 +30,11 @@ export default function CourseDetail({ course }: CourseDetailProps) {
     fetch(`/api/courses/${course.id}/content`)
       .then((res) => (res.ok ? res.json() : { modules: [] }))
       .then((data: { modules: { id: string; title: string }[] }) => setWeeklyModules(data.modules || []))
+      .catch(() => {});
+
+    fetch(`/api/progress?courseId=${course.id}`)
+      .then((res) => (res.ok ? res.json() : { completedLessonIds: [] }))
+      .then((data: { completedLessonIds: string[] }) => setHasProgress((data.completedLessonIds || []).length > 0))
       .catch(() => {});
   }, [isEnrolled, course.id]);
 
@@ -245,22 +251,40 @@ export default function CourseDetail({ course }: CourseDetailProps) {
                   {isEnrolling ? "Redirecting to payment..." : "Enroll Now"}
                 </button>
               ) : (
-                <Link
-                  href={`/academy/courses/${course.slug}`}
-                  style={{
-                    padding: "14px 24px",
-                    background: "rgba(201,168,76,0.1)",
-                    color: "#C9A84C",
-                    border: "1px solid rgba(201,168,76,0.3)",
-                    borderRadius: 8,
-                    textDecoration: "none",
-                    fontWeight: 700,
-                    fontSize: 14,
-                    textAlign: "center",
-                  }}
-                >
-                  Enrolled
-                </Link>
+                <>
+                  <div
+                    style={{
+                      padding: "14px 24px",
+                      background: "rgba(201,168,76,0.1)",
+                      color: "#C9A84C",
+                      border: "1px solid rgba(201,168,76,0.3)",
+                      borderRadius: 8,
+                      fontWeight: 700,
+                      fontSize: 14,
+                      textAlign: "center",
+                    }}
+                  >
+                    Enrolled
+                  </div>
+                  {weeklyModules.length > 0 && (
+                    <Link
+                      href={`/academy/courses/${course.slug}/weeks/${weeklyModules[0].id}`}
+                      style={{
+                        padding: "14px 24px",
+                        background: "linear-gradient(135deg, #C9A84C, #F0C040)",
+                        color: "#050505",
+                        border: "none",
+                        borderRadius: 8,
+                        textDecoration: "none",
+                        fontWeight: 700,
+                        fontSize: 14,
+                        textAlign: "center",
+                      }}
+                    >
+                      {hasProgress ? "Resume Learning" : "Start Learning"}
+                    </Link>
+                  )}
+                </>
               )}
 
               <div style={{ paddingTop: 20, borderTop: "1px solid rgba(201,168,76,0.1)" }}>
