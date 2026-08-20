@@ -2,6 +2,11 @@ import Link from "next/link";
 
 const cards = [
   {
+    href: "/academy/admin/students",
+    title: "Students",
+    description: "See every registered student, their student ID, and what they're enrolled in.",
+  },
+  {
     href: "/academy/admin/content",
     title: "Content",
     description: "Manage weeks, lessons, assignments, and exams for each course. Publish or unpublish content.",
