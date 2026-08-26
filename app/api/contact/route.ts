@@ -13,8 +13,8 @@ export async function POST(req: Request) {
 
   const [{ error }] = await Promise.all([
     resend.emails.send({
-      from: "FSLabs Contact <contact@folubandsamuellabs.com>",
-      to: "admin@folubandsamuellabs.com",
+      from: "FSLabs Contact <access@fslabs.tech>",
+      to: "access@fslabs.tech",
       replyTo: email,
       subject: `New Enquiry: ${service} from ${name}`,
       html: `
@@ -36,9 +36,9 @@ export async function POST(req: Request) {
       `,
     }),
     resend.emails.send({
-      from: "FSLabs <contact@folubandsamuellabs.com>",
+      from: "FSLabs <access@fslabs.tech>",
       to: email,
-      replyTo: "admin@folubandsamuellabs.com",
+      replyTo: "access@fslabs.tech",
       subject: "We received your message — FSLabs",
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background: #0A0804; color: #F0EDE4; border-radius: 12px; overflow: hidden;">
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
             ` : ""}
             <p style="color: rgba(240,237,228,0.5); font-size: 13px; line-height: 1.6; margin-bottom: 0;">
               In the meantime, feel free to browse our services at
-              <a href="https://folubandsamuellabs.com" style="color: #C9A84C;">folubandsamuellabs.com</a>
+              <a href="https://fslabs.tech" style="color: #C9A84C;">fslabs.tech</a>
               or reply to this email if you have any urgent questions.
             </p>
           </div>

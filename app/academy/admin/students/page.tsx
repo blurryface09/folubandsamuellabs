@@ -2,13 +2,21 @@
 
 import { useEffect, useState } from "react";
 
+interface ModuleProgress {
+  title: string;
+  order: number;
+  lessonsCompleted: number;
+  lessonsTotal: number;
+  exam: { attempted: boolean; passed: boolean; score: number | null; passingScore: number } | null;
+}
+
 interface Student {
   id: string;
   name: string | null;
   email: string;
   studentId: string | null;
   createdAt: string;
-  enrollments: { enrolledAt: string; course: { title: string } }[];
+  enrollments: { enrolledAt: string; course: { title: string; modules: ModuleProgress[] } }[];
 }
 
 export default function AdminStudentsPage() {
@@ -81,21 +89,51 @@ export default function AdminStudentsPage() {
               </div>
 
               {s.enrollments.length > 0 ? (
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, paddingTop: 10, borderTop: "1px solid rgba(201,168,76,0.08)" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10, paddingTop: 10, borderTop: "1px solid rgba(201,168,76,0.08)" }}>
                   {s.enrollments.map((e, i) => (
-                    <span
-                      key={i}
-                      style={{
-                        fontSize: 11,
-                        padding: "3px 10px",
-                        background: "rgba(201,168,76,0.08)",
-                        border: "1px solid rgba(201,168,76,0.2)",
-                        borderRadius: 100,
-                        color: "#C9A84C",
-                      }}
-                    >
-                      {e.course.title}
-                    </span>
+                    <div key={i}>
+                      <span
+                        style={{
+                          fontSize: 11,
+                          padding: "3px 10px",
+                          background: "rgba(201,168,76,0.08)",
+                          border: "1px solid rgba(201,168,76,0.2)",
+                          borderRadius: 100,
+                          color: "#C9A84C",
+                        }}
+                      >
+                        {e.course.title}
+                      </span>
+                      {e.course.modules.length > 0 ? (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 8, paddingLeft: 4 }}>
+                          {e.course.modules.map((m) => {
+                            const lessonsDone = m.lessonsTotal > 0 && m.lessonsCompleted === m.lessonsTotal;
+                            const examDone = m.exam ? m.exam.passed : true;
+                            const fullyDone = lessonsDone && examDone;
+                            return (
+                              <div key={m.order} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11.5 }}>
+                                <span style={{ color: fullyDone ? "#A8D5A2" : "rgba(245,240,232,0.5)" }}>{fullyDone ? "✓" : "○"}</span>
+                                <span style={{ color: "rgba(245,240,232,0.7)", minWidth: 90 }}>{m.title.replace(/^Week \d+: /, "")}</span>
+                                <span style={{ color: "rgba(245,240,232,0.45)", fontFamily: "var(--font-roboto-mono, monospace)" }}>
+                                  {m.lessonsCompleted}/{m.lessonsTotal} lessons
+                                </span>
+                                {m.exam && (
+                                  <span style={{ color: m.exam.passed ? "#A8D5A2" : m.exam.attempted ? "#E88" : "rgba(245,240,232,0.4)" }}>
+                                    {m.exam.passed
+                                      ? `quiz passed (${m.exam.score}%)`
+                                      : m.exam.attempted
+                                        ? `quiz failed (${m.exam.score}%)`
+                                        : "quiz not attempted"}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: 11, color: "rgba(245,240,232,0.35)", marginTop: 6 }}>No published content yet</div>
+                      )}
+                    </div>
                   ))}
                 </div>
               ) : (

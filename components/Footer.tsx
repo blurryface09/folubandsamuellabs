@@ -52,7 +52,7 @@ export default function Footer() {
           {[
             { title: "Company", links: [{ label: "About", href: "#about" }, { label: "Team", href: "#team" }, { label: "Services", href: "#services" }, { label: "Academy", href: "/academy" }, { label: "Contact", href: "#contact" }] },
             { title: "Services", links: [{ label: "Software Dev", href: "#services" }, { label: "Cybersecurity", href: "#services" }, { label: "Digital Solutions", href: "#services" }, { label: "Academy", href: "/academy" }] },
-            { title: "Contact", links: [{ label: "Lagos, Nigeria", href: "#" }, { label: "admin@folubandsamuellabs.com", href: "mailto:admin@folubandsamuellabs.com" }] },
+            { title: "Contact", links: [{ label: "Lagos, Nigeria", href: "#" }, { label: "access@fslabs.tech", href: "mailto:access@fslabs.tech" }] },
           ].map(col => (
             <div key={col.title}>
               <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", marginBottom: 20, fontWeight: 700 }}>{col.title}</p>

@@ -4,7 +4,7 @@ import { SiteChrome } from "@/components/SiteChrome";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://folubandsamuellabs.com"),
+  metadataBase: new URL("https://fslabs.tech"),
   title: {
     default: "Folub & Samuel Labs | Technology & Cybersecurity",
     template: "%s | FSLabs",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Folub & Samuel Labs | Technology & Cybersecurity",
     description: "Software development, cybersecurity, IT consulting, and tech outsourcing from Lagos, Nigeria.",
-    url: "https://folubandsamuellabs.com",
+    url: "https://fslabs.tech",
     siteName: "Folub & Samuel Labs",
     locale: "en_NG",
     type: "website",
@@ -38,8 +38,8 @@ const jsonLd = {
   "@type": "Organization",
   name: "Folub & Samuel Labs",
   alternateName: "FSLabs",
-  url: "https://folubandsamuellabs.com",
-  logo: "https://folubandsamuellabs.com/fslabs-logo.PNG",
+  url: "https://fslabs.tech",
+  logo: "https://fslabs.tech/fslabs-logo.PNG",
   description: "Software development, cybersecurity, IT consulting, and tech outsourcing company based in Lagos, Nigeria.",
   address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
 };

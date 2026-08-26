@@ -251,7 +251,7 @@ function ContactForm() {
           onFocus={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")}
           onBlur={e => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.15)")} />
       </div>
-      {status === "error" && <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 11, color: "#F87171" }}>Something went wrong. Email us at admin@folubandsamuellabs.com</p>}
+      {status === "error" && <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 11, color: "#F87171" }}>Something went wrong. Email us at access@fslabs.tech</p>}
       <button type="submit" disabled={status === "sending"} style={{
         padding: "15px 24px", background: "linear-gradient(135deg,#C9A84C,#8B6914)",
         color: "#050505", borderRadius: 12, border: "none",
@@ -641,7 +641,7 @@ export default function Home() {
               </p>
               <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
                 {[
-                  { label: "Email", value: "admin@folubandsamuellabs.com" },
+                  { label: "Email", value: "access@fslabs.tech" },
                   { label: "Location", value: "Lagos, Nigeria" },
                   { label: "RC Number", value: "9637480" },
                 ].map(item => (

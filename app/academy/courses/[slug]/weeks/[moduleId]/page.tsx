@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { mockCourses } from "@/lib/academy/mock-data";
 import { pageTransition } from "@/lib/motion/animations";
+import HelpRequestButton from "@/components/academy/help-request-button";
 
 interface Lesson {
   id: string;
@@ -160,6 +161,7 @@ export default function WeekPage({ params }: { params: Promise<{ slug: string; m
           <p style={{ color: "rgba(245,240,232,0.5)" }}>Nothing here yet.</p>
         )}
       </motion.div>
+      <HelpRequestButton courseId={course.id} moduleId={module.id} />
     </motion.main>
   );
 }

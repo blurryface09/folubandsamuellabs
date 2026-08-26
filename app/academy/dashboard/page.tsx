@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { pageTransition, fadeInUp } from "@/lib/motion/animations";
+import HelpRequestButton from "@/components/academy/help-request-button";
 
 interface EnrolledCourse {
   id: string;
@@ -353,6 +354,7 @@ export default function DashboardPage() {
           </motion.div>
         )}
       </motion.div>
+      <HelpRequestButton />
     </motion.main>
   );
 }

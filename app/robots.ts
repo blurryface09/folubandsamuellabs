@@ -5,8 +5,17 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/student/', '/instructor/', '/admin/'],
+      disallow: [
+        '/api/',
+        '/academy/admin',
+        '/academy/dashboard',
+        '/academy/profile',
+        '/academy/login',
+        '/academy/register',
+        '/academy/courses/*/weeks/*',
+        '/academy/courses/*/modules/*',
+      ],
     },
-    sitemap: 'https://folubandsamuellabs.com/sitemap.xml',
+    sitemap: 'https://fslabs.tech/sitemap.xml',
   }
 }

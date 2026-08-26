@@ -17,6 +17,11 @@ const cards = [
     description: "Review and grade assignment/classwork submissions from students.",
   },
   {
+    href: "/academy/admin/help-requests",
+    title: "Help Requests",
+    description: "See students who've requested a call or meeting because they're stuck.",
+  },
+  {
     href: "/academy/admin/announcements",
     title: "Announcements",
     description: "Post updates that appear on every student's dashboard.",

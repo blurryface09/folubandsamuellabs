@@ -27,7 +27,7 @@ export function ContactClient() {
       if (!res.ok) throw new Error();
       setSubmitted(true);
     } catch {
-      setError("Something went wrong. Email us directly at admin@folubandsamuellabs.com");
+      setError("Something went wrong. Email us directly at access@fslabs.tech");
     } finally {
       setLoading(false);
     }
@@ -58,8 +58,8 @@ export function ContactClient() {
               <p className="text-[10px] tracking-[0.2em] text-white/25 uppercase mb-5">Reach Us</p>
               <div className="space-y-5">
                 {[
-                  { label: "Email", value: "admin@folubandsamuellabs.com" },
-                  { label: "Website", value: "folubandsamuellabs.com" },
+                  { label: "Email", value: "access@fslabs.tech" },
+                  { label: "Website", value: "fslabs.tech" },
                   { label: "Location", value: "Nigeria · Remote Worldwide" },
                 ].map((c) => (
                   <div key={c.label}>

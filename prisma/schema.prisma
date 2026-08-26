@@ -63,6 +63,7 @@ model User {
   gradedAssignments       AssignmentSubmission[]   @relation("GradedBy")
   examAttempts            ExamAttempt[]
   announcements           Announcement[]
+  helpRequests            HelpRequest[]
 
   @@index([email])
   @@index([studentId])
@@ -163,6 +164,7 @@ model Course {
   instructor     User         @relation(fields: [instructorId], references: [id], onDelete: Cascade)
   modules        Module[]
   enrollments    Enrollment[]
+  helpRequests   HelpRequest[]
 
   @@index([organizationId])
   @@index([instructorId])
@@ -185,6 +187,7 @@ model Module {
   lessons     Lesson[]
   assignments Assignment[]
   exams       Exam[]
+  helpRequests HelpRequest[]
 
   @@unique([courseId, order])
   @@index([courseId])
@@ -409,6 +412,40 @@ model Announcement {
   updatedAt DateTime @updatedAt
   author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
 
+  @@index([createdAt])
+}
+
+enum PreferredContact {
+  CALL
+  WHATSAPP
+  VIDEO
+}
+
+enum HelpRequestStatus {
+  PENDING
+  CONTACTED
+  RESOLVED
+}
+
+model HelpRequest {
+  id               String            @id @default(cuid())
+  userId           String
+  courseId         String?
+  moduleId         String?
+  message          String
+  preferredContact PreferredContact  @default(CALL)
+  phone            String
+  preferredTime    String?
+  status           HelpRequestStatus @default(PENDING)
+  adminNote        String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course           Course?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  module           Module?           @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([status])
   @@index([createdAt])
 }
 
