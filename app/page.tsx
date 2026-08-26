@@ -485,6 +485,64 @@ export default function Home() {
 
       <GoldDivider />
 
+      {/* ══ PRODUCTS ══ */}
+      <section id="products" style={{ ...S, background: "#030303", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", bottom: "-10%", right: "-8%", width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle,rgba(201,168,76,0.07) 0%,transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ ...MW }}>
+          <SectionLabel>Built By Us</SectionLabel>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }} className="academy-grid">
+            <div>
+              <h2 className="reveal" style={{ fontFamily: "var(--font-exo2)", fontWeight: 800, fontSize: "clamp(2rem,4.5vw,52px)", lineHeight: 1.1, letterSpacing: "-0.02em", color: "#F5F0E8", marginBottom: 28 }}>
+                TailorNow.<br />
+                <span style={{ background: "linear-gradient(90deg,#F0C040,#C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  Nigeria&apos;s Fashion Platform.
+                </span>
+              </h2>
+              <p className="reveal" style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.45)", lineHeight: 1.95, marginBottom: 28 }}>
+                A marketplace connecting customers with verified tailors and fashion creatives across Nigeria — custom outfits, bridal wear, alterations, and more, booked and paid for entirely in-app.
+              </p>
+              <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 32 }}>
+                {[
+                  "Built and shipped end-to-end by FSLabs",
+                  "Verified creatives only — every profile reviewed",
+                  "Secure in-app payments and order tracking",
+                  "Direct chat between customer and creative",
+                ].map((benefit, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{ width: 20, height: 20, borderRadius: 4, background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2 2 6-6" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    <span style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 13, color: "rgba(245,240,232,0.7)" }}>{benefit}</span>
+                  </div>
+                ))}
+              </div>
+              <a href="https://tailornow.shop" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "15px 36px", background: "linear-gradient(135deg,#C9A84C,#8B6914)", color: "#050505", borderRadius: 12, fontFamily: "var(--font-roboto-mono)", fontWeight: 700, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", boxShadow: "0 0 32px rgba(201,168,76,0.35)", transition: "box-shadow 0.25s, transform 0.2s" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 56px rgba(201,168,76,0.65)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 32px rgba(201,168,76,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+              >Visit TailorNow →</a>
+            </div>
+
+            <div className="reveal">
+              <TiltCard style={{ background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.1)", borderRadius: 24, padding: 48, display: "flex", flexDirection: "column", gap: 40 }}>
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 20, color: "#F5F0E8", marginBottom: 12 }}>A Real Marketplace, Not a Demo</h3>
+                  <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.5)", lineHeight: 1.8 }}>Verified creatives onboarded, live bookings, and real payments processed through Paystack. Built to the same production standard as our client work.</p>
+                </div>
+
+                <div style={{ height: 1, background: "rgba(201,168,76,0.1)" }} />
+
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-exo2)", fontWeight: 700, fontSize: 20, color: "#F5F0E8", marginBottom: 12 }}>Proof of What We Build</h3>
+                  <p style={{ fontFamily: "var(--font-roboto-mono)", fontSize: 12, color: "rgba(245,240,232,0.5)", lineHeight: 1.8 }}>TailorNow is a FSLabs product from the ground up — the same engineering, security, and delivery standard we bring to every client engagement.</p>
+                </div>
+              </TiltCard>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <GoldDivider />
+
       {/* ══ PROCESS ══ */}
       <section id="process" style={{ ...S, background: "#030303", position: "relative", overflow: "hidden" }}>
         <div style={{ ...MW }}>
