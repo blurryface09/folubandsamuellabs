@@ -51,6 +51,7 @@ export default function Navbar() {
     { href: "#about", label: "About" },
     { href: "#team", label: "Team" },
     { href: "/academy", label: "Academy" },
+    { href: "#products", label: "Products" },
     { href: "#contact", label: "Contact" },
   ];
 
