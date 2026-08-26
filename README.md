@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Company Documents
+
+HR and company paperwork lives in `docs/`.
+
+| Document | Description |
+| --- | --- |
+| [`docs/Offer-Letter-Oreoluwa-Gbadamosi.docx`](docs/Offer-Letter-Oreoluwa-Gbadamosi.docx) | Offer of engagement — Oreoluwa Gbadamosi, IT Support Engineer (full-time, remote, commission-based). Signed by Adeseko Samuel, CTO & Co-Founder. Bracketed fields (`[DATE]`, `[START DATE]`, `[COMMISSION RATE]`, etc.) still need filling in before sending. |
