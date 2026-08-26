@@ -16,12 +16,18 @@ product lines:
 - **This repo (folubandsamuellabs.com)** — the company's own marketing site:
   software development services, an HR SaaS (leave management, org tooling),
   a crypto/fiat exchange product (`/exchange`), and training/workforce
-  offerings. Contact form routes to `admin@folubandsamuellabs.com`.
+  offerings. Contact form routes to `access@fslabs.tech`. The old
+  `folubandsamuellabs.com` domain is dead (DNS doesn't resolve) — the site
+  and all mail live at `fslabs.tech` now. Never reference the old domain.
 - **TailorNow** (tailornow.shop, separate repo: `blurryface09/tailor-now`) —
   a Nigerian fashion marketplace connecting customers with verified tailors.
   Live product with real revenue and Paystack payments (split payouts to
   creatives via Paystack subaccounts). Actively being grown as of Aug 2026 —
-  SEO, support-staff tooling, mobile UX fixes all shipped.
+  SEO, support-staff tooling, mobile UX fixes all shipped. Now featured on
+  this site's homepage under a "Products" section, linking out to
+  tailornow.shop. Known gap: WhatsApp order notifications (`src/lib/whatsapp.ts`)
+  are built but not wired — Twilio creds are still placeholder-only, both
+  locally and in Vercel production.
 
 ## People / roles
 
