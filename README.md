@@ -41,4 +41,4 @@ HR and company paperwork lives in `docs/`.
 
 | Document | Description |
 | --- | --- |
-| [`docs/Offer-Letter-Oreoluwa-Gbadamosi.docx`](docs/Offer-Letter-Oreoluwa-Gbadamosi.docx) | Offer of engagement — Oreoluwa Gbadamosi, IT Support Engineer (full-time, remote, commission-based). Reports to the CTO; mandatory Mon/Wed/Fri online meetings. Signed by Adeseko Samuel, CTO & Co-Founder. Final — no placeholders; commission rate is agreed separately in writing. |
+| [`docs/Offer-Letter-Oreoluwa-Afolabi.docx`](docs/Offer-Letter-Oreoluwa-Afolabi.docx) | Offer of engagement — Oreoluwa Afolabi, IT Support Engineer (full-time, remote, commission-based). Reports to the CTO; mandatory Mon/Wed/Fri online meetings. Signed by Adeseko Samuel, CTO & Co-Founder. Final — no placeholders; commission rate is agreed separately in writing. |
