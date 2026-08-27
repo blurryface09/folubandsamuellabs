@@ -12,6 +12,15 @@ interface CourseDetailProps {
   course: Course;
 }
 
+const BROCHURE_BY_SLUG: Record<string, string> = {
+  "fullstack-development": "/FSLabs-FullStack-Brochure.pdf",
+  "ethical-hacking-fundamentals": "/FSLabs-EthicalHacking-Brochure.pdf",
+  "machine-learning-foundations": "/FSLabs-MachineLearning-Brochure.pdf",
+  "backend-development": "/FSLabs-Backend-Brochure.pdf",
+  "frontend-development": "/FSLabs-Frontend-Brochure.pdf",
+  "prompt-engineering": "/FSLabs-PromptEngineering-Brochure.pdf",
+};
+
 export default function CourseDetail({ course }: CourseDetailProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -215,6 +224,30 @@ export default function CourseDetail({ course }: CourseDetailProps) {
                 <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>₦{course.price.toLocaleString()}</div>
                 <div style={{ fontSize: 12, color: "rgba(245,240,232,0.5)" }}>One-time payment</div>
               </div>
+
+              {BROCHURE_BY_SLUG[course.slug] && (
+                <a
+                  href={BROCHURE_BY_SLUG[course.slug]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    padding: "12px 20px",
+                    background: "transparent",
+                    color: "#C9A84C",
+                    border: "1px solid rgba(201,168,76,0.3)",
+                    borderRadius: 8,
+                    fontWeight: 600,
+                    fontSize: 13,
+                    textDecoration: "none",
+                  }}
+                >
+                  Download Brochure &amp; Syllabus
+                </a>
+              )}
 
               {paymentStatus === "failed" && (
                 <div style={{ fontSize: 13, color: "#F87171", background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: 8, padding: "10px 14px" }}>
