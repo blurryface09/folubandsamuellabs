@@ -42,3 +42,4 @@ HR and company paperwork lives in `docs/`.
 | Document | Description |
 | --- | --- |
 | [`docs/Offer-Letter-Oreoluwa-Afolabi.docx`](docs/Offer-Letter-Oreoluwa-Afolabi.docx) | Offer of engagement — Oreoluwa Afolabi, IT Support Engineer (full-time, remote, commission-based). Reports to the CTO; mandatory Mon/Wed/Fri online meetings. Signed by Adeseko Samuel, CTO & Co-Founder. Final — no placeholders; commission rate is agreed separately in writing. |
+| [`docs/Advisory-Agreement-Omoshalewa-Sheu.docx`](docs/Advisory-Agreement-Omoshalewa-Sheu.docx) | Strategic Partner & Advisor invitation — Sheu Omoshalewa Q. Peer-level advisory collaboration, not employment: no fixed hours, no reporting line, non-exclusive, mutual confidentiality. Presently uncompensated; any compensation to be agreed separately. |
