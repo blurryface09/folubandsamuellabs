@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lead Sorter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --paper: #eceee9;
+  --surface: #ffffff;
+  --surface-sunk: #f4f6f2;
+  --ink: #151a18;
+  --ink-soft: #5c6764;
+  --line: #d5dad4;
+  --line-soft: #e4e8e1;
+  --accent: #14594a;
+  --accent-soft: #d9e8e2;
+  --warn: #8a5206;
+  --warn-soft: #f6e7cf;
+  --danger: #9b1c33;
+  --danger-soft: #f7dfe3;
+  --shadow: 0 1px 2px rgba(21, 26, 24, .06), 0 8px 24px -16px rgba(21, 26, 24, .3);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1211;
+    --surface: #151c1a;
+    --surface-sunk: #111817;
+    --ink: #e7ebe8;
+    --ink-soft: #93a09c;
+    --line: #29332f;
+    --line-soft: #1f2724;
+    --accent: #57b79f;
+    --accent-soft: #16302a;
+    --warn: #d79c4a;
+    --warn-soft: #332616;
+    --danger: #e8798d;
+    --danger-soft: #351a20;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d1211;
+  --surface: #151c1a;
+  --surface-sunk: #111817;
+  --ink: #e7ebe8;
+  --ink-soft: #93a09c;
+  --line: #29332f;
+  --line-soft: #1f2724;
+  --accent: #57b79f;
+  --accent-soft: #16302a;
+  --warn: #d79c4a;
+  --warn-soft: #332616;
+  --danger: #e8798d;
+  --danger-soft: #351a20;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding-block: 40px 64px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 15px/1.55 "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+header { display: flex; flex-direction: column; gap: 8px; }
+.eyebrow {
+  font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+}
+h1 { margin: 0; font-size: clamp(28px, 5vw, 40px); font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
+.lede { margin: 0; max-width: 62ch; color: var(--ink-soft); }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; box-shadow: var(--shadow);
+}
+.panel-pad { padding: 22px; }
+
+#drop {
+  border: 1.5px dashed var(--line); border-radius: 10px; background: var(--surface);
+  padding: 34px 22px; text-align: center; display: flex; flex-direction: column;
+  align-items: center; gap: 12px; transition: border-color .15s, background .15s;
+}
+#drop.over { border-color: var(--accent); background: var(--accent-soft); }
+#drop p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+.filename { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; color: var(--ink); }
+
+button {
+  font: 500 14px/1 "IBM Plex Sans", system-ui, sans-serif; cursor: pointer;
+  border-radius: 7px; padding: 10px 16px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); transition: background .12s, border-color .12s;
+}
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+button.primary:hover { filter: brightness(1.08); }
+button:focus-visible, input:focus-visible, label:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-soft); }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.field { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-soft); }
+.field input[type=text] {
+  font: 400 13px/1 "IBM Plex Mono", ui-monospace, monospace; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--surface-sunk);
+  color: var(--ink); width: 190px; max-width: 100%;
+}
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.stat { background: var(--surface); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+.stat .n { font: 600 26px/1 "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.stat .k { font-size: 12px; color: var(--ink-soft); letter-spacing: .01em; }
+.stat.flag .n { color: var(--danger); }
+
+h2 { margin: 0 0 4px; font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+.sub { margin: 0 0 16px; font-size: 13px; color: var(--ink-soft); }
+
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th {
+  text-align: left; font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft);
+  padding: 0 12px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap;
+}
+td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+td.num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+td.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; }
+
+.bar { height: 6px; border-radius: 3px; background: var(--accent); min-width: 2px; }
+.bar.warn { background: var(--warn); }
+.bar.danger { background: var(--danger); }
+.bar-cell { width: 34%; min-width: 90px; }
+
+.pill {
+  display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11.5px; font-weight: 500;
+  background: var(--accent-soft); color: var(--accent); white-space: nowrap;
+}
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.danger { background: var(--danger-soft); color: var(--danger); }
+
+.exports { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.export {
+  border: 1px solid var(--line); border-radius: 9px; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 10px; background: var(--surface-sunk);
+}
+.export h3 { margin: 0; font-size: 14px; font-weight: 600; }
+.export p { margin: 0; font-size: 12.5px; color: var(--ink-soft); flex: 1; }
+.export .row { display: flex; gap: 8px; }
+.export button { padding: 7px 12px; font-size: 13px; }
+
+.note {
+  border-left: 3px solid var(--warn); background: var(--warn-soft);
+  padding: 12px 16px; border-radius: 0 7px 7px 0; font-size: 13px; color: var(--ink);
+}
+.note code, code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; }
+.hint { font-size: 12.5px; color: var(--ink-soft); }
+footer { font-size: 12.5px; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 18px; }
+@media (max-width: 560px) { .bar-cell { display: none; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">FSLabs · list hygiene</span>
+  <h1>Lead Sorter</h1>
+  <p class="lede">Drop a messy lead export in. Get a clean, de-duplicated SuperMailer CSV out — names split into First and Last, role inboxes held back, and every address labelled with the mail platform that actually hosts it.</p>
+</header>
+
+<div id="drop">
+  <strong>Drop a CSV or TSV here</strong>
+  <p>or</p>
+  <label><input type="file" id="file" accept=".csv,.tsv,.txt" hidden><button type="button" id="browse">Choose a file</button></label>
+  <p class="filename" id="filename">Showing sample data — drop your own file to replace it</p>
+</div>
+
+<div class="panel panel-pad controls">
+  <label class="check"><input type="checkbox" id="mx"> Look up MX records <span class="hint">(identifies Google Workspace / Microsoft 365 on custom domains)</span></label>
+  <label class="field">Tag <input type="text" id="tag" value="2025 Participants"></label>
+  <label class="field">Output separator
+    <select id="sep" style="font:400 13px/1 'IBM Plex Mono',monospace;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface-sunk);color:var(--ink)">
+      <option value=",">Comma</option>
+      <option value=";">Semicolon</option>
+    </select>
+  </label>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="panel panel-pad">
+  <h2>Mailbox providers</h2>
+  <p class="sub" id="provider-sub">Who actually hosts each address.</p>
+  <div class="table-scroll"><table id="providers"></table></div>
+</div>
+
+<div class="panel panel-pad">
+  <h2>Export</h2>
+  <p class="sub">Download opens as a file. Copy puts the same CSV on your clipboard — use it if downloads are blocked where this page is running.</p>
+  <div class="exports" id="exports"></div>
+</div>
+
+<div class="panel panel-pad">
+  <h2>Preview</h2>
+  <p class="sub" id="preview-sub">First 12 rows of the send list.</p>
+  <div class="table-scroll"><table id="preview"></table></div>
+</div>
+
+<footer>
+  Names are derived from a name column when your file has one, and from the email itself when it doesn't — always spot-check before a send. Addresses are processed entirely in your browser; nothing is uploaded. MX lookups, when enabled, query Google's public DNS resolver for domain names only.
+</footer>
+
+</div>
+
+<script>
+// ---------- CSV ----------
+function detectDelimiter(line) {
+  const counts = [",", ";", "\t", "|"].map(d => [d, line.split(d).length]);
+  counts.sort((a, b) => b[1] - a[1]);
+  return counts[0][1] > 1 ? counts[0][0] : ",";
+}
+function parseDelimited(text, delimiter) {
+  const rows = []; let row = [], field = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else inQuotes = false; }
+      else field += c;
+      continue;
+    }
+    if (c === '"') inQuotes = true;
+    else if (c === delimiter) { row.push(field); field = ""; }
+    else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+    else if (c !== "\r") field += c;
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim() !== ""));
+}
+function toCsv(rows, delimiter) {
+  const esc = v => (/["\n\r]/.test(v) || v.includes(delimiter)) ? '"' + v.replace(/"/g, '""') + '"' : v;
+  return rows.map(r => r.map(esc).join(delimiter)).join("\r\n") + "\r\n";
+}
+
+// ---------- Email ----------
+const EMAIL_RE = /^[A-Za-z0-9._%+'-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
+const ROLE_LOCALS = new Set(["info","admin","support","sales","contact","hello","help","office","team","enquiries","inquiries","careers","hr","billing","accounts","noreply","no-reply","donotreply","postmaster","webmaster","mail","marketing","service","services","feedback","press","media"]);
+const DOMAIN_FIXES = {"gmail.co":"gmail.com","gmail.con":"gmail.com","gmial.com":"gmail.com","gmai.com":"gmail.com","gmail.comm":"gmail.com","yahoo.co":"yahoo.com","yaho.com":"yahoo.com","hotmai.com":"hotmail.com","outlok.com":"outlook.com"};
+
+function extractEmail(raw) {
+  const cleaned = String(raw).replace(/^mailto:/i, "").trim();
+  const angle = cleaned.match(/<([^>]+)>/);
+  const candidate = (angle ? angle[1] : cleaned).trim().replace(/^[<("']+|[>)"',.;]+$/g, "");
+  if (!candidate.includes("@")) return null;
+  const parts = candidate.split("@");
+  if (parts.length !== 2) return null;
+  let domain = parts[1].toLowerCase();
+  domain = DOMAIN_FIXES[domain] || domain;
+  const email = parts[0] + "@" + domain;
+  return EMAIL_RE.test(email) ? email.toLowerCase() : null;
+}
+const isRole = e => ROLE_LOCALS.has(e.split("@")[0]);
+function dedupeKey(email) {
+  const [local, domain] = email.split("@");
+  const google = domain === "gmail.com" || domain === "googlemail.com";
+  let key = local.split("+")[0];
+  if (google) key = key.replace(/\./g, "");
+  return key + "@" + (google ? "gmail.com" : domain);
+}
+
+// ---------- Providers ----------
+const CONSUMER = {"gmail.com":"Google","googlemail.com":"Google","outlook.com":"Microsoft","hotmail.com":"Microsoft","hotmail.co.uk":"Microsoft","live.com":"Microsoft","msn.com":"Microsoft","yahoo.com":"Yahoo","yahoo.co.uk":"Yahoo","ymail.com":"Yahoo","rocketmail.com":"Yahoo","aol.com":"Yahoo","icloud.com":"Apple","me.com":"Apple","mac.com":"Apple","proton.me":"Proton","protonmail.com":"Proton","pm.me":"Proton","zoho.com":"Zoho","gmx.com":"GMX","mail.com":"GMX","yandex.com":"Yandex"};
+const MX_SIGNATURES = [
+  [/aspmx.*\.google\.com$|googlemail\.com$/i, "Google Workspace"],
+  [/\.outlook\.com$|\.protection\.outlook\.com$/i, "Microsoft 365"],
+  [/\.zoho\.(com|eu|in)$/i, "Zoho"],
+  [/\.protonmail\.ch$|\.proton\.me$/i, "Proton"],
+  [/\.yahoodns\.net$/i, "Yahoo"],
+  [/\.mail\.icloud\.com$/i, "Apple"],
+  [/\.messagingengine\.com$/i, "Fastmail"],
+  [/\.improvmx\.com$/i, "ImprovMX"],
+  [/\.mimecast\.com$/i, "Mimecast"],
+  [/\.pphosted\.com$|\.ppe-hosted\.com$/i, "Proofpoint"],
+  [/\.secureserver\.net$/i, "GoDaddy"],
+  [/\.registrar-servers\.com$|privateemail\.com$/i, "Namecheap"],
+  [/\.titan\.email$|\.flockmail\.com$/i, "Titan"],
+  [/\.yandex\.net$/i, "Yandex"],
+  [/hostinger/i, "Hostinger"]
+];
+const NO_MX = "No MX — undeliverable";
+const providerFromDomain = d => CONSUMER[d] || "Other";
+
+async function lookupMx(domain) {
+  const res = await fetch("https://dns.google/resolve?type=MX&name=" + encodeURIComponent(domain), { headers: { accept: "application/dns-json" } });
+  if (!res.ok) throw new Error("resolver " + res.status);
+  const data = await res.json();
+  const hosts = (data.Answer || [])
+    .filter(a => a.type === 15)
+    .map(a => String(a.data).split(" ").pop().trim().replace(/\.$/, ""))
+    .filter(Boolean);
+  if (!hosts.length) return NO_MX;
+  const hit = MX_SIGNATURES.find(([re]) => hosts.some(h => re.test(h)));
+  return hit ? hit[1] : "Self-hosted (" + hosts[0] + ")";
+}
+
+// ---------- Names ----------
+const PARTICLES = new Set(["de","da","van","von","der","del","di","la","le","bin","al"]);
+function titleCase(word) {
+  if (!word) return word;
+  const lower = word.toLowerCase();
+  if (PARTICLES.has(lower)) return lower;
+  return lower.replace(/(^|['\-])([a-z])/g, (_m, sep, ch) => sep + ch.toUpperCase());
+}
+function splitFullName(full) {
+  let name = String(full).replace(/\s+/g, " ").trim();
+  if (!name) return { firstName: "", lastName: "" };
+  if (name.includes(",")) {
+    const [last, first] = name.split(",").map(p => p.trim());
+    if (first) name = first + " " + last;
+  }
+  const parts = name.split(" ").filter(p => !/^(mr|mrs|ms|miss|dr|prof|engr|barr|rev|sir|chief)\.?$/i.test(p)).filter(Boolean);
+  if (!parts.length) return { firstName: "", lastName: "" };
+  if (parts.length === 1) return { firstName: titleCase(parts[0]), lastName: "" };
+  const rest = parts.slice(1);
+  const lastStart = rest.findIndex(p => PARTICLES.has(p.toLowerCase()));
+  const lastParts = lastStart >= 0 ? rest.slice(lastStart) : [rest[rest.length - 1]];
+  return { firstName: titleCase(parts[0]), lastName: lastParts.map(titleCase).join(" ") };
+}
+function nameFromEmail(email) {
+  const local = email.split("@")[0].split("+")[0];
+  const parts = local.split(/[._\-]+/).map(p => p.replace(/\d+/g, "")).filter(p => p.length > 1);
+  if (!parts.length) return { firstName: "", lastName: "" };
+  if (parts.length === 1) return { firstName: titleCase(parts[0]), lastName: "" };
+  return { firstName: titleCase(parts[0]), lastName: parts.slice(1).map(titleCase).join(" ") };
+}
+
+// ---------- Column mapping ----------
+const ALIASES = {
+  email: ["email","email address","e-mail","mail","emailaddress","work email"],
+  fullName: ["name","full name","fullname","participant","participant name","contact","contact name"],
+  firstName: ["first name","firstname","first","given name","fname"],
+  lastName: ["last name","lastname","last","surname","family name","lname"],
+  company: ["company","organisation","organization","org","business","employer"]
+};
+function mapHeaders(header) {
+  const map = {};
+  header.forEach((raw, index) => {
+    const key = raw.trim().toLowerCase();
+    for (const field in ALIASES) if (map[field] === undefined && ALIASES[field].includes(key)) map[field] = index;
+  });
+  return map;
+}
+
+// ---------- Pipeline ----------
+function process(text, sourceName) {
+  text = text.replace(/^﻿/, "");
+  const delimiter = detectDelimiter(text.split("\n")[0] || "");
+  const rows = parseDelimited(text, delimiter);
+  const leads = [], rejected = [];
+  if (!rows.length) return { leads, rejected, duplicates: 0 };
+
+  const hasHeader = !rows[0].some(c => c.includes("@"));
+  const columns = hasHeader ? mapHeaders(rows[0]) : {};
+  const body = hasHeader ? rows.slice(1) : rows;
+
+  for (const row of body) {
+    const cell = i => (i === undefined ? "" : (row[i] || "").trim());
+    let email = null, rawEmail = cell(columns.email);
+    if (rawEmail) email = extractEmail(rawEmail);
+    if (!email) for (const value of row) { const found = extractEmail(value); if (found) { email = found; rawEmail = value.trim(); break; } }
+    if (!email) {
+      const shown = row.join(delimiter).trim();
+      if (shown) rejected.push({ value: shown, reason: rawEmail ? "invalid email" : "no email found" });
+      continue;
+    }
+    let firstName = cell(columns.firstName), lastName = cell(columns.lastName);
+    if (!firstName) {
+      const full = cell(columns.fullName) || (hasHeader ? "" : (row.find(v => v.trim() && !v.includes("@")) || ""));
+      const split = splitFullName(full);
+      firstName = split.firstName;
+      lastName = lastName || split.lastName;
+    } else {
+      firstName = titleCase(firstName);
+      lastName = lastName ? lastName.split(" ").map(titleCase).join(" ") : "";
+    }
+    if (!firstName) { const guess = nameFromEmail(email); firstName = guess.firstName; lastName = lastName || guess.lastName; }
+    const domain = email.split("@")[1];
+    leads.push({ email, firstName, lastName, fullName: [firstName, lastName].filter(Boolean).join(" "), company: cell(columns.company), domain, provider: providerFromDomain(domain), source: sourceName });
+  }
+
+  const seen = new Map();
+  let duplicates = 0;
+  const score = l => (l.firstName ? 1 : 0) + (l.lastName ? 1 : 0) + (l.company ? 1 : 0);
+  for (const lead of leads) {
+    const key = dedupeKey(lead.email);
+    const existing = seen.get(key);
+    if (!existing) { seen.set(key, lead); continue; }
+    duplicates++;
+    if (score(lead) > score(existing)) seen.set(key, lead);
+  }
+  const unique = [...seen.values()].sort((a, b) => a.email.localeCompare(b.email));
+  return { leads: unique, rejected, duplicates, totalRows: body.length };
+}
+
+// ---------- State & render ----------
+let state = { personal: [], roles: [], rejected: [], duplicates: 0, totalRows: 0 };
+const $ = id => document.getElementById(id);
+
+function rowsFor(leads) {
+  const tag = $("tag").value.trim();
+  const header = ["Email","FirstName","LastName","FullName","Company","Domain","Provider","Source"];
+  if (tag) header.push("Tag");
+  return [header, ...leads.map(l => {
+    const r = [l.email, l.firstName, l.lastName, l.fullName, l.company, l.domain, l.provider, l.source];
+    if (tag) r.push(tag);
+    return r;
+  })];
+}
+function csvFor(kind) {
+  const sep = $("sep").value;
+  if (kind === "rejected") return toCsv([["Value","Reason"], ...state.rejected.map(r => [r.value, r.reason])], sep);
+  return toCsv(rowsFor(kind === "roles" ? state.roles : state.personal), sep);
+}
+function download(name, text) {
+  const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function render() {
+  const { personal, roles, rejected, duplicates, totalRows } = state;
+  const noMx = personal.filter(l => l.provider === NO_MX).length;
+  const noName = personal.filter(l => !l.firstName).length;
+
+  $("stats").innerHTML = [
+    ["Rows read", totalRows, ""],
+    ["Ready to send", personal.length, ""],
+    ["Duplicates merged", duplicates, ""],
+    ["Role inboxes", roles.length, ""],
+    ["No first name", noName, noName ? "flag" : ""],
+    ["Unreadable rows", rejected.length, rejected.length ? "flag" : ""]
+  ].map(([k, n, cls]) => `<div class="stat ${cls}"><span class="n">${n}</span><span class="k">${k}</span></div>`).join("");
+
+  const counts = new Map();
+  for (const l of personal) counts.set(l.provider, (counts.get(l.provider) || 0) + 1);
+  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  const max = sorted.length ? sorted[0][1] : 1;
+  $("providers").innerHTML =
+    "<thead><tr><th>Provider</th><th></th><th style='text-align:right'>Leads</th><th style='text-align:right'>Share</th></tr></thead><tbody>" +
+    sorted.map(([provider, n]) => {
+      const strict = provider.startsWith("Google") || provider.startsWith("Microsoft");
+      const dead = provider === NO_MX;
+      const pill = dead ? '<span class="pill danger">will bounce</span>' : strict ? '<span class="pill">strict bulk rules</span>' : "";
+      const cls = dead ? "danger" : strict ? "" : "warn";
+      return `<tr><td>${provider} ${pill}</td><td class="bar-cell"><div class="bar ${cls}" style="width:${Math.max(2, (n / max) * 100)}%"></div></td><td class="num">${n}</td><td class="num">${((n / Math.max(personal.length, 1)) * 100).toFixed(1)}%</td></tr>`;
+    }).join("") + "</tbody>";
+
+  $("exports").innerHTML = [
+    ["supermailer.csv", "send", `${personal.length} personal addresses, de-duplicated and name-split. This is the import file.`],
+    ["role-accounts.csv", "roles", `${roles.length} shared inboxes (info@, hr@). Held back — mail these deliberately, not in bulk.`],
+    ["rejected.csv", "rejected", `${rejected.length} rows with no usable address, kept so nothing vanishes silently.`]
+  ].map(([file, kind, desc]) => `<div class="export"><h3>${file}</h3><p>${desc}</p><div class="row"><button type="button" class="primary" data-dl="${kind}" data-file="${file}">Download</button><button type="button" data-copy="${kind}">Copy</button></div></div>`).join("");
+
+  const cols = ["Email","First","Last","Company","Provider"];
+  $("preview").innerHTML =
+    "<thead><tr>" + cols.map(c => `<th>${c}</th>`).join("") + "</tr></thead><tbody>" +
+    personal.slice(0, 12).map(l => `<tr><td class="mono">${esc(l.email)}</td><td>${esc(l.firstName)}</td><td>${esc(l.lastName)}</td><td>${esc(l.company)}</td><td>${esc(l.provider)}</td></tr>`).join("") +
+    "</tbody>";
+  $("preview-sub").textContent = personal.length > 12
+    ? `First 12 of ${personal.length} rows in the send list.`
+    : `All ${personal.length} rows in the send list.`;
+}
+const esc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+async function runMx() {
+  const domains = [...new Set(state.personal.concat(state.roles).filter(l => l.provider === "Other").map(l => l.domain))];
+  if (!domains.length) return;
+  $("provider-sub").textContent = `Looking up MX for ${domains.length} custom domain${domains.length === 1 ? "" : "s"}…`;
+  const queue = domains.slice();
+  const resolved = new Map();
+  let blocked = false;
+  await Promise.all(Array.from({ length: 8 }, async () => {
+    for (;;) {
+      const domain = queue.shift();
+      if (!domain) return;
+      try { resolved.set(domain, await lookupMx(domain)); }
+      catch { blocked = true; queue.length = 0; return; }
+    }
+  }));
+  for (const l of state.personal.concat(state.roles)) {
+    if (l.provider === "Other" && resolved.has(l.domain)) l.provider = resolved.get(l.domain);
+  }
+  $("provider-sub").textContent = blocked
+    ? "MX lookup was blocked here — the page's sandbox won't allow the DNS request. Host this file yourself and it works."
+    : "Who actually hosts each address. Custom domains resolved from live MX records.";
+  render();
+}
+
+function load(text, name) {
+  const result = process(text, name);
+  state = {
+    personal: result.leads.filter(l => !isRole(l.email)),
+    roles: result.leads.filter(l => isRole(l.email)),
+    rejected: result.rejected,
+    duplicates: result.duplicates,
+    totalRows: result.totalRows
+  };
+  $("provider-sub").textContent = "Who actually hosts each address.";
+  render();
+  if ($("mx").checked) runMx();
+}
+
+// ---------- Events ----------
+document.addEventListener("click", e => {
+  const dl = e.target.closest("[data-dl]");
+  if (dl) { download(dl.dataset.file, csvFor(dl.dataset.dl)); return; }
+  const copy = e.target.closest("[data-copy]");
+  if (copy) {
+    navigator.clipboard.writeText(csvFor(copy.dataset.copy)).then(() => {
+      const original = copy.textContent;
+      copy.textContent = "Copied";
+      setTimeout(() => { copy.textContent = original; }, 1400);
+    }, () => { copy.textContent = "Copy blocked"; });
+  }
+});
+$("browse").addEventListener("click", () => $("file").click());
+$("file").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  file.text().then(text => { $("filename").textContent = file.name; load(text, file.name); });
+});
+const drop = $("drop");
+["dragenter", "dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); if (t === "dragleave" && drop.contains(e.relatedTarget)) return; drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => {
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  file.text().then(text => { $("filename").textContent = file.name; load(text, file.name); });
+});
+$("mx").addEventListener("change", e => { if (e.target.checked) runMx(); });
+$("tag").addEventListener("input", render);
+$("sep").addEventListener("change", render);
+
+// ---------- Sample data, so the page opens working ----------
+const SAMPLE = `Name,Email Address,Company
+Jane Doe,JANE.DOE@Gmail.com,Acme
+"Okonkwo, Chidi",c.okonkwo+2025@gmail.com,
+Dr. Ada Lovelace,ada@fslabs.tech,FSLabs
+,chinedu.okafor21@yahoo.co,
+Mary-Jane O'Brien,"Mary Jane <mj@outlook.com>",
+Info Desk,info@bigcorp.com,BigCorp
+Broken Row,not-an-email,
+Ngozi van der Berg,ngozi@titan.email,Berg & Co
+janedoe@gmail.com,,
+Tunde Bakare,tunde@microsoft.com,Microsoft
+Amaka Eze,amaka.eze@hotmail.com,
+Samuel Oyelaran,sam@anthropic.com,`;
+load(SAMPLE, "sample.csv");
+</script>
+</body>
+</html>
