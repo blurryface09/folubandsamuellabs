@@ -73,10 +73,6 @@ body {
 .wrap { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
 
 header { display: flex; flex-direction: column; gap: 8px; }
-.eyebrow {
-  font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace;
-  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
-}
 h1 { margin: 0; font-size: clamp(28px, 5vw, 40px); font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
 .lede { margin: 0; max-width: 62ch; color: var(--ink-soft); }
 
@@ -173,7 +169,6 @@ footer { font-size: 12.5px; color: var(--ink-soft); border-top: 1px solid var(--
 <div class="wrap">
 
 <header>
-  <span class="eyebrow">FSLabs · list hygiene</span>
   <h1>Lead Sorter</h1>
   <p class="lede">Drop a messy lead export in. Get a clean, de-duplicated SuperMailer CSV out — names split into First and Last, role inboxes held back, and every address labelled with the mail platform that actually hosts it.</p>
 </header>
@@ -557,7 +552,7 @@ $("sep").addEventListener("change", render);
 const SAMPLE = `Name,Email Address,Company
 Jane Doe,JANE.DOE@Gmail.com,Acme
 "Okonkwo, Chidi",c.okonkwo+2025@gmail.com,
-Dr. Ada Lovelace,ada@fslabs.tech,FSLabs
+Dr. Ada Lovelace,ada@northgate.io,Northgate
 ,chinedu.okafor21@yahoo.co,
 Mary-Jane O'Brien,"Mary Jane <mj@outlook.com>",
 Info Desk,info@bigcorp.com,BigCorp
