@@ -15,6 +15,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { basename, join } from "node:path";
+import { resolveMx } from "node:dns/promises";
 
 type Lead = {
   email: string;
@@ -23,6 +24,8 @@ type Lead = {
   fullName: string;
   company: string;
   source: string;
+  domain: string;
+  provider: string;
 };
 
 type Rejected = { value: string; reason: string; source: string };
@@ -133,6 +136,85 @@ function dedupeKey(email: string): string {
   let key = local.split("+")[0];
   if (isGoogle) key = key.replace(/\./g, "");
   return `${key}@${isGoogle ? "gmail.com" : domain}`;
+}
+
+// ---------- Mailbox provider ----------
+
+// Which mail platform actually hosts the address. Matters for sending:
+// Google and Microsoft apply the strictest bulk-sender rules, and free
+// consumer domains behave very differently from company mailboxes.
+const CONSUMER_DOMAINS: Record<string, string> = {
+  "gmail.com": "Google",
+  "googlemail.com": "Google",
+  "outlook.com": "Microsoft",
+  "hotmail.com": "Microsoft",
+  "hotmail.co.uk": "Microsoft",
+  "live.com": "Microsoft",
+  "msn.com": "Microsoft",
+  "yahoo.com": "Yahoo",
+  "yahoo.co.uk": "Yahoo",
+  "ymail.com": "Yahoo",
+  "rocketmail.com": "Yahoo",
+  "aol.com": "Yahoo",
+  "icloud.com": "Apple",
+  "me.com": "Apple",
+  "mac.com": "Apple",
+  "proton.me": "Proton",
+  "protonmail.com": "Proton",
+  "pm.me": "Proton",
+  "zoho.com": "Zoho",
+  "gmx.com": "GMX",
+  "mail.com": "GMX",
+  "yandex.com": "Yandex",
+};
+
+// MX hostname fingerprints for custom domains (fslabs.tech, acme.com, ...).
+const MX_SIGNATURES: [RegExp, string][] = [
+  [/aspmx.*\.google\.com$|googlemail\.com$/i, "Google Workspace"],
+  [/\.outlook\.com$|\.protection\.outlook\.com$/i, "Microsoft 365"],
+  [/\.zoho\.(com|eu|in)$/i, "Zoho"],
+  [/\.protonmail\.ch$|\.proton\.me$/i, "Proton"],
+  [/\.yahoodns\.net$/i, "Yahoo"],
+  [/\.mail\.icloud\.com$/i, "Apple"],
+  [/\.messagingengine\.com$/i, "Fastmail"],
+  [/\.zoho|\.improvmx\.com$/i, "ImprovMX"],
+  [/\.mimecast\.com$/i, "Mimecast"],
+  [/\.pphosted\.com$|\.ppe-hosted\.com$/i, "Proofpoint"],
+  [/\.secureserver\.net$/i, "GoDaddy"],
+  [/\.registrar-servers\.com$|privateemail\.com$/i, "Namecheap"],
+  [/\.titan\.email$|\.flockmail\.com$/i, "Titan"],
+  [/\.yandex\.net$/i, "Yandex"],
+  [/\.hostinger|\.hostingermail/i, "Hostinger"],
+];
+
+function providerFromDomain(domain: string): string {
+  return CONSUMER_DOMAINS[domain] ?? "Other";
+}
+
+/** Resolve MX records to name the platform behind each custom domain. */
+async function resolveProviders(domains: string[]): Promise<Map<string, string>> {
+  const resolved = new Map<string, string>();
+  const queue = [...domains];
+  const workers = Array.from({ length: 10 }, async () => {
+    for (;;) {
+      const domain = queue.shift();
+      if (!domain) return;
+      try {
+        const records = await resolveMx(domain);
+        records.sort((a, b) => a.priority - b.priority);
+        // A null MX (a lone ".") means the domain explicitly accepts no mail.
+        const hosts = records.map((r) => r.exchange.trim().replace(/\.$/, "")).filter(Boolean);
+        const hit = MX_SIGNATURES.find(([re]) => hosts.some((h) => re.test(h)));
+        if (hit) resolved.set(domain, hit[1]);
+        else if (hosts.length > 0) resolved.set(domain, `Self-hosted (${hosts[0]})`);
+        else resolved.set(domain, "No MX — undeliverable");
+      } catch {
+        resolved.set(domain, "No MX — undeliverable");
+      }
+    }
+  });
+  await Promise.all(workers);
+  return resolved;
 }
 
 // ---------- Names ----------
@@ -270,6 +352,7 @@ function processFile(path: string, forcedDelimiter?: string) {
       lastName = lastName || guess.lastName;
     }
 
+    const domain = email.split("@")[1];
     leads.push({
       email,
       firstName,
@@ -277,19 +360,23 @@ function processFile(path: string, forcedDelimiter?: string) {
       fullName: [firstName, lastName].filter(Boolean).join(" "),
       company: cell(columns.company),
       source,
+      domain,
+      provider: providerFromDomain(domain),
     });
   }
 
   return { leads, rejected };
 }
 
-function main() {
+async function main() {
   const argv = process.argv.slice(2);
   const files: string[] = [];
   let outDir = "out";
   let delimiter: string | undefined;
   let outDelimiter = ",";
   let tag = "";
+  let useMx = false;
+  let splitByProvider = false;
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -297,13 +384,16 @@ function main() {
     else if (arg === "--delimiter") delimiter = argv[++i];
     else if (arg === "--out-delimiter") outDelimiter = argv[++i];
     else if (arg === "--tag") tag = argv[++i];
+    else if (arg === "--mx") useMx = true;
+    else if (arg === "--split-by-provider") splitByProvider = true;
     else if (arg.startsWith("--")) throw new Error(`Unknown flag: ${arg}`);
     else files.push(arg);
   }
 
   if (files.length === 0) {
     console.error(
-      "Usage: npx tsx scripts/sort-leads.ts <file.csv> [more.csv ...] [--out DIR] [--delimiter ,] [--out-delimiter ;] [--tag LABEL]",
+      "Usage: npx tsx scripts/sort-leads.ts <file.csv> [more.csv ...] [--out DIR] [--delimiter ,]\n" +
+        "       [--out-delimiter ;] [--tag LABEL] [--mx] [--split-by-provider]",
     );
     process.exit(1);
   }
@@ -332,18 +422,27 @@ function main() {
   }
 
   const unique = [...seen.values()].sort((a, b) => a.email.localeCompare(b.email));
+  if (useMx) {
+    const custom = [...new Set(unique.filter((l) => l.provider === "Other").map((l) => l.domain))];
+    process.stderr.write(`Looking up MX for ${custom.length} custom domain(s)...\n`);
+    const resolved = await resolveProviders(custom);
+    for (const lead of unique) {
+      if (lead.provider === "Other") lead.provider = resolved.get(lead.domain) ?? "Other";
+    }
+  }
+
   const personal = unique.filter((l) => !isRoleAccount(l.email));
   const roles = unique.filter((l) => isRoleAccount(l.email));
 
   mkdirSync(outDir, { recursive: true });
 
   // SuperMailer maps these headers to merge fields directly.
-  const header = ["Email", "FirstName", "LastName", "FullName", "Company", "Source"];
+  const header = ["Email", "FirstName", "LastName", "FullName", "Company", "Domain", "Provider", "Source"];
   if (tag) header.push("Tag");
   const toRows = (leads: Lead[]) => [
     header,
     ...leads.map((l) => {
-      const row = [l.email, l.firstName, l.lastName, l.fullName, l.company, l.source];
+      const row = [l.email, l.firstName, l.lastName, l.fullName, l.company, l.domain, l.provider, l.source];
       if (tag) row.push(tag);
       return row;
     }),
@@ -358,13 +457,38 @@ function main() {
     "utf8",
   );
 
+  const byProvider = new Map<string, Lead[]>();
+  for (const lead of personal) {
+    const list = byProvider.get(lead.provider) ?? [];
+    list.push(lead);
+    byProvider.set(lead.provider, list);
+  }
+  const providerCounts = [...byProvider.entries()].sort((a, b) => b[1].length - a[1].length);
+
+  if (splitByProvider) {
+    const providerDir = join(outDir, "by-provider");
+    mkdirSync(providerDir, { recursive: true });
+    for (const [provider, leads] of providerCounts) {
+      const slug = provider.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "unknown";
+      writeFileSync(join(providerDir, `${slug}.csv`), toCsv(toRows(leads), outDelimiter), "utf8");
+    }
+  }
+
   const missingName = personal.filter((l) => !l.firstName).length;
   console.log(`Read      ${allLeads.length + rejected.length} rows from ${files.length} file(s)`);
   console.log(`Duplicates removed  ${duplicates}`);
   console.log(`Rejected            ${rejected.length}  → ${join(outDir, "rejected.csv")}`);
   console.log(`Role accounts       ${roles.length}  → ${join(outDir, "role-accounts.csv")}`);
   console.log(`Ready to send       ${personal.length}  → ${mainPath}`);
+  console.log("\nBy mailbox provider:");
+  for (const [provider, leads] of providerCounts) {
+    const share = ((leads.length / Math.max(personal.length, 1)) * 100).toFixed(1);
+    console.log(`  ${provider.padEnd(28)} ${String(leads.length).padStart(5)}  ${share}%`);
+  }
+  if (splitByProvider) console.log(`  → split into ${join(outDir, "by-provider")}/`);
+  const undeliverable = personal.filter((l) => l.provider.startsWith("No MX")).length;
+  if (undeliverable) console.log(`  ⚠ ${undeliverable} on domains with no MX record — these will bounce.`);
   if (missingName) console.log(`  ⚠ ${missingName} have no first name — set a fallback greeting in SuperMailer.`);
 }
 
-main();
+void main();
